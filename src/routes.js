@@ -8,7 +8,7 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
-
+import Patient from "pages/patient/patient";
 
 var routes = [
 
@@ -74,6 +74,13 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: <Register />,
     layout: "/auth",
+  },
+  {
+    path: "/patient",
+    name: "Patient",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Patient />,
+    layout: "/admin",
   },
 ];
 export default routes;
