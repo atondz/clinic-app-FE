@@ -1,4 +1,3 @@
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -16,12 +15,9 @@ root.render(
   <BrowserRouter>
     <Routes>
       {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
-       {/* <Route path="*" element={<Navigate to="/admin/index" replace />} /> */}
+      {/* <Route path="*" element={<Navigate to="/admin/index" replace />} /> */}
       <Route path="/*" element={<AdminLayout />} />
       <Route path="/auth/*" element={<AuthLayout />} />
-     
-
-
     </Routes>
   </BrowserRouter>
 );

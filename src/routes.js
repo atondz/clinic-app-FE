@@ -1,17 +1,15 @@
-
 import Index from "views/Index.js";
 import Profile from "pages/profile/Profile.js";
-import Maps from "views/examples/Maps.js";
+import Maps from "pages/clinic/Maps";
 import Register from "pages/auth/Register.js";
 import Login from "pages/auth/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
-
+import AddClinic from "pages/clinic/Addclinic.js";
 
 var routes = [
-
   {
     path: "/home",
     name: "Home",
@@ -45,6 +43,13 @@ var routes = [
     name: "Phòng Khám",
     icon: "ni ni-pin-3 text-orange",
     component: <Maps />,
+    layout: "/admin",
+  },
+  {
+    path: "/addClinic",
+    name: "Addclinic",
+    icon: "ni ni-circle-08 text-pink",
+    component: <AddClinic />,
     layout: "/admin",
   },
   {
