@@ -1,5 +1,6 @@
 import React from "react";
-import { Badge, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Badge } from "reactstrap";
+
 
 const TableList = ({ data }) => {
   return (
@@ -8,8 +9,8 @@ const TableList = ({ data }) => {
       <td>{data.code}</td>
       <td>{data.gender}</td>
       <td>{data.phone}</td>
-      <td>{data.dob}</td>
-      <td>{data.address}</td>
+      <td>{data.dob}</td>      {/* Ngày sinh */}
+      <td>{data.address}</td>  {/* Địa chỉ */}
       <td>
         <Badge color={data.statusColor} className="badge-dot">
           <i className={`bg-${data.statusColor}`} /> {data.status}
@@ -33,6 +34,7 @@ const TableList = ({ data }) => {
         </UncontrolledDropdown>
       </td>
     </tr>
+    
   );
 };
 

@@ -9,8 +9,13 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
+import Patient from "pages/patient/patient.js";
 
-const routes = [
+
+
+var routes = [
+
+
   {
     path: "/home",
     name: "Home",
@@ -74,6 +79,14 @@ const routes = [
     component: <Register />,
     layout: "/auth",
   },
+  {
+    path: "/patient",
+    name: "Patient",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Patient />,
+    layout: "/admin",
+  },
+  
 ];
 
 // Tạo mảng riêng cho Sidebar
@@ -86,16 +99,9 @@ const sidebarRoutes = [
     layout: "/admin",
   },
   {
-    path: "/Welcome",
-    name: "Welcome",
-    icon: "fa fa-plus-square text-primary",
-    component: <WelcomePage />,
-    layout: "/auth",
-  },
-  {
     path: "/index",
     name: "Giấy Khám Bệnh",
-    icon: "fa fa-plus-square text-primary",
+    icon: "ni ni-collection",
     component: <Index />,
     layout: "/admin",
   },
@@ -125,6 +131,13 @@ const sidebarRoutes = [
     name: "Tables",
     icon: "ni ni-bullet-list-67 text-red",
     component: <Tables />,
+    layout: "/admin",
+  },
+  {
+    path: "/patient",
+    name: "Patient",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Patient />,
     layout: "/admin",
   },
  
