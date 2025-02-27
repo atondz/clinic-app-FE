@@ -10,6 +10,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import { sidebarRoutes } from "routes.js";
 
 import routes from "routes.js";
+import notFound from './../pages/notFound';
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -50,11 +51,11 @@ const Admin = (props) => {
    <Sidebar
   {...props}
   sidebarRoutes={sidebarRoutes}
-  logo={{
-    innerLink: "/index",
-    imgSrc: require("../assets/img/brand/argon-react.png"),
-    imgAlt: "...",
-  }}
+  // logo={{
+  //   innerLink: "/index",
+  //   imgSrc: require("../assets/img/brand/argon-react.png"),
+  //   imgAlt: "...",
+  // }}
 />
 
 
@@ -65,7 +66,7 @@ const Admin = (props) => {
         />
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route path="*" element={<Navigate to="/notFound" replace />} />
         </Routes>
         <Container fluid>
           <AdminFooter />

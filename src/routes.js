@@ -10,6 +10,7 @@ import Icons from "views/examples/Icons.js";
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient.js";
+import NotFound from "pages/notFound";
 
 
 
@@ -86,6 +87,13 @@ var routes = [
     component: <Patient />,
     layout: "/admin",
   },
+  {
+    path: "/notFound",
+    name: "404",
+    icon: "ni ni-circle-08 text-pink",
+    component: <NotFound />,
+    layout: "/admin",
+  },
   
 ];
 
@@ -140,7 +148,7 @@ const sidebarRoutes = [
     component: <Patient />,
     layout: "/admin",
   },
- 
+   
 ];
 
 export { routes, sidebarRoutes };

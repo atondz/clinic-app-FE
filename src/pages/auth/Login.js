@@ -49,10 +49,10 @@ const Login = () => {
 
       toast.success("Đăng nhập thành công! Chuyển hướng đến trang chính...");
 
-      // Chuyển hướng sau 2 giây
+      // Chuyển hướng sau 0.2 giây
       setTimeout(() => {
-        navigate("/");
-      }, 2000);
+        navigate("/home");
+      }, 200);
     } catch (error) {
       toast.error("Email hoặc mật khẩu không chính xác.");
       console.error(error);
