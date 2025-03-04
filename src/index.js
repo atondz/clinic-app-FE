@@ -15,6 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
+
       {/* Chuyển hướng trang mặc định đến /auth/Welcome */}
       <Route path="/" element={<Navigate to="/auth/Welcome" />} />
       
@@ -26,6 +27,7 @@ root.render(
       
       {/* Định tuyến cho AdminLayout (nếu có) */}
       <Route path="/*" element={<AdminLayout />} />
+
     </Routes>
   </BrowserRouter>
 );

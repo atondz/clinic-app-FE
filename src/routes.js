@@ -1,8 +1,9 @@
-// routes.js
+
 import React from "react";
+
 import Index from "views/Index.js";
 import Profile from "pages/profile/Profile.js";
-import Maps from "views/examples/Maps.js";
+import Maps from "pages/clinic/Maps";
 import Register from "pages/auth/Register.js";
 import Login from "pages/auth/Login.js";
 import Tables from "views/examples/Tables.js";
@@ -11,6 +12,7 @@ import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient.js";
 import NotFound from "pages/notFound";
+import AddClinic from "pages/clinic/Addclinic.js";
 
 
 
@@ -48,6 +50,13 @@ var routes = [
     name: "Phòng Khám",
     icon: "ni ni-pin-3 text-orange",
     component: <Maps />,
+    layout: "/admin",
+  },
+  {
+    path: "/addClinic",
+    name: "Addclinic",
+    icon: "ni ni-circle-08 text-pink",
+    component: <AddClinic />,
     layout: "/admin",
   },
   {
@@ -95,7 +104,7 @@ var routes = [
   
 ];
 
-// Tạo mảng riêng cho Sidebar
+
 const sidebarRoutes = [
   {
     path: "/home",
