@@ -9,7 +9,7 @@ import Icons from "views/examples/Icons.js";
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient";
-
+import PatientForm from "pages/patient/patientForm";
 var routes = [
 
   {
@@ -80,6 +80,13 @@ var routes = [
     name: "Patient",
     icon: "ni ni-circle-08 text-pink",
     component: <Patient />,
+    layout: "/admin",
+  },
+  {
+    path: "/patient/patientform",
+    name: "PatientForm",
+    icon: "ni ni-circle-08 text-pink",
+    component: <PatientForm />,
     layout: "/admin",
   },
 ];

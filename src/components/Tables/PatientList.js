@@ -4,7 +4,7 @@ import {
   InputGroup, InputGroupAddon, InputGroupText, Col, Pagination, PaginationItem, PaginationLink
 } from "reactstrap";
 import TableList from "./TableList"; // Import component hàng
-
+import { Link } from "react-router-dom";
 const PatientList = () => {
   const [patients, setPatients] = useState([
     { id: 1, patientName: "Nguyễn Văn A", code: "BN001", gender: "Nam", phone: "0901234567", dob: "12/03/1985", address: "Hà Nội" },
@@ -61,9 +61,13 @@ const PatientList = () => {
             />
           </InputGroup>
         </Col>
-        <Col md="3" className="text-right">
-          <Button color="primary">+ Thêm Bệnh Nhân</Button>
-        </Col>
+
+<Button color="primary">
+  <Link to="/patient/patientform" style={{ color: "white", textDecoration: "none" }}>
+    + Thêm Bệnh Nhân
+  </Link>
+</Button>
+
       </Row>
 
       {/* Bảng danh sách bệnh nhân */}
