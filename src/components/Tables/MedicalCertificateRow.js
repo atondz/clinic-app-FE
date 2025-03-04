@@ -1,15 +1,15 @@
 import React from "react";
 import { Badge, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 
-const TableList = ({ data }) => {
+const MedicalCertificateRow = ({ data }) => {
   return (
     <tr>
       <td>{data.patientName}</td>
       <td>{data.code}</td>
-      <td>{data.gender}</td>
-      <td>{data.phone}</td>
-      <td>{data.dob}</td>
-      <td>{data.address}</td>
+      <td>{data.title}</td> {/* Sửa gender -> title */}
+      <td>{data.clinic}</td> {/* Sửa phone -> clinic */}
+      <td>{data.doctor}</td> {/* Sửa dob -> doctor */}
+      <td>{data.date}</td> {/* Sửa address -> date */}
       <td>
         <Badge color={data.statusColor} className="badge-dot">
           <i className={`bg-${data.statusColor}`} /> {data.status}
@@ -36,4 +36,4 @@ const TableList = ({ data }) => {
   );
 };
 
-export default TableList;
+export default MedicalCertificateRow;

@@ -10,7 +10,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import { sidebarRoutes } from "routes.js";
 
 import routes from "routes.js";
-import notFound from './../pages/notFound';
+// import notFound from './../pages/notFound';
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -26,7 +26,7 @@ const Admin = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
-          <Route path={prop.path} element={prop.component} key={key} exact />
+          <Route path={prop.path} element={prop.component} key={key} />
         );
       } else {
         return null;

@@ -31,13 +31,13 @@ var routes = [
     component: <WelcomePage />,
     layout: "/auth",
   },
-  {
-    path: "/index",
-    name: "Giấy Khám Bệnh",
-    icon: "fa fa-plus-square text-primary",
-    component: <Index />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/index",
+  //   name: "Giấy Khám Bệnh",
+  //   icon: "fa fa-plus-square text-primary",
+  //   component: <Index />,
+  //   layout: "/admin",
+  // },
   {
     path: "/icons",
     name: "Đơn Thuốc",
@@ -113,13 +113,13 @@ const sidebarRoutes = [
     component: <Home />,
     layout: "/admin",
   },
-  {
-    path: "/index",
-    name: "Giấy Khám Bệnh",
-    icon: "ni ni-collection",
-    component: <Index />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/index",
+  //   name: "Giấy Khám Bệnh",
+  //   icon: "ni ni-collection",
+  //   component: <Index />,
+  //   layout: "/admin",
+  // },
   {
     path: "/icons",
     name: "Đơn Thuốc",
