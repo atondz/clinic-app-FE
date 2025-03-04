@@ -62,7 +62,7 @@ const Register = () => {
       // Chuyển sang trang đăng nhập sau 2 giây
       setTimeout(() => {
         navigate("/auth/login");
-      }, 2000);
+      }, 1000);
     } catch (error) {
       toast.error("Lỗi: Không thể đăng ký tài khoản.");
       console.error(error);
@@ -191,7 +191,7 @@ const Register = () => {
                     >
                       <span className="text-muted">
                         Tôi đồng ý với{" "}
-                        <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" >
                           Chính sách bảo mật
                         </a>
                       </span>
@@ -202,7 +202,7 @@ const Register = () => {
 
               {/* Nút Đăng ký */}
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="submit">
+                <Button className="mt-4" color="primary" type="submit" >
                   Đăng ký
                 </Button>
               </div>

@@ -15,8 +15,6 @@ import NotFound from "pages/notFound";
 
 
 var routes = [
-
-
   {
     path: "/home",
     name: "Home",

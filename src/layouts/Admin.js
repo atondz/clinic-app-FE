@@ -51,11 +51,7 @@ const Admin = (props) => {
    <Sidebar
   {...props}
   sidebarRoutes={sidebarRoutes}
-  // logo={{
-  //   innerLink: "/index",
-  //   imgSrc: require("../assets/img/brand/argon-react.png"),
-  //   imgAlt: "...",
-  // }}
+
 />
 
 
