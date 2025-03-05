@@ -133,14 +133,14 @@ const ListOfDrugs = () => {
                     className="me-2"
                     onClick={() => handleEdit(drug)}
                   >
-                    <FaEdit />
+                    Sửa
                   </Button>
                   <Button
                     variant="danger"
                     size="sm"
                     onClick={() => handleDelete(drug.id)}
                   >
-                    <FaTrash />
+                    Xóa
                   </Button>
                 </td>
               </tr>
