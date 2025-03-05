@@ -13,6 +13,7 @@ import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient.js";
 import NotFound from "pages/notFound";
 import AddClinic from "pages/clinic/Addclinic.js";
+import PatientForm from "pages/patient/patientForm";
 
 
 
@@ -31,13 +32,13 @@ var routes = [
     component: <WelcomePage />,
     layout: "/auth",
   },
-  // {
-  //   path: "/index",
-  //   name: "Giấy Khám Bệnh",
-  //   icon: "fa fa-plus-square text-primary",
-  //   component: <Index />,
-  //   layout: "/admin",
-  // },
+  {
+    path: "/patient/new",
+    name: "Thêm bệnh nhân",
+    icon: "fa fa-plus-square text-primary",
+    component: <PatientForm/>,
+    layout: "/admin",
+  },
   {
     path: "/icons",
     name: "Đơn Thuốc",
