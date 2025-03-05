@@ -16,9 +16,13 @@ import {
   Nav,
   Container,
   Media,
+  Button,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import { logout } from "utils/auth";
 
 const AdminNavbar = (props) => {
+  const navigate = useNavigate();
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -27,7 +31,7 @@ const AdminNavbar = (props) => {
             className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
             to="/index"
           >
-            {props.brandText}
+          Clinic app
           </Link>
           
           <Nav className="align-items-center d-none d-md-flex" navbar>
@@ -69,8 +73,36 @@ const AdminNavbar = (props) => {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <i className="ni ni-user-run" />
-                  <span>Đăng xuất</span>
+                <div
+                      style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      width: "100%",
+        }}
+      >
+                 <i className="ni ni-user-run" />
+                  
+                  <nav>
+                  <button
+                         onClick={() => logout(navigate)}
+                       style={{
+                        background: "none",
+                       border: "none",
+                        color: "inherit",
+                       fontSize: "inherit",
+                       display: "flex",
+                      alignItems: "end flex",
+                      gap: "8px",
+                       width: "100%",
+                      padding: "10px 15px",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      borderRadius: "5px",  }} >
+                     Đăng Xuất             
+            </button>  
+                 </nav>
+                 </div>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
