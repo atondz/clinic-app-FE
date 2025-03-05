@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import Index from "views/Index.js";
@@ -14,8 +13,8 @@ import Patient from "pages/patient/patient.js";
 import NotFound from "pages/notFound";
 import AddClinic from "pages/clinic/Addclinic.js";
 import PatientForm from "pages/patient/patientForm";
-
-
+import ListOfDrugs from "pages/drug/ListOfDrugs.js";
+import AddDrugForm from "pages/drug/AddDrugForm.js";
 
 var routes = [
   {
@@ -36,7 +35,7 @@ var routes = [
     path: "/patient/new",
     name: "Thêm bệnh nhân",
     icon: "fa fa-plus-square text-primary",
-    component: <PatientForm/>,
+    component: <PatientForm />,
     layout: "/admin",
   },
   {
@@ -58,6 +57,20 @@ var routes = [
     name: "Addclinic",
     icon: "ni ni-circle-08 text-pink",
     component: <AddClinic />,
+    layout: "/admin",
+  },
+  {
+    path: "/drug",
+    name: "Thuốc",
+    icon: "ni ni-pin-3 text-orange",
+    component: <ListOfDrugs />,
+    layout: "/admin",
+  },
+  {
+    path: "/addDrugForm",
+    name: "AddDrugForm",
+    icon: "ni ni-pin-3 text-orange",
+    component: <AddDrugForm />,
     layout: "/admin",
   },
   {
@@ -102,9 +115,7 @@ var routes = [
     component: <NotFound />,
     layout: "/admin",
   },
-  
 ];
-
 
 const sidebarRoutes = [
   {
@@ -136,6 +147,13 @@ const sidebarRoutes = [
     layout: "/admin",
   },
   {
+    path: "/drug",
+    name: "Thuốc",
+    icon: "ni ni-pin-3 text-orange",
+    component: <ListOfDrugs />,
+    layout: "/admin",
+  },
+  {
     path: "/user-profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
@@ -156,7 +174,6 @@ const sidebarRoutes = [
     component: <Patient />,
     layout: "/admin",
   },
-   
 ];
 
 export { routes, sidebarRoutes };
