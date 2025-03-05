@@ -1,22 +1,14 @@
-
-import { useState } from "react";
+// Sidebar.js
+import React, { useState } from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
-// nodejs library to set properties for components
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 
-// reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
   Collapse,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  FormGroup,
   Form,
   Input,
   InputGroupAddon,
@@ -28,38 +20,39 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Progress,
-  Table,
   Container,
   Row,
   Col,
 } from "reactstrap";
 
-var ps;
-
 const Sidebar = (props) => {
-  const [collapseOpen, setCollapseOpen] = useState();
-  // verifies if routeName is the one active (in browser input)
+  const [collapseOpen, setCollapseOpen] = useState(false);
+
+  // Kiểm tra active route (nếu cần dùng cho việc đánh dấu link)
   const activeRoute = (routeName) => {
-    return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+    return props.location && props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
-  // toggles collapse between opened and closed (true/false)
+
+  // Toggle mở/đóng collapse
   const toggleCollapse = () => {
-    setCollapseOpen((data) => !data);
+    setCollapseOpen((prev) => !prev);
   };
-  // closes the collapse
+
+  // Đóng collapse khi click vào 1 link
   const closeCollapse = () => {
     setCollapseOpen(false);
   };
-  // creates the links that appear in the left menu / Sidebar
+
+  // Tạo danh sách link từ mảng sidebarRoutes
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
       return (
         <NavItem key={key}>
           <NavLink
-            to={(prop.layout != "/admin" ? prop.layout : "") + prop.path}
+            to={(prop.layout !== "/admin" ? prop.layout : "") + prop.path}
             tag={NavLinkRRD}
             onClick={closeCollapse}
+            className={activeRoute(prop.path)}
           >
             <i className={prop.icon} />
             {prop.name}
@@ -69,8 +62,10 @@ const Sidebar = (props) => {
     });
   };
 
-  const { bgColor, routes, logo } = props;
-  let navbarBrandProps;
+  // Sử dụng prop sidebarRoutes thay vì routes
+  const { bgColor, sidebarRoutes, logo } = props;
+  let navbarBrandProps = {};
+
   if (logo && logo.innerLink) {
     navbarBrandProps = {
       to: logo.innerLink,
@@ -90,25 +85,24 @@ const Sidebar = (props) => {
       id="sidenav-main"
     >
       <Container fluid>
-        {/* Toggler */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={toggleCollapse}
-        >
+        {/* Nút Toggle */}
+        <button className="navbar-toggler" type="button" onClick={toggleCollapse}>
           <span className="navbar-toggler-icon" />
         </button>
-        {/* Brand */}
+        {/* Brand/Logo */}
         {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps}>
-            {/* <img
+            {/* Bạn có thể mở phần comment bên dưới để hiển thị logo */}
+            {/*
+            <img
               alt={logo.imgAlt}
               className="navbar-brand-img"
               src={logo.imgSrc}
-            /> */}
+            />
+            */}
           </NavbarBrand>
         ) : null}
-        {/* User */}
+        {/* User info cho Mobile */}
         <Nav className="align-items-center d-md-none">
           <UncontrolledDropdown nav>
             <DropdownToggle nav className="nav-link-icon">
@@ -128,12 +122,7 @@ const Sidebar = (props) => {
           <UncontrolledDropdown nav>
             <DropdownToggle nav>
               <Media className="align-items-center">
-                <span className="avatar avatar-sm rounded-circle">
-                  <img
-                    alt="..."
-                    src={require("../../assets/img/theme/team-1-800x800.jpg")}
-                  />
-                </span>
+               
               </Media>
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
@@ -164,9 +153,9 @@ const Sidebar = (props) => {
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
-        {/* Collapse */}
+        {/* Nội dung Collapse */}
         <Collapse navbar isOpen={collapseOpen}>
-          {/* Collapse header */}
+          {/* Header của Collapse dành cho Mobile */}
           <div className="navbar-collapse-header d-md-none">
             <Row>
               {logo ? (
@@ -183,18 +172,14 @@ const Sidebar = (props) => {
                 </Col>
               ) : null}
               <Col className="collapse-close" xs="6">
-                <button
-                  className="navbar-toggler"
-                  type="button"
-                  onClick={toggleCollapse}
-                >
+                <button className="navbar-toggler" type="button" onClick={toggleCollapse}>
                   <span />
                   <span />
                 </button>
               </Col>
             </Row>
           </div>
-          {/* Form */}
+          {/* Form tìm kiếm dành cho Mobile */}
           <Form className="mt-4 mb-3 d-md-none">
             <InputGroup className="input-group-rounded input-group-merge">
               <Input
@@ -210,15 +195,13 @@ const Sidebar = (props) => {
               </InputGroupAddon>
             </InputGroup>
           </Form>
-          {/* Navigation */}
-          <Nav navbar>{createLinks(routes)}</Nav>
-          {/* Divider */}
+          {/* Navigation links */}
+          <Nav navbar>{createLinks(sidebarRoutes)}</Nav>
           <hr className="my-3" />
-          {/* Heading */}
-         
+          {/* Heading bổ sung (nếu có) */}
           <Nav className="mb-md-3" navbar>
             <NavItem className="active-pro active">
-              
+              {/* Ví dụ: link nâng cao */}
             </NavItem>
           </Nav>
         </Collapse>
@@ -228,22 +211,16 @@ const Sidebar = (props) => {
 };
 
 Sidebar.defaultProps = {
-  routes: [{}],
+  sidebarRoutes: [{}],
 };
 
 Sidebar.propTypes = {
-  // links that will be displayed inside the component
-  routes: PropTypes.arrayOf(PropTypes.object),
+  // Các link được hiển thị trên sidebar
+  sidebarRoutes: PropTypes.arrayOf(PropTypes.object),
   logo: PropTypes.shape({
-    // innerLink is for links that will direct the user within the app
-    // it will be rendered as <Link to="...">...</Link> tag
     innerLink: PropTypes.string,
-    // outterLink is for links that will direct the user outside the app
-    // it will be rendered as simple <a href="...">...</a> tag
     outterLink: PropTypes.string,
-    // the image src of the logo
     imgSrc: PropTypes.string.isRequired,
-    // the alt for the img
     imgAlt: PropTypes.string.isRequired,
   }),
 };

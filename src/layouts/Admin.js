@@ -7,8 +7,10 @@ import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import { sidebarRoutes } from "routes.js";
 
 import routes from "routes.js";
+// import notFound from './../pages/notFound';
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -24,7 +26,7 @@ const Admin = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
-          <Route path={prop.path} element={prop.component} key={key} exact />
+          <Route path={prop.path} element={prop.component} key={key} />
         );
       } else {
         return null;
@@ -46,15 +48,13 @@ const Admin = (props) => {
 
   return (
     <>
-      <Sidebar
-        {...props}
-        routes={routes}
-        logo={{
-          innerLink: "/index",
-          imgSrc: require("../assets/img/brand/argon-react.png"),
-          imgAlt: "...",
-        }}
-      />
+   <Sidebar
+  {...props}
+  sidebarRoutes={sidebarRoutes}
+
+/>
+
+
       <div className="main-content" ref={mainContent}>
         <AdminNavbar
           {...props}
@@ -62,7 +62,7 @@ const Admin = (props) => {
         />
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route path="*" element={<Navigate to="/notFound" replace />} />
         </Routes>
         <Container fluid>
           <AdminFooter />
