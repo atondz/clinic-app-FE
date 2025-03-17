@@ -22,9 +22,7 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
-   "homepage": "https://demos.creative-tim.com/",
- 
- 
+  "homepage": "https://demos.creative-tim.com/",
   "scripts": {
     "start": "react-scripts start",
     "build": "cross-env PUBLIC_URL=/ react-scripts build",
@@ -55,10 +53,13 @@
     "moment": "2.29.4",
     "nouislider": "15.4.0",
     "react": "18.2.0",
+    "react-bootstrap": "^2.10.9",
     "react-chartjs-2": "2.11.2",
     "react-copy-to-clipboard": "5.1.0",
     "react-datetime": "3.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^5.5.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "6.21.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
