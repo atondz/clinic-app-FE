@@ -13,7 +13,12 @@ import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient.js";
 import NotFound from "pages/notFound";
 import AddClinic from "pages/clinic/Addclinic.js";
+
 import PatientForm from "pages/patient/patientForm";
+
+import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
+import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
+
 
 var routes = [
   {
@@ -100,7 +105,21 @@ var routes = [
     component: <NotFound />,
     layout: "/admin",
   },
-  
+  {
+    path: "/medicine-types",
+    name: "Loại Thuốc",
+    icon: "fa fa-pills text-primary",
+    component: <MedicineTypes />,
+    layout: "/admin",
+  },
+  {
+    path: "/add-medicine-types",
+    name: "Thêm Loại Thuốc",
+    icon: "fa fa-plus-circle text-success",
+    component: <AddMedicineTypes />,
+    layout: "/admin",
+  },
+
 ];
 
 
@@ -154,7 +173,14 @@ const sidebarRoutes = [
     component: <Patient />,
     layout: "/admin",
   },
-   
+  {
+    path: "/medicine-types",
+    name: "Loại Thuốc",
+    icon: "fa fa-pills text-primary",
+    component: <MedicineTypes />,
+    layout: "/admin",
+  },
+
 ];
 
 export { routes, sidebarRoutes };
