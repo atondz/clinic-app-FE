@@ -23,8 +23,9 @@ const TableList = ({ data, navigate, setPatients }) => {
 
   return (
     <tr>
+    <td>{data.patient_id}</td>
       <td>{data.name}</td>
-      <td>{data.patient_id}</td>
+      
       <td>{data.gender ? "Nam" : "Nữ"}</td>
       <td>{data.phone}</td>
       <td>{new Date(data.birth_date).toLocaleDateString()}</td>

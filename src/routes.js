@@ -15,8 +15,6 @@ import NotFound from "pages/notFound";
 import AddClinic from "pages/clinic/Addclinic.js";
 import PatientForm from "pages/patient/patientForm";
 
-
-
 var routes = [
   {
     path: "/home",
