@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import Index from "views/Index.js";
@@ -13,9 +12,14 @@ import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient.js";
 import NotFound from "pages/notFound";
 import AddClinic from "pages/clinic/Addclinic.js";
+
 import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
 
+
+import PatientForm from "pages/patient/patientForm";
+import ListOfDrugs from "pages/drug/ListOfDrugs.js";
+import AddDrugForm from "pages/drug/AddDrugForm.js";
 
 var routes = [
   {
@@ -33,10 +37,10 @@ var routes = [
     layout: "/auth",
   },
   {
-    path: "/index",
-    name: "Giấy Khám Bệnh",
+    path: "/patient/new",
+    name: "Thêm bệnh nhân",
     icon: "fa fa-plus-square text-primary",
-    component: <Index />,
+    component: <PatientForm />,
     layout: "/admin",
   },
   {
@@ -58,6 +62,20 @@ var routes = [
     name: "Addclinic",
     icon: "ni ni-circle-08 text-pink",
     component: <AddClinic />,
+    layout: "/admin",
+  },
+  {
+    path: "/drug",
+    name: "Thuốc",
+    icon: "ni ni-pin-3 text-orange",
+    component: <ListOfDrugs />,
+    layout: "/admin",
+  },
+  {
+    path: "/addDrugForm",
+    name: "AddDrugForm",
+    icon: "ni ni-pin-3 text-orange",
+    component: <AddDrugForm />,
     layout: "/admin",
   },
   {
@@ -102,6 +120,7 @@ var routes = [
     component: <NotFound />,
     layout: "/admin",
   },
+
   {
     path: "/medicine-types",
     name: "Loại Thuốc",
@@ -117,8 +136,8 @@ var routes = [
     layout: "/admin",
   },
 
-];
 
+];
 
 const sidebarRoutes = [
   {
@@ -126,13 +145,6 @@ const sidebarRoutes = [
     name: "Home",
     icon: "fa fa-plus-square text-primary",
     component: <Home />,
-    layout: "/admin",
-  },
-  {
-    path: "/index",
-    name: "Giấy Khám Bệnh",
-    icon: "ni ni-collection",
-    component: <Index />,
     layout: "/admin",
   },
   {
@@ -147,6 +159,13 @@ const sidebarRoutes = [
     name: "Phòng Khám",
     icon: "ni ni-pin-3 text-orange",
     component: <Maps />,
+    layout: "/admin",
+  },
+  {
+    path: "/drug",
+    name: "Thuốc",
+    icon: "ni ni-pin-3 text-orange",
+    component: <ListOfDrugs />,
     layout: "/admin",
   },
   {
@@ -170,6 +189,7 @@ const sidebarRoutes = [
     component: <Patient />,
     layout: "/admin",
   },
+
   {
     path: "/medicine-types",
     name: "Loại Thuốc",
@@ -177,6 +197,7 @@ const sidebarRoutes = [
     component: <MedicineTypes />,
     layout: "/admin",
   },
+
 
 ];
 
