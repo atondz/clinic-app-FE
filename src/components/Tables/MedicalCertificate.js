@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  Card, CardHeader, Table, Container, Row, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter,
+  Card, CardHeader, Table, Container, Row, Button, Input, 
   Form, FormGroup, Label, InputGroup, InputGroupAddon, InputGroupText, Col, Pagination, PaginationItem, PaginationLink
 } from "reactstrap";
-import TableRow from "./TableRow"; // Import component hàng
+import TableRow from "./MedicalCertificateRow.js"; // Import component hàng
 
-const PatientTable = () => {
+const MedicalCertificate = () => {
   const [patients, setPatients] = useState([
     { id: 1, patientName: "Nguyễn Văn A", code: "BN001", title: "Khám tổng quát", clinic: "Phòng 101", doctor: "Bác sĩ B", date: "20/02/2025", status: "Đã khám", statusColor: "success", paymentStatus: "Đã thanh toán", paymentColor: "info" },
     { id: 2, patientName: "Trần Thị B", code: "BN002", title: "Nội soi", clinic: "Phòng 102", doctor: "Bác sĩ C", date: "21/02/2025", status: "Chưa khám", statusColor: "warning", paymentStatus: "Đã thanh toán", paymentColor: "success" },
@@ -122,4 +122,4 @@ const PatientTable = () => {
   );
 };
 
-export default PatientTable;
+export default MedicalCertificate;
