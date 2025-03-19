@@ -17,7 +17,7 @@ import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
 import HealthInsuranceList from "pages/BHYT/HealthInsuranceList.js";
 import AddHealthInsurance from "pages/BHYT/AddHealthInsurance.js";
-
+import EditHealthInsurance from "pages/BHYT/EditHealthInsurance.js";
 
 
 import PatientForm from "pages/patient/patientForm";
@@ -153,6 +153,15 @@ var routes = [
     component: <AddHealthInsurance />,
     layout: "/admin",
   },
+  {
+    path: "/edit-bhyt/:id",
+    name: "Chỉnh sửa BHYT",
+    icon: "fa fa-edit text-warning",
+    component: <EditHealthInsurance />, // Đúng component chỉnh sửa
+    layout: "/admin",
+  }
+
+
 ];
 
 

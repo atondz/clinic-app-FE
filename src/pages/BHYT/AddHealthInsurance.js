@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Card, CardBody, Container, Row, Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
+import {
+    Card,
+    CardBody,
+    Container,
+    Row,
+    Col,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Button,
+} from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import Header from "components/Headers/Header.js";
 
-const AddHealthInsurance = ({ addHealthInsurance }) => {
+const HealthInsuranceAdd = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
+    const [healthInsurance, setHealthInsurance] = useState({
         code: "",
         fullName: "",
         placeOfRegistration: "",
@@ -15,13 +26,14 @@ const AddHealthInsurance = ({ addHealthInsurance }) => {
         placeOfIssue: ""
     });
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setHealthInsurance({ ...healthInsurance, [name]: value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addHealthInsurance(formData);
+        console.log("Health Insurance Submitted:", healthInsurance);
         navigate("/bhyt");
     };
 
@@ -30,71 +42,36 @@ const AddHealthInsurance = ({ addHealthInsurance }) => {
             <Header />
             <Container fluid className="mt-4">
                 <Row>
-                    <Col lg="12">
-                        <Card>
-                            <CardBody>
-                                <h3 className="mb-4">Thêm Thẻ BHYT</h3>
-                                <Form onSubmit={handleSubmit}>
-                                    <Row>
-                                        <Col md="6">
-                                            <FormGroup>
-                                                <Label>Mã BHYT</Label>
-                                                <Input type="text" name="code" value={formData.code} onChange={handleChange} required />
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md="6">
-                                            <FormGroup>
-                                                <Label>Họ và Tên</Label>
-                                                <Input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col md="6">
-                                            <FormGroup>
-                                                <Label>Nơi đăng ký khám</Label>
-                                                <Input type="text" name="placeOfRegistration" value={formData.placeOfRegistration} onChange={handleChange} required />
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md="6">
-                                            <FormGroup>
-                                                <Label>Giá trị sử dụng</Label>
-                                                <Input type="date" name="validity" value={formData.validity} onChange={handleChange} required />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col md="6">
-                                            <FormGroup>
-                                                <Label>Mã số</Label>
-                                                <Input type="text" name="serialNumber" value={formData.serialNumber} onChange={handleChange} required />
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md="6">
-                                            <FormGroup>
-                                                <Label>Ngày cấp</Label>
-                                                <Input type="date" name="issueDate" value={formData.issueDate} onChange={handleChange} required />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col md="12">
-                                            <FormGroup>
-                                                <Label>Nơi cấp</Label>
-                                                <Input type="text" name="placeOfIssue" value={formData.placeOfIssue} onChange={handleChange} required />
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Button color="success" type="submit">Lưu lại</Button>
-                                    <Button color="danger" className="ml-2" onClick={() => navigate("/admin/health-insurance-list")}>Quay lại</Button>
-                                </Form>
-                            </CardBody>
-                        </Card>
+                    <Col>
+                        <h3 className="text-dark">Thêm Thẻ BHYT</h3>
+                        <p className="text-muted">Quản Lý Thẻ BHYT / Thêm Thẻ BHYT</p>
                     </Col>
                 </Row>
+                <Card className="mt-4">
+                    <CardBody>
+                        <Row>
+                            <Col md="6">
+                                <h4 className="text-dark">Thông tin cơ bản</h4>
+                                <p className="text-muted">Điền tất cả thông tin bên dưới</p>
+                                <Form onSubmit={handleSubmit}>
+                                    <FormGroup>
+                                        <Label for="code">Mã BHYT <span className="text-danger">*</span></Label>
+                                        <Input type="text" id="code" name="code" placeholder="Nhập mã BHYT" value={healthInsurance.code} onChange={handleInputChange} required />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="fullName">Họ và Tên <span className="text-danger">*</span></Label>
+                                        <Input type="text" id="fullName" name="fullName" placeholder="Nhập họ và tên" value={healthInsurance.fullName} onChange={handleInputChange} required />
+                                    </FormGroup>
+                                    <Button color="success" type="submit" className="mr-2">Lưu Lại</Button>
+                                    <Button color="danger" onClick={() => navigate("/bhyt")}>Quay lại</Button>
+                                </Form>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
             </Container>
         </>
     );
 };
 
-export default AddHealthInsurance;
+export default HealthInsuranceAdd;

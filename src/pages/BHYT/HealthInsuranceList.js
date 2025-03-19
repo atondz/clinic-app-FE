@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Card, CardBody, Container, Row, Col, InputGroup, Input, Button, Table } from "reactstrap";
+import {
+    Card,
+    CardBody,
+    Container,
+    Row,
+    Col,
+    InputGroup,
+    Input,
+    Button,
+    Table
+} from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import Header from "components/Headers/Header.js";
 
@@ -10,11 +20,6 @@ const HealthInsuranceList = () => {
         { id: 1, code: "BHYT003", fullName: "Nguyễn Văn A", placeOfRegistration: "Hà Nội", validity: "1/2/2025", serialNumber: "123456", issueDate: "1/2/2025", placeOfIssue: "Hà Nội" },
         { id: 2, code: "BHYT004", fullName: "Nguyễn Văn B", placeOfRegistration: "HCM", validity: "1/2/2024", serialNumber: "654321", issueDate: "1/2/2024", placeOfIssue: "HCM" },
     ]);
-
-    const filteredHealthInsurances = healthInsurances.filter(item =>
-        item.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.code.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     const handleDelete = (id) => {
         setHealthInsurances(healthInsurances.filter(item => item.id !== id));
@@ -59,7 +64,7 @@ const HealthInsuranceList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredHealthInsurances.map((item, index) => (
+                                {healthInsurances.map((item, index) => (
                                     <tr key={item.id}>
                                         <td>{index + 1}</td>
                                         <td>{item.code}</td>
@@ -70,8 +75,8 @@ const HealthInsuranceList = () => {
                                         <td>{item.issueDate}</td>
                                         <td>{item.placeOfIssue}</td>
                                         <td>
+                                            <Button color="success" size="sm" onClick={() => navigate(`/edit-bhyt/${item.id}`)}>Sửa</Button>{' '}
                                             <Button color="danger" size="sm" onClick={() => handleDelete(item.id)}>Xoá</Button>
-                                            <Button color="success" size="sm">Sửa</Button>
                                         </td>
                                     </tr>
                                 ))}
