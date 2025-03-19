@@ -1,84 +1,54 @@
 import React, { useState } from "react";
-import {
-    Card,
-    CardBody,
-    Container,
-    Row,
-    Col,
-    InputGroup,
-    Input,
-    Button,
-    Table,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Form,
-    FormGroup,
-    Label,
-} from "reactstrap";
-import { Link } from "react-router-dom";
+import { Card, CardBody, Container, Row, Col, Button, Table, Input, InputGroup, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import Header from "components/Headers/Header.js";
 
-const MedicineTypes = () => {
+const MedicineTypesList = () => {
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [medicineTypes, setMedicineTypes] = useState([
-        { id: 1, code: "ABC001", name: "Kháng sinh" },
-        { id: 2, code: "ABC002", name: "Giảm đau" },
-        { id: 3, code: "ABC003", name: "Kháng viêm" },
+        { id: 1, code: "MT001", name: "Thuốc giảm đau" },
+        { id: 2, code: "MT002", name: "Thuốc kháng sinh" },
     ]);
 
-    // State quản lý modal chỉnh sửa
-    const [editModalOpen, setEditModalOpen] = useState(false);
-    const [currentMedicineType, setCurrentMedicineType] = useState({
-        id: null,
-        code: "",
-        name: "",
-    });
+    // State cho popup chỉnh sửa
+    const [editModal, setEditModal] = useState(false);
+    const [currentMedicine, setCurrentMedicine] = useState(null);
 
-    // Lọc danh sách theo tìm kiếm
-    const filteredMedicineTypes = medicineTypes.filter(
-        (type) =>
-            type.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            type.code.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    // Xóa loại thuốc
-    const handleDelete = (id) => {
-        setMedicineTypes(medicineTypes.filter((type) => type.id !== id));
+    // Mở popup sửa
+    const handleEdit = (medicine) => {
+        setCurrentMedicine({ ...medicine });
+        setEditModal(true);
     };
 
-    // Mở popup chỉnh sửa
-    const handleEdit = (medicineType) => {
-        setCurrentMedicineType(medicineType);
-        setEditModalOpen(true);
+    // Đóng popup sửa
+    const toggleEditModal = () => {
+        setEditModal(false);
     };
 
-    // Xử lý thay đổi trong form sửa
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setCurrentMedicineType({ ...currentMedicineType, [name]: value });
-    };
-
-    // Lưu thay đổi và cập nhật danh sách
-    const handleSaveEdit = () => {
-        setMedicineTypes(
-            medicineTypes.map((type) =>
-                type.id === currentMedicineType.id ? currentMedicineType : type
+    // Lưu chỉnh sửa
+    const handleSave = () => {
+        setMedicineTypes((prevTypes) =>
+            prevTypes.map((type) =>
+                type.id === currentMedicine.id ? currentMedicine : type
             )
         );
-        setEditModalOpen(false);
+        setEditModal(false);
     };
+
+    const filteredMedicineTypes = medicineTypes.filter((type) =>
+        type.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <>
             <Header />
-            <Container className="mt-4" fluid>
-                <Row className="mb-4">
+            <Container fluid className="mt-4">
+                <Row className="mb-3 align-items-center">
                     <Col md="6">
                         <h3 className="text-dark">Danh Sách Loại Thuốc</h3>
                     </Col>
-                    <Col md="3">
+                    <Col md="4">
                         <InputGroup>
                             <Input
                                 type="text"
@@ -88,22 +58,21 @@ const MedicineTypes = () => {
                             />
                         </InputGroup>
                     </Col>
-                    <Col md="3" className="text-right">
-                        <Link to="/add-medicine-types" className="btn btn-success">
+                    <Col md="2" className="text-right">
+                        <Button color="success" onClick={() => navigate("/add-medicine-types")}>
                             + Thêm loại thuốc
-                        </Link>
+                        </Button>
                     </Col>
                 </Row>
-
                 <Card>
                     <CardBody>
-                        <Table bordered hover responsive>
-                            <thead className="thead-light">
+                        <Table striped>
+                            <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Mã Loại Thuốc</th>
+                                    <th>Mã</th>
                                     <th>Tên Loại Thuốc</th>
-                                    <th>Hành Động</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -114,19 +83,10 @@ const MedicineTypes = () => {
                                             <td>{type.code}</td>
                                             <td>{type.name}</td>
                                             <td>
-                                                <Button
-                                                    color="danger"
-                                                    size="sm"
-                                                    className="mr-2"
-                                                    onClick={() => handleDelete(type.id)}
-                                                >
-                                                    Xoá
+                                                <Button color="danger" size="sm" className="mr-2">
+                                                    Xóa
                                                 </Button>
-                                                <Button
-                                                    color="success"
-                                                    size="sm"
-                                                    onClick={() => handleEdit(type)}
-                                                >
+                                                <Button color="success" size="sm" onClick={() => handleEdit(type)}>
                                                     Sửa
                                                 </Button>
                                             </td>
@@ -143,48 +103,46 @@ const MedicineTypes = () => {
                         </Table>
                     </CardBody>
                 </Card>
-
-                {/* Popup sửa thông tin loại thuốc */}
-                <Modal isOpen={editModalOpen} toggle={() => setEditModalOpen(!editModalOpen)}>
-                    <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
-                        Chỉnh Sửa Loại Thuốc
-                    </ModalHeader>
-                    <ModalBody>
-                        <Form>
-                            <FormGroup>
-                                <Label for="code">Mã Loại Thuốc</Label>
-                                <Input
-                                    type="text"
-                                    id="code"
-                                    name="code"
-                                    value={currentMedicineType.code}
-                                    onChange={handleInputChange}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="name">Tên Loại Thuốc</Label>
-                                <Input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={currentMedicineType.name}
-                                    onChange={handleInputChange}
-                                />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={handleSaveEdit}>
-                            Lưu
-                        </Button>{" "}
-                        <Button color="secondary" onClick={() => setEditModalOpen(false)}>
-                            Thoát
-                        </Button>
-                    </ModalFooter>
-                </Modal>
             </Container>
+
+            {/* Popup chỉnh sửa loại thuốc */}
+            <Modal isOpen={editModal} toggle={toggleEditModal}>
+                <ModalHeader toggle={toggleEditModal}>Chỉnh sửa loại thuốc</ModalHeader>
+                <ModalBody>
+                    <Form>
+                        <FormGroup>
+                            <Label for="medicineCode">Mã loại thuốc</Label>
+                            <Input
+                                type="text"
+                                id="medicineCode"
+                                value={currentMedicine?.code || ""}
+                                disabled
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="medicineName">Tên loại thuốc</Label>
+                            <Input
+                                type="text"
+                                id="medicineName"
+                                value={currentMedicine?.name || ""}
+                                onChange={(e) =>
+                                    setCurrentMedicine((prev) => ({ ...prev, name: e.target.value }))
+                                }
+                            />
+                        </FormGroup>
+                    </Form>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={toggleEditModal}>
+                        Thoát
+                    </Button>
+                    <Button color="primary" onClick={handleSave}>
+                        Lưu
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </>
     );
 };
 
-export default MedicineTypes;
+export default MedicineTypesList;
