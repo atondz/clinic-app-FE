@@ -15,6 +15,8 @@ import AddClinic from "pages/clinic/Addclinic.js";
 
 import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
+import HealthInsuranceList from "pages/BHYT/HealthInsuranceList.js";
+import AddHealthInsurance from "pages/BHYT/AddHealthInsurance.js";
 
 
 
@@ -137,10 +139,23 @@ var routes = [
     component: <AddMedicineTypes />,
     layout: "/admin",
   },
-
+  {
+    path: "/bhyt",
+    name: "Bảo Hiểm Y Tế",
+    icon: "fa fa-id-card text-info",
+    component: <HealthInsuranceList />,
+    layout: "/admin",
+  },
+  {
+    path: "/add-bhyt",
+    name: "Thêm BHYT",
+    icon: "fa fa-plus-circle text-success",
+    component: <AddHealthInsurance />,
+    layout: "/admin",
+  },
 ];
 
- 
+
 const sidebarRoutes = [
   {
     path: "/home",
@@ -198,7 +213,13 @@ const sidebarRoutes = [
     component: <MedicineTypes />,
     layout: "/admin",
   },
-
+  {
+    path: "/bhyt",
+    name: "Bảo Hiểm Y Tế",
+    icon: "fa fa-id-card text-info",
+    component: <HealthInsuranceList />,
+    layout: "/admin",
+  },
 ];
 
 export { routes, sidebarRoutes };
