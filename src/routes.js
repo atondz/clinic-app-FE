@@ -16,12 +16,11 @@ import AddClinic from "pages/clinic/Addclinic.js";
 import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
 
-
-
 import PatientForm from "pages/patient/patientForm";
 import ListOfDrugs from "pages/drug/ListOfDrugs.js";
 import AddDrugForm from "pages/drug/AddDrugForm.js";
-
+import ServiceList from "pages/medicalservice/ServiceList.js";
+import AddServiceForm from "pages/medicalservice/AddServiceForm.js";
 
 var routes = [
   {
@@ -64,6 +63,20 @@ var routes = [
     name: "Addclinic",
     icon: "ni ni-circle-08 text-pink",
     component: <AddClinic />,
+    layout: "/admin",
+  },
+  {
+    path: "/medicalservice",
+    name: "Dịch vụ khám",
+    icon: "ni ni-pin-3 text-orange",
+    component: <ServiceList />,
+    layout: "/admin",
+  },
+  {
+    path: "/serviceList",
+    name: "ServiceList",
+    icon: "ni ni-pin-3 text-orange",
+    component: <AddServiceForm />,
     layout: "/admin",
   },
   {
@@ -137,10 +150,8 @@ var routes = [
     component: <AddMedicineTypes />,
     layout: "/admin",
   },
-
 ];
 
- 
 const sidebarRoutes = [
   {
     path: "/home",
@@ -161,6 +172,13 @@ const sidebarRoutes = [
     name: "Phòng Khám",
     icon: "ni ni-pin-3 text-orange",
     component: <Maps />,
+    layout: "/admin",
+  },
+  {
+    path: "/medicalservice",
+    name: "Dịch vụ khám",
+    icon: "ni ni-pin-3 text-orange",
+    component: <ServiceList />,
     layout: "/admin",
   },
   {
@@ -198,7 +216,6 @@ const sidebarRoutes = [
     component: <MedicineTypes />,
     layout: "/admin",
   },
-
 ];
 
 export { routes, sidebarRoutes };
