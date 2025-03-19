@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -6,17 +5,10 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Form,
-  FormGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  InputGroup,
   Navbar,
   Nav,
   Container,
   Media,
-  Button,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { logout } from "utils/auth";
@@ -25,20 +17,20 @@ const AdminNavbar = (props) => {
   const navigate = useNavigate();
   return (
     <>
-      <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
+      <Navbar className="navbar-top navbar-dark pt-2" expand="md" id="navbar-main">
         <Container fluid>
           <Link
             className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-            to="/index"
+            to="/home"
           >
-          Clinic app
+            Clinic app
           </Link>
-          
-          <Nav className="align-items-center d-none d-md-flex" navbar>
+
+          <Nav className="align-items-center d-none d-md-flex pb-1" navbar>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
+                  <span className="avatar avatar-sm rounded-circle ">
                     <img
                       alt="..."
                       src={require("../../assets/img/theme/team-4-800x800.jpg")}
@@ -73,36 +65,38 @@ const AdminNavbar = (props) => {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                <div
-                      style={{
+                  <div
+                    style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
                       width: "100%",
-        }}
-      >
-                 <i className="ni ni-user-run" />
-                  
-                  <nav>
-                  <button
-                         onClick={() => logout(navigate)}
-                       style={{
-                        background: "none",
-                       border: "none",
-                        color: "inherit",
-                       fontSize: "inherit",
-                       display: "flex",
-                      alignItems: "end flex",
-                      gap: "8px",
-                       width: "100%",
-                      padding: "10px 15px",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      borderRadius: "5px",  }} >
-                     Đăng Xuất             
-            </button>  
-                 </nav>
-                 </div>
+                    }}
+                  >
+                    <i className="ni ni-user-run" />
+
+                    <nav>
+                      <button
+                        onClick={() => logout(navigate)}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "inherit",
+                          fontSize: "inherit",
+                          display: "flex",
+                          alignItems: "end flex",
+                          gap: "8px",
+                          width: "100%",
+                          padding: "10px 15px",
+                          cursor: "pointer",
+                          textAlign: "left",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        Đăng Xuất
+                      </button>
+                    </nav>
+                  </div>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

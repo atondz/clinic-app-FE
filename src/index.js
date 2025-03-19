@@ -16,7 +16,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Navigate to="/auth/Welcome" />} />
+      <Route path="/" element={<Navigate to="/auth/register" />} />
       <Route path="/auth/Welcome" element={<WelcomePage />} />
       <Route path="/auth/*" element={<AuthLayout />} />
       <Route
@@ -28,5 +28,6 @@ root.render(
         }
       />
     </Routes>
+
   </BrowserRouter>
 );

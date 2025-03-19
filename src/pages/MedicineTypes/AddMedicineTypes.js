@@ -12,34 +12,48 @@ import {
     Button,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import Header from "components/Headers/Header.js";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Header from "../../components/Headers/Header"; // Sửa lại đường dẫn Header nếu cần
 
 const AddMedicineTypes = () => {
     const navigate = useNavigate();
     const [medicineType, setMedicineType] = useState({
-        code: "",
-        name: "",
+        medicine_type_code: "",
+        medicine_type_name: "",
     });
 
-    // Handle input changes
+    const [loading, setLoading] = useState(false); // Trạng thái loading
+
+    // Xử lý thay đổi input
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setMedicineType({ ...medicineType, [name]: value });
     };
 
-    // Handle form submission
-    const handleSubmit = (e) => {
+    // Gửi dữ liệu lên API
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Here you would typically send the data to a backend
-        console.log("Medicine Type Submitted:", medicineType);
+        setLoading(true);
 
-        // Navigate back to medicine types list
-        navigate("/admin/medicine-types");
-    };
+        try {
+            const response = await axios.post(
+                "http://localhost:5001/api/medicineTypes",
+                medicineType,
+                { headers: { "Content-Type": "application/json" } }
+            );
 
-    // Handle cancel and return to list
-    const handleCancel = () => {
-        navigate("/admin/medicine-types");
+            if (response.status === 201) {
+                toast.success("🎉 Thêm loại thuốc thành công!", { position: "top-right", autoClose: 1000 });
+                setTimeout(() => navigate("/medicine-types"), 1100); // Chờ toast xong mới chuyển trang
+            }
+        } catch (err) {
+            toast.error("❌ Lỗi: Không thể thêm loại thuốc!", { position: "top-right", autoClose: 3000 });
+            console.error("Error adding medicine type:", err.response?.data || err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -61,35 +75,35 @@ const AddMedicineTypes = () => {
                                 <p className="text-muted">Điền tất cả thông tin bên dưới</p>
                                 <Form onSubmit={handleSubmit}>
                                     <FormGroup>
-                                        <Label for="code">
+                                        <Label for="medicine_type_code">
                                             Mã Loại Thuốc <span className="text-danger">*</span>
                                         </Label>
                                         <Input
                                             type="text"
-                                            id="code"
-                                            name="code"
+                                            id="medicine_type_code"
+                                            name="medicine_type_code"
                                             placeholder="Nhập mã loại thuốc"
-                                            value={medicineType.code}
+                                            value={medicineType.medicine_type_code}
                                             onChange={handleInputChange}
                                             required
                                         />
                                     </FormGroup>
                                     <FormGroup>
-                                        <Label for="name">
+                                        <Label for="medicine_type_name">
                                             Tên Loại Thuốc <span className="text-danger">*</span>
                                         </Label>
                                         <Input
                                             type="text"
-                                            id="name"
-                                            name="name"
+                                            id="medicine_type_name"
+                                            name="medicine_type_name"
                                             placeholder="Nhập tên loại thuốc"
-                                            value={medicineType.name}
+                                            value={medicineType.medicine_type_name}
                                             onChange={handleInputChange}
                                             required
                                         />
                                     </FormGroup>
-                                    <Button color="success" type="submit" className="mr-2">
-                                        Lưu Lại
+                                    <Button color="success" type="submit" className="mr-2" disabled={loading}>
+                                        {loading ? "Đang lưu..." : "Lưu Lại"}
                                     </Button>
                                     <Button color="danger" onClick={() => navigate("/medicine-types")}>
                                         Quay lại
@@ -101,6 +115,8 @@ const AddMedicineTypes = () => {
                     </CardBody>
                 </Card>
             </Container>
+
+            <ToastContainer />
         </>
     );
 };

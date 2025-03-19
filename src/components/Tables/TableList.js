@@ -11,8 +11,9 @@ const TableList = ({ data, navigate, setPatients }) => {
       })
         .then((res) => {
           if (res.ok) {
-            toast.success("Xóa bệnh nhân thành công!"); // 🚀 Hiển thị toast
+            
             setPatients((prev) => prev.filter((patient) => patient.id !== data.id));
+            toast.success("Xóa bệnh nhân thành công!" , {position: "top-right", autoClose: 1000 });
           } else {
             toast.error("Lỗi khi xóa bệnh nhân!");
           }

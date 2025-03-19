@@ -1,17 +1,12 @@
 import Header from "../../components/Headers/Header";
 import React from "react";
 import {
-  Container,
-  Row,
-  Col,
+  Container,Row,Col,
   Card,
   CardBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-} from "reactstrap";
+  Form, Button,
+  FormGroup,Label,Input,
+ } from "reactstrap";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AddClinic = () => {

@@ -48,7 +48,7 @@ const Login = () => {
       localStorage.setItem("authToken", token);
 
       toast.success("Đăng nhập thành công! Chuyển hướng đến trang chính...");
-
+      
       // Chuyển hướng sau 0.2 giây
       setTimeout(() => {
         navigate("/home");

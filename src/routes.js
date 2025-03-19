@@ -19,8 +19,8 @@ import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
 
 
 import PatientForm from "pages/patient/patientForm";
-import ListOfDrugs from "pages/drug/ListOfDrugs.js";
-import AddDrugForm from "pages/drug/AddDrugForm.js";
+import ListOfDrugs from "pages/Medical/ListOfDrugs.js";
+import AddDrugForm from "pages/Medical/AddDrugForm.js";
 
 
 var routes = [
@@ -150,13 +150,6 @@ const sidebarRoutes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Đơn Thuốc",
-    icon: "fa fa-medkit text-orange",
-    component: <Icons />,
-    layout: "/admin",
-  },
-  {
     path: "/maps",
     name: "Phòng Khám",
     icon: "ni ni-pin-3 text-orange",
@@ -166,27 +159,13 @@ const sidebarRoutes = [
   {
     path: "/drug",
     name: "Thuốc",
-    icon: "ni ni-pin-3 text-orange",
+    icon: "fas fa-capsules fs-1 text-orange",
     component: <ListOfDrugs />,
     layout: "/admin",
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: <Profile />,
-    layout: "/admin",
-  },
-  {
-    path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: <Tables />,
-    layout: "/admin",
-  },
-  {
     path: "/patient",
-    name: "Patient",
+    name: "Danh Sách Bệnh Nhân",
     icon: "ni ni-circle-08 text-pink",
     component: <Patient />,
     layout: "/admin",
@@ -198,6 +177,13 @@ const sidebarRoutes = [
     component: <MedicineTypes />,
     layout: "/admin",
   },
+  // {
+  //   path: "/icons",
+  //   name: "Đơn Thuốc",
+  //   icon: "fa fa-medkit text-orange",
+  //   component: <Icons />,
+  //   layout: "/admin",
+  // },
 
 ];
 

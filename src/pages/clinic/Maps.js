@@ -52,9 +52,10 @@ const Maps = () => {
             </InputGroup>
           </Col>
           <Col md="3" className="text-right">
-            <Link to="/addclinic" className="btn btn-success">
-              + Thêm phòng khám
-            </Link>
+           
+            <Button tag={Link} to="/addclinic" color="primary" className="w-100">
+                          + Thêm Phòng khám
+                        </Button>
           </Col>
         </Row>
 
