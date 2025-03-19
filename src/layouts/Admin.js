@@ -64,9 +64,19 @@ const Admin = (props) => {
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/notFound" replace />} />
         </Routes>
-        <Container fluid>
-          <AdminFooter />
-        </Container>
+        <Container
+  fluid
+  style={{
+    position: "fixed",
+    bottom: 0,
+    width: "85%",
+    backgroundColor: "#f8f9fa",
+    textAlign: "center",
+  }}
+>
+  
+</Container>
+
       </div>
     </>
   );
