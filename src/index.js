@@ -19,14 +19,7 @@ root.render(
       <Route path="/" element={<Navigate to="/auth/Welcome" />} />
       <Route path="/auth/Welcome" element={<WelcomePage />} />
       <Route path="/auth/*" element={<AuthLayout />} />
-      <Route
-        path="/*"
-        element={
-          <ProtectedRoute>
-            <AdminLayout />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/*" element={<AdminLayout />} />
     </Routes>
   </BrowserRouter>
 );
