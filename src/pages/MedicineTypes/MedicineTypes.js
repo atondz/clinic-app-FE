@@ -1,3 +1,4 @@
+//medicineTypes
 import React, { useState, useEffect } from "react";
 import {
   Card,
@@ -10,7 +11,11 @@ import {
   Table,
   Pagination,
   PaginationItem,
-  PaginationLink
+  PaginationLink,
+  CardHeader,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -24,7 +29,7 @@ const MedicineTypes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchMedicineTypes = async () => {
@@ -55,14 +60,17 @@ const MedicineTypes = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5001/api/medicineTypes/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://localhost:5001/api/medicineTypes/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!response.ok) {
         throw new Error("Xóa thất bại. Vui lòng thử lại!");
       }
       setMedicineTypes((prev) => prev.filter((type) => type.id !== id));
-      toast.success("Xoá thành công!",{autoClose: 1000});
+      toast.success("Xoá thành công!", { autoClose: 1000 });
     } catch (error) {
       toast.error(error.message);
     }
@@ -79,7 +87,10 @@ const MedicineTypes = () => {
   // Tính toán dữ liệu cho trang hiện tại
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredMedicineTypes.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredMedicineTypes.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const totalPages = Math.ceil(filteredMedicineTypes.length / itemsPerPage);
 
   return (
@@ -91,15 +102,27 @@ const MedicineTypes = () => {
             <h3 className="mb-0">Danh Sách Loại Thuốc</h3>
           </Col>
           <Col md={3}>
-            <Input
-              type="text"
-              placeholder="Tìm kiếm..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <InputGroup>
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <i className="fas fa-search" />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                type="text"
+                placeholder="Tìm kiếm loại thuốc..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </InputGroup>
           </Col>
           <Col md={3} className="text-right">
-            <Button tag={Link} to="/add-medicine-types" color="primary" className="w-60">
+            <Button
+              tag={Link}
+              to="/add-medicine-types"
+              color="primary"
+              className="w-100"
+            >
               + Thêm loại thuốc
             </Button>
           </Col>
@@ -110,7 +133,10 @@ const MedicineTypes = () => {
         ) : error ? (
           <div className="text-danger">{error}</div>
         ) : (
-          <Card>
+          <Card className="shadow">
+            <CardHeader className="bg-light border-0">
+              <h4 className="text-dark mb-0">Danh sách các loại thuốc</h4>
+            </CardHeader>
             <CardBody className="p-0">
               <Table hover responsive className="mb-0">
                 <thead className="thead-light">
@@ -128,11 +154,20 @@ const MedicineTypes = () => {
                       <td>{type.medicine_type_code}</td>
                       <td>{type.medicine_type_name}</td>
                       <td>
-                        <Button color="danger" size="sm" className="mr-2" onClick={() => handleDelete(type.id)}>
-                          Xoá
-                        </Button>
-                        <Button color="primary" size="sm" onClick={() => handleEdit(type.id)}>
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={() => handleEdit(type.id)}
+                        >
                           Sửa
+                        </Button>
+                        <Button
+                          color="danger"
+                          size="sm"
+                          className="mr-2"
+                          onClick={() => handleDelete(type.id)}
+                        >
+                          Xoá
                         </Button>
                       </td>
                     </tr>
@@ -141,7 +176,9 @@ const MedicineTypes = () => {
               </Table>
 
               {!filteredMedicineTypes.length && (
-                <div className="text-center py-4 text-muted">Không tìm thấy kết quả phù hợp</div>
+                <div className="text-center py-4 text-muted">
+                  Không tìm thấy kết quả phù hợp
+                </div>
               )}
             </CardBody>
           </Card>
@@ -151,7 +188,10 @@ const MedicineTypes = () => {
         {totalPages > 1 && (
           <Pagination className="mt-3 justify-content-center">
             <PaginationItem disabled={currentPage === 1}>
-              <PaginationLink previous onClick={() => handlePageChange(currentPage - 1)} />
+              <PaginationLink
+                previous
+                onClick={() => handlePageChange(currentPage - 1)}
+              />
             </PaginationItem>
             {[...Array(totalPages)].map((_, index) => (
               <PaginationItem active={index + 1 === currentPage} key={index}>
@@ -161,7 +201,10 @@ const MedicineTypes = () => {
               </PaginationItem>
             ))}
             <PaginationItem disabled={currentPage === totalPages}>
-              <PaginationLink next onClick={() => handlePageChange(currentPage + 1)} />
+              <PaginationLink
+                next
+                onClick={() => handlePageChange(currentPage + 1)}
+              />
             </PaginationItem>
           </Pagination>
         )}
