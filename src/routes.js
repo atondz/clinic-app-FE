@@ -1,12 +1,11 @@
 import React from "react";
 
-import Index from "views/Index.js";
 import Profile from "pages/profile/Profile.js";
 import Maps from "pages/clinic/Maps";
 import Register from "pages/auth/Register.js";
 import Login from "pages/auth/Login.js";
 import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
+
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient.js";
@@ -16,12 +15,10 @@ import AddClinic from "pages/clinic/Addclinic.js";
 import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
 
-
-
 import PatientForm from "pages/patient/patientForm";
-import ListOfDrugs from "pages/Medical/ListOfDrugs.js";
-import AddDrugForm from "pages/Medical/AddDrugForm.js";
-
+import ListOfDrugs from "pages/Medicine/ListOfDrugs.js";
+import AddDrugForm from "pages/Medicine/AddDrugForm.js";
+import Prescription from "pages/Prescription/Prescription";
 
 var routes = [
   {
@@ -46,10 +43,10 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
+    path: "/prescription",
     name: "Đơn Thuốc",
     icon: "fa fa-medkit text-orange",
-    component: <Icons />,
+    component: <Prescription />,
     layout: "/admin",
   },
   {
@@ -137,10 +134,8 @@ var routes = [
     component: <AddMedicineTypes />,
     layout: "/admin",
   },
-
 ];
 
- 
 const sidebarRoutes = [
   {
     path: "/home",
@@ -149,6 +144,14 @@ const sidebarRoutes = [
     component: <Home />,
     layout: "/admin",
   },
+  {
+    path: "/prescription",
+    name: "Giấy Khám Bệnh",
+    icon: "fa fa-medkit text-orange",
+    component: <Prescription />,
+    layout: "/admin",
+  },
+
   {
     path: "/maps",
     name: "Phòng Khám",
@@ -184,7 +187,6 @@ const sidebarRoutes = [
   //   component: <Icons />,
   //   layout: "/admin",
   // },
-
 ];
 
 export { routes, sidebarRoutes };
