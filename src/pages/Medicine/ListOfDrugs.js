@@ -82,7 +82,7 @@ const ListOfDrugs = () => {
       (drug.medicine_type_name &&
         drug.medicine_type_name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
-
+  
   return (
     <>
       <Header />
