@@ -65,7 +65,8 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "reactstrap": "8.10.0",
-    "sass": "1.69.5"
+    "sass": "1.69.5",
+    "toast": "^0.5.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

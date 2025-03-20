@@ -1,11 +1,13 @@
 // AddDrugForm
 import Header from "../../components/Headers/Header";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddDrugForm = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +18,32 @@ const AddDrugForm = () => {
     unit: "",
     description: "",
   });
+  const [medicineTypes, setMedicineTypes] = useState([]);
+  const [loadingTypes, setLoadingTypes] = useState(true);
+  const [errorTypes, setErrorTypes] = useState(null);
+  const navigate = useNavigate();
+
+  // Lấy danh sách loại thuốc khi component mount
+  useEffect(() => {
+    const fetchMedicineTypes = async () => {
+      setLoadingTypes(true);
+      setErrorTypes(null);
+      try {
+        const response = await axios.get("http://localhost:5001/api/medicineTypes");
+        const typesData = response.data.data || response.data || [];
+        // if (!Array.isArray(typesData)) {
+        //   throw new Error("Dữ liệu loại thuốc không phải là mảng");
+        // }
+        setMedicineTypes(typesData);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách loại thuốc:", error.response?.data || error.message);
+        alert.error(`Lỗi khi tải loại thuốc: ${error.message}`);
+      } finally {
+        setLoadingTypes(false);
+      }
+    };
+    fetchMedicineTypes();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +64,9 @@ const AddDrugForm = () => {
       !formData.unit ||
       !formData.description
     ) {
-      alert("Vui lòng điền đầy đủ các trường bắt buộc!");
+      toast.error("Vui lòng điền đầy đủ các trường bắt buộc!", {
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -49,7 +79,12 @@ const AddDrugForm = () => {
         unit: formData.unit,
         description: formData.description,
       });
-      alert("Thêm thuốc thành công!");
+
+      toast.success("Thêm thuốc thành công!", {
+        autoClose: 2000,
+        onClose: () => navigate("/drug"),
+      });
+
       setFormData({
         medicine_code: "",
         medicine_name: "",
@@ -58,22 +93,18 @@ const AddDrugForm = () => {
         unit: "",
         description: "",
       });
-      navigate("/drug");
     } catch (error) {
-      console.error("Lỗi khi thêm thuốc:", error.response?.data || error.message);
-      alert(
-        `Thêm thuốc thất bại! Lỗi: ${
-          error.response?.data?.message || error.message
-        }`
-      );
+      console.error("Lỗi khi thêm thuốc:", error);
+      const errorMessage = error.response?.data?.message || "Lỗi không xác định";
+      toast.error(`Thêm thuốc thất bại: ${errorMessage}`, {
+        autoClose: 4000,
+      });
     }
   };
 
   const handleCancel = () => {
     navigate("/drug");
   };
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -120,19 +151,31 @@ const AddDrugForm = () => {
             <Col md={6}>
               <Form.Group controlId="medicineTypeId">
                 <Form.Label>
-                  ID loại thuốc <span style={{ color: "red" }}>*</span>
+                  Loại thuốc <span style={{ color: "red" }}>*</span>
                 </Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="ID loại thuốc (VD: 1)"
-                  name="medicine_type_id"
-                  value={formData.medicine_type_id}
-                  onChange={handleChange}
-                  required
-                />
-                <Form.Text muted>
-                  (Cần lấy ID từ danh sách loại thuốc trước)
-                </Form.Text>
+                {loadingTypes ? (
+                  <Form.Control as="select" disabled>
+                    <option>Đang tải loại thuốc...</option>
+                  </Form.Control>
+                ) : errorTypes ? (
+                  <Form.Control as="select" disabled>
+                    <option>Lỗi: {errorTypes}</option>
+                  </Form.Control>
+                ) : (
+                  <Form.Select
+                    name="medicine_type_id"
+                    value={formData.medicine_type_id}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Chọn loại thuốc</option>
+                    {medicineTypes.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {`${type.medicine_type_code} - ${type.medicine_type_name}`}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
               </Form.Group>
             </Col>
             <Col md={6}>
@@ -193,6 +236,17 @@ const AddDrugForm = () => {
           </div>
         </Form>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };

@@ -128,7 +128,7 @@ const ListOfDrugs = () => {
                       <td>{index + 1}</td>
                       <td>{drug.medicine_code}</td>
                       <td>{drug.medicine_name}</td>
-                      <td>{drug.medicine_type_name}</td>
+                      <td>{drug.MedicineType.medicine_type_name}</td>
                       <td>{drug.price.toLocaleString()}</td>
                       <td>{drug.unit}</td>
                       <td>{drug.description}</td>
