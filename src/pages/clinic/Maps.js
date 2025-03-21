@@ -1,6 +1,5 @@
-//maps
 import Header from "../../components/Headers/Header";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -16,30 +15,56 @@ import {
   InputGroupAddon,
   InputGroupText,
 } from "reactstrap";
+import axios from "axios"; // Thêm thư viện axios để gọi API
+import { ToastContainer, toast } from "react-toastify"; // Import thư viện toast
+import "react-toastify/dist/ReactToastify.css"; // Import CSS
 
 const Maps = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [clinics, setClinics] = useState([
-    { id: 1, code: "ABC000", name: "Phòng tai mũi họng" },
-    { id: 2, code: "ABC001", name: "Phòng nội soi" },
-    { id: 3, code: "BBC002", name: "Phòng xét nghiệm" },
-  ]);
+  const [clinics, setClinics] = useState([]); // Khởi tạo state clinics rỗng
 
+  // Fetch danh sách phòng khám từ API
+  useEffect(() => {
+    const fetchClinics = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/clinics"); // Gọi API
+        setClinics(response.data); // Cập nhật state clinics
+      } catch (error) {
+        console.error("Lỗi khi fetch danh sách phòng khám:", error);
+        toast.error("Không thể tải danh sách phòng khám!"); // Thông báo lỗi
+      }
+    };
+
+    fetchClinics();
+  }, []);
+
+  // Xử lý tìm kiếm
   const filteredClinics = clinics.filter((clinic) =>
     clinic.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDelete = (id) => {
-    setClinics(clinics.filter((clinic) => clinic.id !== id));
+  // Xử lý xóa phòng khám
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5001/api/clinics/${id}`); // Gọi API xóa
+      setClinics(clinics.filter((clinic) => clinic.id !== id)); // Cập nhật state
+      toast.success("Xóa phòng khám thành công!"); // Thông báo thành công
+    } catch (error) {
+      console.error("Lỗi khi xóa phòng khám:", error);
+      toast.error("Xóa phòng khám thất bại!"); // Thông báo lỗi
+    }
   };
 
+  // Xử lý sửa phòng khám
   const handleEdit = (id) => {
-    alert(`Chỉnh sửa phòng khám với ID: ${id}`);
+    // Chuyển hướng đến trang chỉnh sửa với ID của phòng khám
+    window.location.href = `/editclinic/${id}`;
   };
 
   return (
     <>
       <Header />
+      <ToastContainer /> {/* Thêm ToastContainer vào đây */}
       <Container className="mt-4" fluid>
         <Row className="mb-4">
           <Col md="6">
@@ -74,7 +99,7 @@ const Maps = () => {
 
         <Card className="shadow">
           <CardHeader className="bg-light border-0">
-            <h4 className="text-dark mb-0">Danh phòng khám</h4>
+            <h4 className="text-dark mb-0">Danh sách phòng khám</h4>
           </CardHeader>
           <Table className="align-items-center" responsive>
             <thead className="thead-light">

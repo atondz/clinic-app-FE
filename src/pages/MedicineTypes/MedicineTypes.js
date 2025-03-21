@@ -1,4 +1,3 @@
-//medicineTypes
 import React, { useState, useEffect } from "react";
 import {
   Card,
@@ -29,8 +28,10 @@ const MedicineTypes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedDescriptions, setExpandedDescriptions] = useState(new Set()); // State để theo dõi các mục đã mở rộng
   const itemsPerPage = 5;
 
+  // Fetch dữ liệu từ API
   useEffect(() => {
     const fetchMedicineTypes = async () => {
       try {
@@ -47,6 +48,21 @@ const MedicineTypes = () => {
     fetchMedicineTypes();
   }, []);
 
+  // Hàm xử lý thu gọn/mở rộng nội dung
+  const toggleDescription = (id) => {
+    setExpandedDescriptions((prev) => {
+      const newSet = new Set(prev);
+      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+      return newSet;
+    });
+  };
+
+  // Hàm cắt ngắn nội dung
+  const truncateText = (text, maxLength = 30) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
+  // Lọc dữ liệu theo từ khóa tìm kiếm
   const filteredMedicineTypes = medicineTypes.filter((type) => {
     const searchLower = searchTerm.toLowerCase();
     return (
@@ -55,6 +71,7 @@ const MedicineTypes = () => {
     );
   });
 
+  // Xử lý xóa loại thuốc
   const handleDelete = async (id) => {
     if (!window.confirm("Bạn có chắc chắn muốn xoá loại thuốc này không?")) {
       return;
@@ -76,10 +93,12 @@ const MedicineTypes = () => {
     }
   };
 
+  // Xử lý chỉnh sửa loại thuốc
   const handleEdit = (id) => {
     navigate(`/admin/edit-medicine-type/${id}`);
   };
 
+  // Xử lý phân trang
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -148,30 +167,55 @@ const MedicineTypes = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentItems.map((type, index) => (
-                    <tr key={type.id}>
-                      <td>{indexOfFirstItem + index + 1}</td>
-                      <td>{type.medicine_type_code}</td>
-                      <td>{type.medicine_type_name}</td>
-                      <td>
-                        <Button
-                          color="primary"
-                          size="sm"
-                          onClick={() => handleEdit(type.id)}
+                  {currentItems.map((type, index) => {
+                    const isExpanded = expandedDescriptions.has(type.id);
+                    const showText = isExpanded
+                      ? type.medicine_type_name
+                      : truncateText(type.medicine_type_name);
+
+                    return (
+                      <tr key={type.id}>
+                        <td>{indexOfFirstItem + index + 1}</td>
+                        <td>{type.medicine_type_code}</td>
+                        <td
+                          style={{
+                            maxWidth: "300px",
+                            whiteSpace: isExpanded ? "pre-wrap" : "nowrap",
+                            wordBreak: "break-word",
+                          }}
                         >
-                          Sửa
-                        </Button>
-                        <Button
-                          color="danger"
-                          size="sm"
-                          className="mr-2"
-                          onClick={() => handleDelete(type.id)}
-                        >
-                          Xoá
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                          {showText}
+                          {type.medicine_type_name.length > 30 && (
+                            <Button
+                              color="link"
+                              size="sm"
+                              onClick={() => toggleDescription(type.id)}
+                              className="p-0 ml-2"
+                            >
+                              {isExpanded ? "[Thu gọn]" : "[Xem thêm]"}
+                            </Button>
+                          )}
+                        </td>
+                        <td>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            onClick={() => handleEdit(type.id)}
+                          >
+                            Sửa
+                          </Button>
+                          <Button
+                            color="danger"
+                            size="sm"
+                            className="mr-2"
+                            onClick={() => handleDelete(type.id)}
+                          >
+                            Xoá
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </Table>
 
@@ -184,7 +228,7 @@ const MedicineTypes = () => {
           </Card>
         )}
 
-        {/* Pagination */}
+        {/* Phân trang */}
         {totalPages > 1 && (
           <Pagination className="mt-3 justify-content-center">
             <PaginationItem disabled={currentPage === 1}>
