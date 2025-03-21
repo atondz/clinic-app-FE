@@ -1,78 +1,62 @@
-// ListOfDrugs
 import Header from "../../components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { Table, Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ListOfDrugs = () => {
   const [drugs, setDrugs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editingDrug, setEditingDrug] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true); // Thêm trạng thái loading
-  const [error, setError] = useState(null); // Thêm trạng thái lỗi
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  // Lấy danh sách thuốc từ API khi component mount
+  // Fetch drug list from API when component mounts
   useEffect(() => {
     fetchDrugs();
   }, []);
 
   const fetchDrugs = async () => {
-    setLoading(true); // Bắt đầu loading
-    setError(null);   // Reset lỗi
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get("http://localhost:5001/api/medicine");
-      setDrugs(response.data.data || []); // Đảm bảo data là mảng
-      console.log("Danh sách thuốc:", response.data.data); // Debug
+      setDrugs(response.data.data || []);
+      console.log("Drug list:", response.data.data);
     } catch (error) {
-      console.error("Lỗi khi lấy danh sách thuốc:", error);
-      setError("Không thể tải danh sách thuốc. Vui lòng kiểm tra server hoặc console.");
+      console.error("Error fetching drug list:", error);
+      setError("Cannot load drug list. Please check server or console.");
     } finally {
-      setLoading(false); // Kết thúc loading
+      setLoading(false);
     }
   };
 
-  // Xử lý tìm kiếm
+  // Handle search
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Xử lý mở Modal chỉnh sửa
-  const handleEdit = (drug) => {
-    setEditingDrug({ ...drug });
-    setShowModal(true);
+  // Handle edit - navigate to edit page with drug ID
+  const handleEdit = (drugId) => {
+    navigate(`/editDrug/${drugId}`);
   };
 
-  // Xử lý lưu chỉnh sửa (gửi PUT request)
-  const handleSave = async () => {
-    try {
-      await axios.put(
-        `http://localhost:5001/api/medicine/${editingDrug.id}`,
-        editingDrug
-      );
-      setDrugs((prevDrugs) =>
-        prevDrugs.map((d) => (d.id === editingDrug.id ? editingDrug : d))
-      );
-      setShowModal(false);
-      setEditingDrug(null);
-    } catch (error) {
-      console.error("Lỗi khi cập nhật thuốc:", error);
-    }
-  };
-
-  // Xử lý xóa (gửi DELETE request)
+  // Handle delete (send DELETE request)
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5001/api/medicine/${id}`);
-      setDrugs((prevDrugs) => prevDrugs.filter((drug) => drug.id !== id));
-    } catch (error) {
-      console.error("Lỗi khi xóa thuốc:", error);
+    if (window.confirm("Are you sure you want to delete this drug?")) {
+      try {
+        await axios.delete(`http://localhost:5001/api/medicine/${id}`);
+        setDrugs((prevDrugs) => prevDrugs.filter((drug) => drug.id !== id));
+        alert("Drug deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting drug:", error);
+        alert("Failed to delete drug. Please try again.");
+      }
     }
   };
 
-  // Lọc danh sách theo tìm kiếm
+  // Filter list based on search
   const filteredDrugs = drugs.filter(
     (drug) =>
       (drug.medicine_name &&
@@ -137,7 +121,7 @@ const ListOfDrugs = () => {
                           variant="warning"
                           size="sm"
                           className="me-2"
-                          onClick={() => handleEdit(drug)}
+                          onClick={() => handleEdit(drug.id)}
                         >
                           <FaEdit /> Sửa
                         </Button>
@@ -161,78 +145,6 @@ const ListOfDrugs = () => {
           </>
         )}
       </div>
-
-      {/* Modal Chỉnh Sửa */}
-      {editingDrug && (
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Chỉnh sửa thuốc</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Tên thuốc</Form.Label>
-                <Form.Control
-                  value={editingDrug.medicine_name || ""}
-                  onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      medicine_name: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Loại thuốc</Form.Label>
-                <Form.Control
-                  value={editingDrug.medicine_type_name || ""}
-                  onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      medicine_type_name: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Giá (VNĐ)</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={editingDrug.price || 0}
-                  onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      price: +e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Mô tả</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  value={editingDrug.description || ""}
-                  onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-              Hủy
-            </Button>
-            <Button variant="primary" onClick={handleSave}>
-              Lưu
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
     </>
   );
 };

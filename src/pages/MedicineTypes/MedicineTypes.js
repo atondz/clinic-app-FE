@@ -62,14 +62,14 @@ const MedicineTypes = () => {
         throw new Error("Xóa thất bại. Vui lòng thử lại!");
       }
       setMedicineTypes((prev) => prev.filter((type) => type.id !== id));
-      toast.success("Xoá thành công!",{autoClose: 1000});
+      toast.success("Xoá thành công!", { autoClose: 1000 });
     } catch (error) {
       toast.error(error.message);
     }
   };
 
   const handleEdit = (id) => {
-    navigate(`/admin/edit-medicine-type/${id}`);
+    navigate(`/edit-medicine-type/${id}`);  // Make sure this path matches your route configuration
   };
 
   const handlePageChange = (page) => {
