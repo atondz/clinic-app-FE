@@ -1,4 +1,3 @@
-// ListOfDrugs
 import Header from "../../components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { Table, Button, Form, InputGroup, Modal } from "react-bootstrap";
@@ -21,8 +20,10 @@ const ListOfDrugs = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingDrug, setEditingDrug] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true); // Thêm trạng thái loading
-  const [error, setError] = useState(null); // Thêm trạng thái lỗi
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [expandedRows, setExpandedRows] = useState({}); // Trạng thái cho các hàng mở rộng
+  const maxDescriptionLength = 50; // Độ dài tối đa cho mô tả bị cắt
 
   // Lấy danh sách thuốc từ API khi component mount
   useEffect(() => {
@@ -30,19 +31,19 @@ const ListOfDrugs = () => {
   }, []);
 
   const fetchDrugs = async () => {
-    setLoading(true); // Bắt đầu loading
-    setError(null); // Reset lỗi
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get("http://localhost:5001/api/medicine");
-      setDrugs(response.data.data || []); // Đảm bảo data là mảng
-      console.log("Danh sách thuốc:", response.data.data); // Debug
+      setDrugs(response.data.data || []);
+      console.log("Danh sách thuốc:", response.data.data);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách thuốc:", error);
       setError(
         "Không thể tải danh sách thuốc. Vui lòng kiểm tra server hoặc console."
       );
     } finally {
-      setLoading(false); // Kết thúc loading
+      setLoading(false);
     }
   };
 
@@ -84,6 +85,14 @@ const ListOfDrugs = () => {
     }
   };
 
+  // Xử lý mở rộng/thu gọn mô tả
+  const toggleExpand = (id) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   // Lọc danh sách theo tìm kiếm
   const filteredDrugs = drugs.filter(
     (drug) =>
@@ -96,7 +105,7 @@ const ListOfDrugs = () => {
           .toLowerCase()
           .includes(searchTerm.toLowerCase()))
   );
-  
+
   return (
     <>
       <Header />
@@ -158,10 +167,30 @@ const ListOfDrugs = () => {
                         <td>{index + 1}</td>
                         <td>{drug.medicine_code}</td>
                         <td>{drug.medicine_name}</td>
-                        <td>{drug.medicine_type_name}</td>
-                        <td>{drug.price.toLocaleString()}</td>
+                        <td>{drug.MedicineType?.medicine_type_name}</td>
+                        <td>{drug.price?.toLocaleString()}</td>
                         <td>{drug.unit}</td>
-                        <td>{drug.description}</td>
+                        <td style={{ maxWidth: "200px", whiteSpace: "normal" }}>
+                          {expandedRows[drug.id] ||
+                          (drug.description &&
+                            drug.description.length <= maxDescriptionLength)
+                            ? drug.description || "Chưa có mô tả"
+                            : `${(drug.description || "").substring(
+                                0,
+                                maxDescriptionLength
+                              )}...`}
+                          {drug.description &&
+                            drug.description.length > maxDescriptionLength && (
+                              <Button
+                                variant="link"
+                                size="sm"
+                                onClick={() => toggleExpand(drug.id)}
+                                style={{ padding: 0, marginLeft: "5px" }}
+                              >
+                                {expandedRows[drug.id] ? "Thu gọn" : "Xem thêm"}
+                              </Button>
+                            )}
+                        </td>
                         <td>
                           <Button
                             variant="primary"
