@@ -14,11 +14,13 @@ import AddClinic from "pages/clinic/Addclinic.js";
 
 import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
-
+import EditMedicineType from "pages/MedicineTypes/EditMedicineTypes";
 import PatientForm from "pages/patient/patientForm";
 import ListOfDrugs from "pages/Medicine/ListOfDrugs.js";
 import AddDrugForm from "pages/Medicine/AddDrugForm.js";
 import Prescription from "pages/Prescription/Prescription";
+import EditDrug from "pages/Medicine/EditDrug.js";
+
 
 var routes = [
   {
@@ -78,6 +80,15 @@ var routes = [
     layout: "/admin",
   },
   {
+    path: "/editDrug/:id",
+    name: "EditDrug",
+    icon: "ni ni-pin-3 text-orange",
+    component: <EditDrug />,
+    layout: "/admin",
+  },
+
+
+  {
     path: "/user-profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
@@ -134,6 +145,14 @@ var routes = [
     component: <AddMedicineTypes />,
     layout: "/admin",
   },
+  {
+    path: "/edit-medicine-type/:id",
+    name: "Chỉnh Sửa Loại Thuốc",
+    icon: "fa fa-edit text-warning",
+    component: <EditMedicineType />,
+    layout: "/admin",
+  },
+
 ];
 
 const sidebarRoutes = [

@@ -22,9 +22,9 @@ root.render(
       <Route
         path="/*"
         element={
-          <ProtectedRoute>
-            <AdminLayout />
-          </ProtectedRoute>
+
+          <AdminLayout />
+
         }
       />
     </Routes>
