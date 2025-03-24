@@ -31,9 +31,9 @@ const AddDrugForm = () => {
       try {
         const response = await axios.get("http://localhost:5001/api/medicineTypes");
         const typesData = response.data.data || response.data || [];
-        // if (!Array.isArray(typesData)) {
-        //   throw new Error("Dữ liệu loại thuốc không phải là mảng");
-        // }
+        if (!Array.isArray(typesData)) {
+          throw new Error("Dữ liệu loại thuốc không phải là mảng");
+        }
         setMedicineTypes(typesData);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách loại thuốc:", error.response?.data || error.message);
@@ -65,7 +65,7 @@ const AddDrugForm = () => {
       !formData.description
     ) {
       toast.error("Vui lòng điền đầy đủ các trường bắt buộc!", {
-        autoClose: 3000,
+        autoClose: 2000,
       });
       return;
     }
@@ -168,7 +168,7 @@ const AddDrugForm = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Chọn loại thuốc</option>
+                    <option value="id">Chọn loại thuốc</option>
                     {medicineTypes.map((type) => (
                       <option key={type.id} value={type.id}>
                         {`${type.medicine_type_code} - ${type.medicine_type_name}`}
