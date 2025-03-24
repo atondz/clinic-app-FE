@@ -20,7 +20,7 @@ import ListOfDrugs from "pages/Medicine/ListOfDrugs.js";
 import AddDrugForm from "pages/Medicine/AddDrugForm.js";
 import Prescription from "pages/Prescription/Prescription";
 import RegistrationSystem from "pages/RegistrationExam/RegistrationSystem";
-
+import RegistrationDetails from "pages/RegistrationExam/RegistrationDetails.js";
 var routes = [
   {
     path: "/home",
@@ -90,6 +90,13 @@ var routes = [
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: <Profile />,
+    layout: "/admin",
+  },
+  {
+    path: "/registrationDetails",
+    name: "details",
+    icon: "ni ni-single-02 text-yellow",
+    component: <RegistrationDetails />,
     layout: "/admin",
   },
   {
