@@ -1,4 +1,3 @@
-// AddDrugForm
 import Header from "../../components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
@@ -37,7 +36,8 @@ const AddDrugForm = () => {
         setMedicineTypes(typesData);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách loại thuốc:", error.response?.data || error.message);
-        alert.error(`Lỗi khi tải loại thuốc: ${error.message}`);
+        setErrorTypes(error.message);
+        toast.error(`Lỗi khi tải loại thuốc: ${error.message}`);
       } finally {
         setLoadingTypes(false);
       }
@@ -71,11 +71,12 @@ const AddDrugForm = () => {
     }
 
     try {
+      console.log("Dữ liệu gửi lên:", formData); // Ghi log để debug
       const response = await axios.post("http://localhost:5001/api/medicine", {
         medicine_code: formData.medicine_code,
         medicine_name: formData.medicine_name,
-        medicine_type_id: parseInt(formData.medicine_type_id),
-        price: parseInt(formData.price),
+        medicine_type_id: formData.medicine_type_id, // Giữ nguyên chuỗi _id
+        price: parseInt(formData.price), // Giá vẫn cần là số
         unit: formData.unit,
         description: formData.description,
       });
@@ -168,9 +169,9 @@ const AddDrugForm = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="id">Chọn loại thuốc</option>
+                    <option value="">Chọn loại thuốc</option>
                     {medicineTypes.map((type) => (
-                      <option key={type.id} value={type.id}>
+                      <option key={type._id} value={type._id}>
                         {`${type.medicine_type_code} - ${type.medicine_type_name}`}
                       </option>
                     ))}
