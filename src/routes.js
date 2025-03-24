@@ -19,6 +19,7 @@ import PatientForm from "pages/patient/patientForm";
 import ListOfDrugs from "pages/Medicine/ListOfDrugs.js";
 import AddDrugForm from "pages/Medicine/AddDrugForm.js";
 import Prescription from "pages/Prescription/Prescription";
+import RegistrationSystem from "pages/RegistrationExam/RegistrationSystem";
 
 var routes = [
   {
@@ -26,6 +27,13 @@ var routes = [
     name: "Home",
     icon: "fa fa-plus-square text-primary",
     component: <Home />,
+    layout: "/admin",
+  },
+  {
+    path: "/regisExam",
+    name: "Đăng ký khám",
+    icon: "fa fa-plus-square text-primary",
+    component: <RegistrationSystem />,
     layout: "/admin",
   },
   {
@@ -142,6 +150,13 @@ const sidebarRoutes = [
     name: "Home",
     icon: "fa fa-plus-square text-primary",
     component: <Home />,
+    layout: "/admin",
+  },
+  {
+    path: "/regisExam",
+    name: "Đăng ký khám",
+    icon: "fa fa-plus-square text-primary",
+    component: <RegistrationSystem />,
     layout: "/admin",
   },
   {
