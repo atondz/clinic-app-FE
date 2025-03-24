@@ -1,29 +1,19 @@
+// ListOfDrugs
 import Header from "../../components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { Table, Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import {
-  Card,
-  CardHeader,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  Col,
-  Row,
-  Container,
-} from "reactstrap";
+import { MedicineTypes } from 'pages/MedicineTypes/MedicineTypes.js';
 
 const ListOfDrugs = () => {
   const [drugs, setDrugs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingDrug, setEditingDrug] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [expandedRows, setExpandedRows] = useState({}); // Trạng thái cho các hàng mở rộng
-  const maxDescriptionLength = 50; // Độ dài tối đa cho mô tả bị cắt
+  const [loading, setLoading] = useState(true); // Thêm trạng thái loading
+  const [error, setError] = useState(null); // Thêm trạng thái lỗi
 
   // Lấy danh sách thuốc từ API khi component mount
   useEffect(() => {
@@ -31,19 +21,17 @@ const ListOfDrugs = () => {
   }, []);
 
   const fetchDrugs = async () => {
-    setLoading(true);
-    setError(null);
+    setLoading(true); // Bắt đầu loading
+    setError(null);   // Reset lỗi
     try {
       const response = await axios.get("http://localhost:5001/api/medicine");
-      setDrugs(response.data.data || []);
-      console.log("Danh sách thuốc:", response.data.data);
+      setDrugs(response.data.data || []); // Đảm bảo data là mảng
+      console.log("Danh sách thuốc:", response.data.data); // Debug
     } catch (error) {
       console.error("Lỗi khi lấy danh sách thuốc:", error);
-      setError(
-        "Không thể tải danh sách thuốc. Vui lòng kiểm tra server hoặc console."
-      );
+      setError("Không thể tải danh sách thuốc. Vui lòng kiểm tra server hoặc console.");
     } finally {
-      setLoading(false);
+      setLoading(false); // Kết thúc loading
     }
   };
 
@@ -85,14 +73,6 @@ const ListOfDrugs = () => {
     }
   };
 
-  // Xử lý mở rộng/thu gọn mô tả
-  const toggleExpand = (id) => {
-    setExpandedRows((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
   // Lọc danh sách theo tìm kiếm
   const filteredDrugs = drugs.filter(
     (drug) =>
@@ -101,198 +81,159 @@ const ListOfDrugs = () => {
       (drug.medicine_code &&
         drug.medicine_code.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (drug.medicine_type_name &&
-        drug.medicine_type_name
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()))
+        drug.medicine_type_name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
     <>
       <Header />
-      <Container className="mt-4" fluid>
-        <div className="mb-4 d-flex justify-content-between align-items-center">
-          <h4 className="mb-0">Danh Sách Thuốc</h4>
-          <div className="d-flex align-items-center w-50">
-            <InputGroup className="flex-grow-1" style={{ marginRight: "1rem" }}>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <i className="fas fa-search" />
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input
-                type="text"
-                placeholder="Tìm kiếm thuốc..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </InputGroup>
-
-            <div style={{ marginLeft: "1rem" }}>
-              <Link
-                to="/addDrugForm"
-                className="btn btn-primary"
-                style={{ whiteSpace: "nowrap" }}
-              >
-                + Thêm thuốc
-              </Link>
-            </div>
-          </div>
-        </div>
-
+      <div className="container mt-4">
+        <h4 className="mb-4">Danh Sách Thuốc</h4>
         {loading && <p>Đang tải dữ liệu...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
         {!loading && !error && (
           <>
-            <Card className="shadow">
-              <CardHeader className="bg-light border-0">
-                <h4 className="text-dark mb-0">Danh sách thuốc</h4>
-              </CardHeader>
-              <Table className="align-items-center" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th>STT</th>
-                    <th>Mã</th>
-                    <th>Tên thuốc</th>
-                    <th>Loại thuốc</th>
-                    <th>Giá (VNĐ)</th>
-                    <th>Đơn vị tính</th>
-                    <th>Mô tả</th>
-                    <th>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredDrugs.length > 0 ? (
-                    filteredDrugs.map((drug, index) => (
-                      <tr key={drug.id}>
-                        <td>{index + 1}</td>
-                        <td>{drug.medicine_code}</td>
-                        <td>{drug.medicine_name}</td>
-                        <td>{drug.MedicineType?.medicine_type_name}</td>
-                        <td>{drug.price?.toLocaleString()}</td>
-                        <td>{drug.unit}</td>
-                        <td style={{ maxWidth: "200px", whiteSpace: "normal" }}>
-                          {expandedRows[drug.id] ||
-                          (drug.description &&
-                            drug.description.length <= maxDescriptionLength)
-                            ? drug.description || "Chưa có mô tả"
-                            : `${(drug.description || "").substring(
-                                0,
-                                maxDescriptionLength
-                              )}...`}
-                          {drug.description &&
-                            drug.description.length > maxDescriptionLength && (
-                              <Button
-                                variant="link"
-                                size="sm"
-                                onClick={() => toggleExpand(drug.id)}
-                                style={{ padding: 0, marginLeft: "5px" }}
-                              >
-                                {expandedRows[drug.id] ? "Thu gọn" : "Xem thêm"}
-                              </Button>
-                            )}
-                        </td>
-                        <td>
-                          <Button
-                            variant="primary"
-                            size="sm"
-                            className="me-2"
-                            onClick={() => handleEdit(drug)}
-                          >
-                            <FaEdit /> Sửa
-                          </Button>
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            onClick={() => handleDelete(drug.id)}
-                          >
-                            <FaTrash /> Xóa
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="8">Không có dữ liệu thuốc.</td>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <InputGroup className="w-50">
+                <Form.Control
+                  placeholder="Nhập tên, mã hoặc loại thuốc"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                />
+                <Button variant="primary">
+                  <FaSearch className="me-2" />
+                  Tìm kiếm
+                </Button>
+              </InputGroup>
+              <Link to="/addDrugForm" className="btn btn-primary">
+                + Thêm thuốc
+              </Link>
+            </div>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Mã</th>
+                  <th>Tên thuốc</th>
+                  <th>Loại thuốc</th>
+                  <th>Giá (VNĐ)</th>
+                  <th>Đơn vị tính</th>
+                  <th>Mô tả</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDrugs.length > 0 ? (
+                  filteredDrugs.map((drug, index) => (
+                    <tr key={drug.id}>
+                      <td>{index + 1}</td>
+                      <td>{drug.medicine_code}</td>
+                      <td>{drug.medicine_name}</td>
+                      <td>{drug.medicine_type_id.medicine_type_name}</td>
+                      <td>{drug.price.toLocaleString()}</td>
+                      <td>{drug.unit}</td>
+                      <td>{drug.description}</td>
+                      <td>
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          className="me-2"
+                          onClick={() => handleEdit(drug)}
+                        >
+                          <FaEdit /> Sửa
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(drug.id)}
+                        >
+                          <FaTrash /> Xóa
+                        </Button>
+                      </td>
                     </tr>
-                  )}
-                </tbody>
-              </Table>
-            </Card>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="8">Không có dữ liệu thuốc.</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
           </>
         )}
+      </div>
 
-        {/* Modal Chỉnh Sửa */}
-        {editingDrug && (
-          <Modal show={showModal} onHide={() => setShowModal(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>Chỉnh sửa thuốc</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group className="mb-3">
-                  <Form.Label>Tên thuốc</Form.Label>
-                  <Form.Control
-                    value={editingDrug.medicine_name || ""}
-                    onChange={(e) =>
-                      setEditingDrug({
-                        ...editingDrug,
-                        medicine_name: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Loại thuốc</Form.Label>
-                  <Form.Control
-                    value={editingDrug.medicine_type_name || ""}
-                    onChange={(e) =>
-                      setEditingDrug({
-                        ...editingDrug,
-                        medicine_type_name: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Giá (VNĐ)</Form.Label>
-                  <Form.Control
-                    type="number"
-                    value={editingDrug.price || 0}
-                    onChange={(e) =>
-                      setEditingDrug({
-                        ...editingDrug,
-                        price: +e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Mô tả</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    value={editingDrug.description || ""}
-                    onChange={(e) =>
-                      setEditingDrug({
-                        ...editingDrug,
-                        description: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowModal(false)}>
-                Hủy
-              </Button>
-              <Button variant="primary" onClick={handleSave}>
-                Lưu
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        )}
-      </Container>
+      {/* Modal Chỉnh Sửa */}
+      {editingDrug && (
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Chỉnh sửa thuốc</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Tên thuốc</Form.Label>
+                <Form.Control
+                  value={editingDrug.medicine_name || ""}
+                  onChange={(e) =>
+                    setEditingDrug({
+                      ...editingDrug,
+                      medicine_name: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Loại thuốc</Form.Label>
+                <Form.Control
+                  value={editingDrug.medicine_type_name || ""}
+                  onChange={(e) =>
+                    setEditingDrug({
+                      ...editingDrug,
+                      medicine_type_name: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Giá (VNĐ)</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={editingDrug.price || 0}
+                  onChange={(e) =>
+                    setEditingDrug({
+                      ...editingDrug,
+                      price: +e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Mô tả</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={editingDrug.description || ""}
+                  onChange={(e) =>
+                    setEditingDrug({
+                      ...editingDrug,
+                      description: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Hủy
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
+              Lưu
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </>
   );
 };
