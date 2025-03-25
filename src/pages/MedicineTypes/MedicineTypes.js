@@ -15,23 +15,30 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
 } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "components/Headers/Header.js";
 
 const MedicineTypes = () => {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [medicineTypes, setMedicineTypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [expandedDescriptions, setExpandedDescriptions] = useState(new Set()); // State để theo dõi các mục đã mở rộng
+  const [expandedDescriptions, setExpandedDescriptions] = useState(new Set());
+  const [showModal, setShowModal] = useState(false);
+  const [editingType, setEditingType] = useState(null);
   const itemsPerPage = 5;
 
-  // Fetch dữ liệu từ API
   useEffect(() => {
     const fetchMedicineTypes = async () => {
       try {
@@ -48,21 +55,18 @@ const MedicineTypes = () => {
     fetchMedicineTypes();
   }, []);
 
-  // Hàm xử lý thu gọn/mở rộng nội dung
-  const toggleDescription = (id) => {
+  const toggleDescription = (_id) => {
     setExpandedDescriptions((prev) => {
       const newSet = new Set(prev);
-      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+      newSet.has(_id) ? newSet.delete(_id) : newSet.add(_id);
       return newSet;
     });
   };
 
-  // Hàm cắt ngắn nội dung
   const truncateText = (text, maxLength = 30) => {
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
-  // Lọc dữ liệu theo từ khóa tìm kiếm
   const filteredMedicineTypes = medicineTypes.filter((type) => {
     const searchLower = searchTerm.toLowerCase();
     return (
@@ -71,14 +75,13 @@ const MedicineTypes = () => {
     );
   });
 
-  // Xử lý xóa loại thuốc
-  const handleDelete = async (id) => {
+  const handleDelete = async (_id) => {
     if (!window.confirm("Bạn có chắc chắn muốn xoá loại thuốc này không?")) {
       return;
     }
     try {
       const response = await fetch(
-        `http://localhost:5001/api/medicineTypes/${id}`,
+        `http://localhost:5001/api/medicineTypes/${_id}`,
         {
           method: "DELETE",
         }
@@ -86,24 +89,63 @@ const MedicineTypes = () => {
       if (!response.ok) {
         throw new Error("Xóa thất bại. Vui lòng thử lại!");
       }
-      setMedicineTypes((prev) => prev.filter((type) => type.id !== id));
+      setMedicineTypes((prev) => prev.filter((type) => type._id !== _id));
       toast.success("Xoá thành công!", { autoClose: 1000 });
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  // Xử lý chỉnh sửa loại thuốc
-  const handleEdit = (id) => {
-    navigate(`/admin/edit-medicine-type/${id}`);
+  const handleEdit = (type) => {
+    setEditingType({
+      _id: type._id,
+      medicine_type_code: type.medicine_type_code,
+      medicine_type_name: type.medicine_type_name,
+    });
+    setShowModal(true);
   };
 
-  // Xử lý phân trang
+  const handleSave = async () => {
+    if (!editingType._id) {
+      toast.error("Không tìm thấy ID của loại thuốc để cập nhật.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/medicineTypes/${editingType._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            medicine_type_code: editingType.medicine_type_code,
+            medicine_type_name: editingType.medicine_type_name,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Cập nhật thất bại. Vui lòng thử lại!");
+      }
+      const updatedType = await response.json();
+      setMedicineTypes((prev) =>
+        prev.map((type) =>
+          type._id === editingType._id ? { ...type, ...updatedType.data } : type
+        )
+      );
+      setShowModal(false);
+      setEditingType(null);
+      toast.success("Cập nhật thành công!", { autoClose: 1000 });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  // Tính toán dữ liệu cho trang hiện tại
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredMedicineTypes.slice(
@@ -168,28 +210,26 @@ const MedicineTypes = () => {
                 </thead>
                 <tbody>
                   {currentItems.map((type, index) => {
-                    const isExpanded = expandedDescriptions.has(type.id);
+                    const isExpanded = expandedDescriptions.has(type._id);
                     const showText = isExpanded
                       ? type.medicine_type_name
                       : truncateText(type.medicine_type_name);
 
                     return (
-                      <tr key={type.id}>
+                      <tr key={`medicine-type-${type._id}-${index}`}>
                         <td>{indexOfFirstItem + index + 1}</td>
                         <td>{type.medicine_type_code}</td>
-                        <td
-                          style={{
+                        <td style={{
                             maxWidth: "300px",
                             whiteSpace: isExpanded ? "pre-wrap" : "nowrap",
                             wordBreak: "break-word",
-                          }}
-                        >
+                          }}>
                           {showText}
                           {type.medicine_type_name.length > 30 && (
                             <Button
                               color="link"
                               size="sm"
-                              onClick={() => toggleDescription(type.id)}
+                              onClick={() => toggleDescription(type._id)}
                               className="p-0 ml-2"
                             >
                               {isExpanded ? "[Thu gọn]" : "[Xem thêm]"}
@@ -200,15 +240,15 @@ const MedicineTypes = () => {
                           <Button
                             color="primary"
                             size="sm"
-                            onClick={() => handleEdit(type.id)}
+                            onClick={() => handleEdit(type)}
                           >
                             Sửa
                           </Button>
                           <Button
                             color="danger"
                             size="sm"
-                            className="mr-2"
-                            onClick={() => handleDelete(type.id)}
+                            className="ml-2"
+                            onClick={() => handleDelete(type._id)}
                           >
                             Xoá
                           </Button>
@@ -219,7 +259,7 @@ const MedicineTypes = () => {
                 </tbody>
               </Table>
 
-              {!filteredMedicineTypes.length && (
+              {filteredMedicineTypes.length === 0 && (
                 <div className="text-center py-4 text-muted">
                   Không tìm thấy kết quả phù hợp
                 </div>
@@ -228,7 +268,6 @@ const MedicineTypes = () => {
           </Card>
         )}
 
-        {/* Phân trang */}
         {totalPages > 1 && (
           <Pagination className="mt-3 justify-content-center">
             <PaginationItem disabled={currentPage === 1}>
@@ -238,7 +277,10 @@ const MedicineTypes = () => {
               />
             </PaginationItem>
             {[...Array(totalPages)].map((_, index) => (
-              <PaginationItem active={index + 1 === currentPage} key={index}>
+              <PaginationItem 
+                active={index + 1 === currentPage} 
+                key={`page-${index}`}
+              >
                 <PaginationLink onClick={() => handlePageChange(index + 1)}>
                   {index + 1}
                 </PaginationLink>
@@ -252,6 +294,54 @@ const MedicineTypes = () => {
             </PaginationItem>
           </Pagination>
         )}
+
+        <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
+          <ModalHeader toggle={() => setShowModal(false)}>
+            Chỉnh sửa loại thuốc
+          </ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label for="medicineTypeCode">Mã loại thuốc</Label>
+                <Input
+                  type="text"
+                  id="medicineTypeCode"
+                  value={editingType?.medicine_type_code || ""}
+                  onChange={(e) =>
+                    setEditingType({
+                      ...editingType,
+                      medicine_type_code: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="medicineTypeName">Tên loại thuốc</Label>
+                <Input
+                  type="text"
+                  id="medicineTypeName"
+                  value={editingType?.medicine_type_name || ""}
+                  onChange={(e) =>
+                    setEditingType({
+                      ...editingType,
+                      medicine_type_name: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </FormGroup>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={() => setShowModal(false)}>
+              Hủy
+            </Button>
+            <Button color="primary" onClick={handleSave}>
+              Lưu
+            </Button>
+          </ModalFooter>
+        </Modal>
       </Container>
     </>
   );

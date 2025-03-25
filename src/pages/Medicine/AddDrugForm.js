@@ -1,6 +1,7 @@
 import Header from "../../components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -48,6 +49,7 @@ const AddDrugForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -65,12 +67,14 @@ const AddDrugForm = () => {
     }
 
     try {
+
       console.log("Dữ liệu gửi lên:", formData);
       const response = await axios.post("http://localhost:5001/api/medicine", {
         medicine_code: formData.medicine_code,
         medicine_name: formData.medicine_name,
         medicine_type_id: formData.medicine_type_id,
         price: parseInt(formData.price),
+
         unit: formData.unit,
         description: formData.description,
       });
@@ -212,6 +216,7 @@ const AddDrugForm = () => {
             <Form.Label>
               Mô tả <span style={{ color: "red" }}>*</span>
             </Form.Label>
+
             <Form.Control
               as="textarea"
               rows={3}
@@ -219,7 +224,7 @@ const AddDrugForm = () => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              required
+
             />
           </Form.Group>
 

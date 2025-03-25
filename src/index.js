@@ -17,7 +17,11 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Navigate to="/auth/register" />} />
+
       {/* <Route path="/auth/R" element={<WelcomePage />} /> */}
+
+      <Route path="/auth/Welcome" element={<WelcomePage />} />
+
       <Route path="/auth/*" element={<AuthLayout />} />
       <Route
         path="/*"

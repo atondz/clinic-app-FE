@@ -14,27 +14,39 @@ import {
   CardHeader,
   InputGroupAddon,
   InputGroupText,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
 } from "reactstrap";
-import axios from "axios"; // Thêm thư viện axios để gọi API
-import { ToastContainer, toast } from "react-toastify"; // Import thư viện toast
-import "react-toastify/dist/ReactToastify.css"; // Import CSS
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Maps = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [clinics, setClinics] = useState([]); // Khởi tạo state clinics rỗng
+  const [clinics, setClinics] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [editingClinic, setEditingClinic] = useState({
+    _id: "",
+    code: "",
+    name: ""
+  });
 
   // Fetch danh sách phòng khám từ API
   useEffect(() => {
     const fetchClinics = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/clinics"); // Gọi API
-        setClinics(response.data); // Cập nhật state clinics
+        const response = await axios.get("http://localhost:5001/api/clinics");
+        setClinics(response.data);
       } catch (error) {
         console.error("Lỗi khi fetch danh sách phòng khám:", error);
-        toast.error("Không thể tải danh sách phòng khám!"); // Thông báo lỗi
+        toast.error("Không thể tải danh sách phòng khám!");
       }
     };
-
     fetchClinics();
   }, []);
 
@@ -44,27 +56,57 @@ const Maps = () => {
   );
 
   // Xử lý xóa phòng khám
-  const handleDelete = async (id) => {
+  const handleDelete = async (_id) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa phòng khám này không?")) {
+      return;
+    }
     try {
-      await axios.delete(`http://localhost:5001/api/clinics/${id}`); // Gọi API xóa
-      setClinics(clinics.filter((clinic) => clinic.id !== id)); // Cập nhật state
-      toast.success("Xóa phòng khám thành công!"); // Thông báo thành công
+      await axios.delete(`http://localhost:5001/api/clinics/${_id}`);
+      setClinics(clinics.filter((clinic) => clinic._id !== _id));
+      toast.success("Xóa phòng khám thành công!");
     } catch (error) {
       console.error("Lỗi khi xóa phòng khám:", error);
-      toast.error("Xóa phòng khám thất bại!"); // Thông báo lỗi
+      toast.error("Xóa phòng khám thất bại!");
     }
   };
 
-  // Xử lý sửa phòng khám
-  const handleEdit = (id) => {
-    // Chuyển hướng đến trang chỉnh sửa với ID của phòng khám
-    window.location.href = `/editclinic/${id}`;
+  // Mở modal chỉnh sửa
+  const handleEdit = (clinic) => {
+    setEditingClinic({
+      _id: clinic._id,
+      code: clinic.code,
+      name: clinic.name
+    });
+    setShowModal(true);
+  };
+
+  // Lưu thông tin sau khi chỉnh sửa
+  const handleSave = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5001/api/clinics/${editingClinic._id}`,
+        {
+          code: editingClinic.code,
+          name: editingClinic.name
+        }
+      );
+      
+      setClinics(clinics.map(clinic => 
+        clinic._id === editingClinic._id ? response.data : clinic
+      ));
+      
+      setShowModal(false);
+      toast.success("Cập nhật phòng khám thành công!");
+    } catch (error) {
+      console.error("Lỗi khi cập nhật phòng khám:", error);
+      toast.error("Cập nhật phòng khám thất bại!");
+    }
   };
 
   return (
     <>
       <Header />
-      <ToastContainer /> {/* Thêm ToastContainer vào đây */}
+      <ToastContainer />
       <Container className="mt-4" fluid>
         <Row className="mb-4">
           <Col md="6">
@@ -108,13 +150,12 @@ const Maps = () => {
                 <th scope="col">Mã</th>
                 <th scope="col">Tên phòng khám</th>
                 <th scope="col">Hành động</th>
-                <th scope="col" />
               </tr>
             </thead>
             <tbody>
               {filteredClinics.length > 0 ? (
                 filteredClinics.map((clinic, index) => (
-                  <tr key={clinic.id}>
+                  <tr key={clinic._id}>
                     <td>{index + 1}</td>
                     <td>{clinic.code}</td>
                     <td>{clinic.name}</td>
@@ -122,15 +163,15 @@ const Maps = () => {
                       <Button
                         color="primary"
                         size="sm"
-                        onClick={() => handleEdit(clinic.id)}
+                        onClick={() => handleEdit(clinic)}
                       >
                         Sửa
                       </Button>
                       <Button
                         color="danger"
                         size="sm"
-                        className="mr-2"
-                        onClick={() => handleDelete(clinic.id)}
+                        className="ml-2"
+                        onClick={() => handleDelete(clinic._id)}
                       >
                         Xóa
                       </Button>
@@ -147,6 +188,47 @@ const Maps = () => {
             </tbody>
           </Table>
         </Card>
+
+        {/* Modal chỉnh sửa */}
+        <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
+          <ModalHeader toggle={() => setShowModal(false)}>
+            Chỉnh sửa thông tin phòng khám
+          </ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label for="clinicCode">Mã phòng khám</Label>
+                <Input
+                  type="text"
+                  id="clinicCode"
+                  value={editingClinic.code}
+                  onChange={(e) =>
+                    setEditingClinic({ ...editingClinic, code: e.target.value })
+                  }
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="clinicName">Tên phòng khám</Label>
+                <Input
+                  type="text"
+                  id="clinicName"
+                  value={editingClinic.name}
+                  onChange={(e) =>
+                    setEditingClinic({ ...editingClinic, name: e.target.value })
+                  }
+                />
+              </FormGroup>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={() => setShowModal(false)}>
+              Hủy
+            </Button>
+            <Button color="primary" onClick={handleSave}>
+              Lưu thay đổi
+            </Button>
+          </ModalFooter>
+        </Modal>
       </Container>
     </>
   );

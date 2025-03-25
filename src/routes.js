@@ -209,6 +209,7 @@ const sidebarRoutes = [
   //   component: <Icons />,
   //   layout: "/admin",
   // },
+
   {
     path: "/registrationDetails",
     name: "details",
@@ -216,6 +217,7 @@ const sidebarRoutes = [
     component: <RegistrationDetails />,
     layout: "/admin",
   },
+
 ];
 
 export { routes, sidebarRoutes };
