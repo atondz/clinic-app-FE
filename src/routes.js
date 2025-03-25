@@ -209,6 +209,13 @@ const sidebarRoutes = [
   //   component: <Icons />,
   //   layout: "/admin",
   // },
+  {
+    path: "/registrationDetails",
+    name: "details",
+    icon: "ni ni-single-02 text-yellow",
+    component: <RegistrationDetails />,
+    layout: "/admin",
+  },
 ];
 
 export { routes, sidebarRoutes };

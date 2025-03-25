@@ -128,6 +128,92 @@ const RegistrationSystem = () => {
       "createdAt": "2025-03-23T12:15:59.404Z",
       "updatedAt": "2025-03-23T12:15:59.404Z",
       "__v": 0
+    },
+    {
+      "_id": "67dffb7fc4cf735f7d5fa97b",
+      "medical_code": "00000001",
+      "order_number": 1,
+      "patient_id": {
+        "_id": "67dffb7fc4cf735f7d5fa977",
+        "id_card": "010101010100",
+        "patient_id": "PAT0005",
+        "name": "Nguyễn Văn A",
+        "gender": true,
+        "birth_date": "2000-01-01T00:00:00.000Z",
+        "phone": "0101010191",
+        "address": "Huế",
+        "createdAt": "2025-03-23T12:15:59.272Z",
+        "updatedAt": "2025-03-23T12:15:59.272Z",
+        "__v": 0
+      },
+      "clinic_id": {
+        "_id": "67dfd79d880b73090cde5f7f",
+        "code": "Cl002",
+        "name": "Phòng Khám tổng Hợp",
+        "createdAt": "2025-03-23T09:42:53.902Z",
+        "updatedAt": "2025-03-23T09:42:53.902Z",
+        "__v": 0
+      },
+      "doctor_id": {
+        "_id": "67dffb22c4cf735f7d5fa970",
+        "name": "Toan",
+        "email": "doctor@gmail.com",
+        "password": "$2a$10$/G7aybWXcYGdh4C3pP6.FOz157/P/XH5aaxbWZ7qBnHq1kQGalxae",
+        "role": "doctor",
+        "created_at": "2025-03-23T12:14:26.874Z",
+        "updated_at": "2025-03-23T12:14:26.874Z",
+        "__v": 0
+      },
+      "priority": true,
+      "symptoms": "Đau đầu, mệt mỏi",
+      "note": "Khẩn cấp",
+      "registration_date": "2025-03-23T12:15:59.403Z",
+      "createdAt": "2025-03-23T12:15:59.404Z",
+      "updatedAt": "2025-03-23T12:15:59.404Z",
+      "__v": 0
+    },
+    {
+      "_id": "67dffb7fc4cf735f7d5fa97b",
+      "medical_code": "00000001",
+      "order_number": 1,
+      "patient_id": {
+        "_id": "67dffb7fc4cf735f7d5fa977",
+        "id_card": "010101010100",
+        "patient_id": "PAT0005",
+        "name": "Nguyễn Văn A",
+        "gender": true,
+        "birth_date": "2000-01-01T00:00:00.000Z",
+        "phone": "0101010191",
+        "address": "Huế",
+        "createdAt": "2025-03-23T12:15:59.272Z",
+        "updatedAt": "2025-03-23T12:15:59.272Z",
+        "__v": 0
+      },
+      "clinic_id": {
+        "_id": "67dfd79d880b73090cde5f7f",
+        "code": "Cl002",
+        "name": "Phòng Khám tổng Hợp",
+        "createdAt": "2025-03-23T09:42:53.902Z",
+        "updatedAt": "2025-03-23T09:42:53.902Z",
+        "__v": 0
+      },
+      "doctor_id": {
+        "_id": "67dffb22c4cf735f7d5fa970",
+        "name": "Toan",
+        "email": "doctor@gmail.com",
+        "password": "$2a$10$/G7aybWXcYGdh4C3pP6.FOz157/P/XH5aaxbWZ7qBnHq1kQGalxae",
+        "role": "doctor",
+        "created_at": "2025-03-23T12:14:26.874Z",
+        "updated_at": "2025-03-23T12:14:26.874Z",
+        "__v": 0
+      },
+      "priority": true,
+      "symptoms": "Đau đầu, mệt mỏi",
+      "note": "Khẩn cấp",
+      "registration_date": "2025-03-23T12:15:59.403Z",
+      "createdAt": "2025-03-23T12:15:59.404Z",
+      "updatedAt": "2025-03-23T12:15:59.404Z",
+      "__v": 0
     }
   ];
 

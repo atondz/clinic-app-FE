@@ -1,87 +1,132 @@
-// ListOfDrugs
 import Header from "../../components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { Table, Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { MedicineTypes } from 'pages/MedicineTypes/MedicineTypes.js';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ListOfDrugs = () => {
   const [drugs, setDrugs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingDrug, setEditingDrug] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true); // Thêm trạng thái loading
-  const [error, setError] = useState(null); // Thêm trạng thái lỗi
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [loadingTypes, setLoadingTypes] = useState(true);
+  const [errorTypes, setErrorTypes] = useState(null);
+  const [medicineTypes, setMedicineTypes] = useState([]);
 
-  // Lấy danh sách thuốc từ API khi component mount
   useEffect(() => {
     fetchDrugs();
   }, []);
 
+  useEffect(() => {
+    const fetchMedicineTypes = async () => {
+      setLoadingTypes(true);
+      setErrorTypes(null);
+      try {
+        const response = await axios.get("http://localhost:5001/api/medicineTypes");
+        const typesData = response.data.data || response.data || [];
+        if (!Array.isArray(typesData)) {
+          throw new Error("Dữ liệu loại thuốc không phải là mảng");
+        }
+        setMedicineTypes(typesData);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách loại thuốc:", error.response?.data || error.message);
+        setErrorTypes(error.message);
+        toast.error(`Lỗi khi tải loại thuốc: ${error.message}`);
+      } finally {
+        setLoadingTypes(false);
+      }
+    };
+    fetchMedicineTypes();
+  }, []);
+
   const fetchDrugs = async () => {
-    setLoading(true); // Bắt đầu loading
-    setError(null);   // Reset lỗi
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get("http://localhost:5001/api/medicine");
-      setDrugs(response.data.data || []); // Đảm bảo data là mảng
-      console.log("Danh sách thuốc:", response.data.data); // Debug
+      setDrugs(response.data.data || []);
+      console.log("Danh sách thuốc:", response.data.data);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách thuốc:", error);
-      setError("Không thể tải danh sách thuốc. Vui lòng kiểm tra server hoặc console.");
+      setError("Không thể tải danh sách thuốc.");
     } finally {
-      setLoading(false); // Kết thúc loading
+      setLoading(false);
     }
   };
 
-  // Xử lý tìm kiếm
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Xử lý mở Modal chỉnh sửa
   const handleEdit = (drug) => {
-    setEditingDrug({ ...drug });
+    const drugId = drug._id || drug.id;
+    setEditingDrug({
+      ...drug,
+      id: drugId,
+      medicine_type_id: drug.medicine_type_id.id || drug.medicine_type_id._id,
+    });
     setShowModal(true);
   };
 
-  // Xử lý lưu chỉnh sửa (gửi PUT request)
   const handleSave = async () => {
+    if (!editingDrug.id) {
+      toast.error("Không tìm thấy ID của thuốc để cập nhật.");
+      return;
+    }
+
+    const updatedDrug = {
+      medicine_code: editingDrug.medicine_code,
+      medicine_name: editingDrug.medicine_name,
+      medicine_type_id: editingDrug.medicine_type_id,
+      price: editingDrug.price,
+      unit: editingDrug.unit,
+      description: editingDrug.description,
+    };
+
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:5001/api/medicine/${editingDrug.id}`,
-        editingDrug
+        updatedDrug
       );
+      const updatedMedicine = response.data.data || response.data;
       setDrugs((prevDrugs) =>
-        prevDrugs.map((d) => (d.id === editingDrug.id ? editingDrug : d))
+        prevDrugs.map((d) =>
+          (d._id || d.id) === editingDrug.id ? { ...d, ...updatedMedicine } : d
+        )
       );
       setShowModal(false);
       setEditingDrug(null);
+      toast.success("Cập nhật thuốc thành công!");
     } catch (error) {
       console.error("Lỗi khi cập nhật thuốc:", error);
+      const errorMessage = error.response?.data?.message || "Lỗi không xác định";
+      toast.error(`Cập nhật thất bại: ${errorMessage}`);
     }
   };
 
-  // Xử lý xóa (gửi DELETE request)
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5001/api/medicine/${id}`);
-      setDrugs((prevDrugs) => prevDrugs.filter((drug) => drug.id !== id));
-    } catch (error) {
-      console.error("Lỗi khi xóa thuốc:", error);
+    if (window.confirm("Bạn có chắc muốn xóa thuốc này?")) {
+      try {
+        await axios.delete(`http://localhost:5001/api/medicine/${id}`);
+        setDrugs((prevDrugs) => prevDrugs.filter((drug) => (drug._id || drug.id) !== id));
+        toast.success("Xóa thuốc thành công!");
+      } catch (error) {
+        console.error("Lỗi khi xóa thuốc:", error);
+        toast.error("Xóa thất bại.");
+      }
     }
   };
 
-  // Lọc danh sách theo tìm kiếm
   const filteredDrugs = drugs.filter(
     (drug) =>
-      (drug.medicine_name &&
-        drug.medicine_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (drug.medicine_code &&
-        drug.medicine_code.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (drug.medicine_type_name &&
-        drug.medicine_type_name.toLowerCase().includes(searchTerm.toLowerCase()))
+      (drug.medicine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (drug.medicine_code?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (drug.medicine_type_id?.medicine_type_name?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -125,12 +170,12 @@ const ListOfDrugs = () => {
               <tbody>
                 {filteredDrugs.length > 0 ? (
                   filteredDrugs.map((drug, index) => (
-                    <tr key={drug.id}>
+                    <tr key={drug._id || drug.id}>
                       <td>{index + 1}</td>
                       <td>{drug.medicine_code}</td>
                       <td>{drug.medicine_name}</td>
-                      <td>{drug.medicine_type_id.medicine_type_name}</td>
-                      <td>{drug.price.toLocaleString()}</td>
+                      <td>{drug.medicine_type_id?.medicine_type_name}</td>
+                      <td>{drug.price?.toLocaleString()}</td>
                       <td>{drug.unit}</td>
                       <td>{drug.description}</td>
                       <td>
@@ -145,7 +190,7 @@ const ListOfDrugs = () => {
                         <Button
                           variant="danger"
                           size="sm"
-                          onClick={() => handleDelete(drug.id)}
+                          onClick={() => handleDelete(drug._id || drug.id)}
                         >
                           <FaTrash /> Xóa
                         </Button>
@@ -163,7 +208,6 @@ const ListOfDrugs = () => {
         )}
       </div>
 
-      {/* Modal Chỉnh Sửa */}
       {editingDrug && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
@@ -172,28 +216,53 @@ const ListOfDrugs = () => {
           <Modal.Body>
             <Form>
               <Form.Group className="mb-3">
+                <Form.Label>Mã thuốc</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={editingDrug.medicine_code || ""}
+                  onChange={(e) =>
+                    setEditingDrug({ ...editingDrug, medicine_code: e.target.value })
+                  }
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
                 <Form.Label>Tên thuốc</Form.Label>
                 <Form.Control
+                  type="text"
                   value={editingDrug.medicine_name || ""}
                   onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      medicine_name: e.target.value,
-                    })
+                    setEditingDrug({ ...editingDrug, medicine_name: e.target.value })
                   }
+                  required
                 />
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Loại thuốc</Form.Label>
-                <Form.Control
-                  value={editingDrug.medicine_type_name || ""}
-                  onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      medicine_type_name: e.target.value,
-                    })
-                  }
-                />
+                {loadingTypes ? (
+                  <Form.Select disabled>
+                    <option>Đang tải loại thuốc...</option>
+                  </Form.Select>
+                ) : errorTypes ? (
+                  <Form.Select disabled>
+                    <option>Lỗi: {errorTypes}</option>
+                  </Form.Select>
+                ) : (
+                  <Form.Select
+                    value={editingDrug.medicine_type_id || ""}
+                    onChange={(e) =>
+                      setEditingDrug({ ...editingDrug, medicine_type_id: e.target.value })
+                    }
+                    required
+                  >
+                    <option value="">Chọn loại thuốc</option>
+                    {medicineTypes.map((type) => (
+                      <option key={type.id || type._id} value={type.id || type._id}>
+                        {type.medicine_type_name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Giá (VNĐ)</Form.Label>
@@ -201,11 +270,20 @@ const ListOfDrugs = () => {
                   type="number"
                   value={editingDrug.price || 0}
                   onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      price: +e.target.value,
-                    })
+                    setEditingDrug({ ...editingDrug, price: +e.target.value })
                   }
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Đơn vị tính</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={editingDrug.unit || ""}
+                  onChange={(e) =>
+                    setEditingDrug({ ...editingDrug, unit: e.target.value })
+                  }
+                  required
                 />
               </Form.Group>
               <Form.Group className="mb-3">
@@ -215,11 +293,9 @@ const ListOfDrugs = () => {
                   rows={3}
                   value={editingDrug.description || ""}
                   onChange={(e) =>
-                    setEditingDrug({
-                      ...editingDrug,
-                      description: e.target.value,
-                    })
+                    setEditingDrug({ ...editingDrug, description: e.target.value })
                   }
+                  required
                 />
               </Form.Group>
             </Form>
@@ -234,6 +310,7 @@ const ListOfDrugs = () => {
           </Modal.Footer>
         </Modal>
       )}
+      <ToastContainer />
     </>
   );
 };

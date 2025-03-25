@@ -1,8 +1,6 @@
 import Header from "../../components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
-import "react-quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -50,10 +48,6 @@ const AddDrugForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleDescriptionChange = (value) => {
-    setFormData({ ...formData, description: value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -71,12 +65,12 @@ const AddDrugForm = () => {
     }
 
     try {
-      console.log("Dữ liệu gửi lên:", formData); // Ghi log để debug
+      console.log("Dữ liệu gửi lên:", formData);
       const response = await axios.post("http://localhost:5001/api/medicine", {
         medicine_code: formData.medicine_code,
         medicine_name: formData.medicine_name,
-        medicine_type_id: formData.medicine_type_id, // Giữ nguyên chuỗi _id
-        price: parseInt(formData.price), // Giá vẫn cần là số
+        medicine_type_id: formData.medicine_type_id,
+        price: parseInt(formData.price),
         unit: formData.unit,
         description: formData.description,
       });
@@ -218,11 +212,13 @@ const AddDrugForm = () => {
             <Form.Label>
               Mô tả <span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <ReactQuill
-              theme="snow"
-              value={formData.description}
-              onChange={handleDescriptionChange}
+            <Form.Control
+              as="textarea"
+              rows={3}
               placeholder="Nhập mô tả..."
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
               required
             />
           </Form.Group>
