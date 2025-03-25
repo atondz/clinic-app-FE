@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // 🚀 Điều hướng khi chỉnh sửa
 import {
-  Card, CardHeader, Table, Container, Row, Button, Input, 
+  Card, CardHeader, Table, Container, Row, Button, Input,
   InputGroup, InputGroupAddon, InputGroupText, Col, Pagination, PaginationItem, PaginationLink
 } from "reactstrap";
 import TableList from "./TableList"; // Import hàng dữ liệu
@@ -66,7 +66,7 @@ const PatientList = () => {
           </InputGroup>
         </Col>
         <Col md="3" className="text-right">
-          <Button color="primary" onClick={()=> navigate("/patient/new")}>+ Thêm Bệnh Nhân</Button>
+          <Button color="primary" onClick={() => navigate("/patient/new")}>+ Thêm Bệnh Nhân</Button>
         </Col>
       </Row>
 
@@ -80,7 +80,7 @@ const PatientList = () => {
             <Table className="align-items-center" responsive>
               <thead className="thead-light">
                 <tr>
-                 <th scope="col">Mã</th>
+                  <th scope="col">Mã</th>
                   <th scope="col">Tên Bệnh nhân</th>
                   <th scope="col">Giới Tính</th>
                   <th scope="col">SDT</th>
