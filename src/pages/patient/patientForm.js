@@ -40,7 +40,7 @@ const PatientForm = () => {
 
     try {
       // Gửi dữ liệu form đến API (Sử dụng URL của bạn và thêm id nếu có)
-      const response = await axios.post("http://localhost:5001/api/patients", formData);
+      const response = await axios.post("https://api.example.com/clinic-stats", formData);
       
       // Kiểm tra phản hồi từ server
       if (response.status === 201) {
