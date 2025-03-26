@@ -8,13 +8,19 @@ import Tables from "views/examples/Tables.js";
 
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
+<<<<<<< HEAD
+=======
+import PatientForm from "pages/patient/patientForm";
+>>>>>>> 86fc312c54ddae2a718d1eeb94df1e2d008d9d9c
 import Patient from "pages/patient/patient.js";
 import NotFound from "pages/notFound";
 import AddClinic from "pages/clinic/Addclinic.js";
+import EditPatient from "./pages/patient/editPatient.js";
 
 import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
 
+<<<<<<< HEAD
 import PatientForm from "pages/patient/patientForm";
 import ListOfDrugs from "pages/Medicine/ListOfDrugs.js";
 import AddDrugForm from "pages/Medicine/AddDrugForm.js";
@@ -23,6 +29,9 @@ import RegistrationSystem from "pages/RegistrationExam/RegistrationSystem";
 import RegistrationDetails from "pages/RegistrationExam/RegistrationDetails.js";
 import PrescriptionForm  from "pages/Prescription/PrescriptionForm.js";
 import PatientDetail from "pages/Prescription/PatientDetail";
+=======
+
+>>>>>>> 86fc312c54ddae2a718d1eeb94df1e2d008d9d9c
 var routes = [
   {
     path: "/home",
@@ -130,12 +139,28 @@ var routes = [
     layout: "/admin",
   },
   {
+<<<<<<< HEAD
     path: "/notFound",
     name: "404",
+=======
+    path: "/patient/new",
+    name: "PatientForm",
     icon: "ni ni-circle-08 text-pink",
-    component: <NotFound />,
+    component: <PatientForm />,
     layout: "/admin",
   },
+  {
+    path: "/patient/edit/:id",
+    name: "Edit Patient",
+>>>>>>> 86fc312c54ddae2a718d1eeb94df1e2d008d9d9c
+    icon: "ni ni-circle-08 text-pink",
+    component: <EditPatient />,
+    layout: "/admin",
+  },
+<<<<<<< HEAD
+=======
+];
+>>>>>>> 86fc312c54ddae2a718d1eeb94df1e2d008d9d9c
 
   {
     path: "/medicine-types",
@@ -211,6 +236,7 @@ const sidebarRoutes = [
     component: <Patient />,
     layout: "/admin",
   },
+<<<<<<< HEAD
   {
     path: "/medicine-types",
     name: "Loại Thuốc",
@@ -225,6 +251,10 @@ const sidebarRoutes = [
   //   component: <Icons />,
   //   layout: "/admin",
   // },
+=======
+ 
+   
+>>>>>>> 86fc312c54ddae2a718d1eeb94df1e2d008d9d9c
 ];
 
 export { routes, sidebarRoutes };
