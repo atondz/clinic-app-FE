@@ -4,6 +4,7 @@ import {
   Form, FormGroup, Label, InputGroup, InputGroupAddon, InputGroupText, Col, Pagination, PaginationItem, PaginationLink
 } from "reactstrap";
 import TableRow from "./MedicalCertificateRow.js"; // Import component hàng
+import { useNavigate } from "react-router-dom"; // Import useNavigate để điều hướng
 
 const MedicalCertificate = () => {
   const [patients, setPatients] = useState([
@@ -19,6 +20,8 @@ const MedicalCertificate = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const patientsPerPage = 5;
+
+  const navigate = useNavigate(); // Hook để điều hướng
 
   // Lọc bệnh nhân theo tìm kiếm
   const filteredPatients = patients.filter((patient) =>
@@ -62,7 +65,7 @@ const MedicalCertificate = () => {
           </InputGroup>
         </Col>
         <Col md="3" className="text-right">
-          <Button color="primary" onClick={() => setModalOpen(true)}>+ Thêm Giấy Khám Bệnh</Button>
+          <Button color="primary" onClick={() => navigate("/prescription/add-medical-certificate")}>+ Thêm Giấy Khám Bệnh</Button> {/* Điều hướng đến trang form */}
         </Col>
       </Row>
 

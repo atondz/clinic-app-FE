@@ -1,57 +1,90 @@
 import React from 'react';
 import { Stethoscope, Users, Clock } from 'lucide-react';
-import 'tailwindcss/tailwind.css';
+import {
+  UncontrolledCollapse,
+  NavbarBrand,
+  Navbar,
+  NavItem,
+  NavLink,
+  
+  Nav,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
+import { Link } from 'react-router-dom';
 
 const ClinicLanding = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
-     {/* Unified Header */}
-<header className="w-full bg-blue-700 shadow-lg fixed top-0 left-0 z-50 py-3">
-  <div className="container mx-auto flex justify-between items-center px-6">
-    {/* Logo */}
-    <h1 className="text-2xl font-bold text-blue">Clinic</h1>
-    
-
-    {/* Login/Register Buttons */}
-    <div className="flex space-x-4 ml-auto justify-end">
-      <a href="auth/login" className="bg-yellow-400 text-black px-5 py-2 rounded-full hover:bg-yellow-500 transition font-semibold shadow-md">
-        Login
-      </a>
-      <a href="auth/register" className="bg-yellow-400 text-black px-5 py-2 rounded-full hover:bg-yellow-500 transition font-semibold shadow-md">
-      Register
-      </a>
-    </div>
-  </div>
-</header>
-
-
-      {/* Hero Section */}
-      <div className="relative h-screen flex flex-col justify-center items-center text-center pt-32 px-4">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-800 drop-shadow-lg">Clinic Management System</h1>
-        <p className="text-lg mt-4 mb-6 text-gray-600 max-w-2xl">Your Health, Our Priority – Comprehensive care at your fingertips.</p>
-      </div>
-
-      {/* Stats Section */}
-      <div className="bg-white py-12 shadow-lg -mt-20 rounded-t-xl relative container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div>
-            <Stethoscope className="mx-auto text-blue-600" size={50} />
-            <h2 className="text-4xl font-bold">20+</h2>
-            <p className="text-gray-600 text-lg">Medical Specialists</p>
+    <>
+    <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
+      <Container className="px-4">
+        <NavbarBrand to="/" tag={Link}>
+          <img
+            alt="..."
+            src={require("../../assets/img/brand/argon-react-white.png")}
+          />
+        </NavbarBrand>
+        <button className="navbar-toggler" id="navbar-collapse-main">
+          <span className="navbar-toggler-icon" />
+        </button>
+        <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
+          <div className="navbar-collapse-header d-md-none">
+            <Row>
+              <Col className="collapse-brand" xs="6">
+                <Link to="/">
+                  <img
+                    alt="..."
+                    src={require("../../assets/img/brand/argon-react.png")}
+                  />
+                </Link>
+              </Col>
+              <Col className="collapse-close" xs="6">
+                <button className="navbar-toggler" id="navbar-collapse-main">
+                  <span />
+                  <span />
+                </button>
+              </Col>
+            </Row>
           </div>
-          <div>
-            <Users className="mx-auto text-blue-600" size={50} />
-            <h2 className="text-4xl font-bold">15k+</h2>
-            <p className="text-gray-600 text-lg">Satisfied Patients</p>
-          </div>
-          <div>
-            <Clock className="mx-auto text-blue-600" size={50} />
-            <h2 className="text-4xl font-bold">24/7</h2>
-            <p className="text-gray-600 text-lg">Medical Support</p>
-          </div>
-        </div>
-      </div>
-    </div>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <NavLink className="nav-link-icon" to="/" tag={Link}>
+                <i className="ni ni-planet" />
+                <span className="nav-link-inner--text">Dashboard</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className="nav-link-icon"
+                to="/auth/register"
+                tag={Link}
+              >
+                <i className="ni ni-circle-08" />
+                <span className="nav-link-inner--text">Register</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="nav-link-icon" to="/auth/login" tag={Link}>
+                <i className="ni ni-key-25" />
+                <span className="nav-link-inner--text">Login</span>
+              </NavLink>
+            </NavItem>
+            {/* <NavItem>
+              <NavLink
+                className="nav-link-icon"
+                to="/admin/user-profile"
+                tag={Link}
+              >
+                <i className="ni ni-single-02" />
+                <span className="nav-link-inner--text">Profile</span>
+              </NavLink>
+            </NavItem> */}
+          </Nav>
+        </UncontrolledCollapse>
+      </Container>
+    </Navbar>
+  </>
   );
 };
 

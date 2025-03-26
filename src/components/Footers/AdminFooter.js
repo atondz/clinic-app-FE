@@ -8,7 +8,7 @@ const Footer = () => {
         <Col xl="6">
           <div className="copyright text-center text-xl-left text-muted">
           
-              Phạm Quốc Toàn
+              
             
           </div>
         </Col>
@@ -25,13 +25,13 @@ const Footer = () => {
 
             <NavItem>
               <NavLink >
-                About Us
+              
               </NavLink>
             </NavItem>
 
             <NavItem>
               <NavLink >
-                Blog
+                
               </NavLink>
             </NavItem>
 

@@ -80,7 +80,7 @@ const Sidebar = (props) => {
 
   return (
     <Navbar
-      className="navbar-vertical fixed-left navbar-light bg-white"
+      className="navbar-vertical fixed-left navbar-dark bg-dark"
       expand="md"
       id="sidenav-main"
     >
@@ -92,14 +92,7 @@ const Sidebar = (props) => {
         {/* Brand/Logo */}
         {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps}>
-            {/* Bạn có thể mở phần comment bên dưới để hiển thị logo */}
-            {/*
-            <img
-              alt={logo.imgAlt}
-              className="navbar-brand-img"
-              src={logo.imgSrc}
-            />
-            */}
+            
           </NavbarBrand>
         ) : null}
         {/* User info cho Mobile */}

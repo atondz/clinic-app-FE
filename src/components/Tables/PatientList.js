@@ -92,8 +92,8 @@ const PatientList = () => {
             <Table className="align-items-center" responsive>
               <thead className="thead-light">
                 <tr>
+                 <th scope="col">Mã</th>
                   <th scope="col">Tên Bệnh nhân</th>
-                  <th scope="col">Mã</th>
                   <th scope="col">Giới Tính</th>
                   <th scope="col">SDT</th>
                   <th scope="col">Ngày Sinh</th>

@@ -1,11 +1,8 @@
 import React from "react";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
-import { useNavigate } from "react-router-dom"; // 🛠 Import useNavigate
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"; // 🚀 Import toastify
 
-const TableList = ({ data, setPatients }) => {
-  const navigate = useNavigate(); // 🚀 Lấy navigate từ useNavigate
-
+const TableList = ({ data, navigate, setPatients }) => {
   const handleDelete = async () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa bệnh nhân này không?")) {
       fetch(`http://localhost:5001/api/patients/${data.id}`, {
@@ -14,8 +11,9 @@ const TableList = ({ data, setPatients }) => {
       })
         .then((res) => {
           if (res.ok) {
-            toast.success("Xóa bệnh nhân thành công!");
+            
             setPatients((prev) => prev.filter((patient) => patient.id !== data.id));
+            toast.success("Xóa bệnh nhân thành công!" , {position: "top-right", autoClose: 1000 });
           } else {
             toast.error("Lỗi khi xóa bệnh nhân!");
           }
@@ -26,8 +24,9 @@ const TableList = ({ data, setPatients }) => {
 
   return (
     <tr>
+    <td>{data.patient_id}</td>
       <td>{data.name}</td>
-      <td>{data.patient_id}</td>
+      
       <td>{data.gender ? "Nam" : "Nữ"}</td>
       <td>{data.phone}</td>
       <td>{new Date(data.birth_date).toLocaleDateString()}</td>
@@ -38,7 +37,7 @@ const TableList = ({ data, setPatients }) => {
             <i className="fas fa-ellipsis-v" />
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu-arrow" right>
-          <DropdownItem onClick={() => navigate(`/patient/edit/${data.id}`)}>Chỉnh sửa</DropdownItem>
+            <DropdownItem onClick={() => navigate(`/patients/${data.id}/edit`)}>Chỉnh sửa</DropdownItem>
             <DropdownItem onClick={handleDelete}>Xóa</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>

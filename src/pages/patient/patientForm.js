@@ -12,22 +12,26 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import axios from "axios"; // Import axios
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify"; // Import Toast
+import "react-toastify/dist/ReactToastify.css"; // Import CSS của Toastify
 
 const PatientForm = () => {
   const [formData, setFormData] = useState({
+    id_card: "",
+    patient_id: "",
     name: "",
     gender: "Nam",
-    dob: "",
+    birth_date: "",
     phone: "",
     address: "",
   });
 
-  const [loading, setLoading] = useState(false); // Để kiểm tra trạng thái loading
-  const [error, setError] = useState(""); // Để hiển thị lỗi nếu có
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const navigate = useNavigate(); // Sử dụng hook useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,24 +39,36 @@ const PatientForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Bắt đầu trạng thái loading
-    setError(""); // Reset lỗi
+    setLoading(true);
+    setError("");
+
+    const formattedData = {
+      id_card: formData.id_card,
+      patient_id: formData.patient_id || `PAT${Date.now()}`,
+      name: formData.name,
+      gender: formData.gender === "Nam" ? true : false,
+      birth_date: formData.birth_date,
+      phone: formData.phone,
+      address: formData.address,
+    };
 
     try {
-      // Gửi dữ liệu form đến API (Sử dụng URL của bạn và thêm id nếu có)
-      const response = await axios.post("https://api.example.com/clinic-stats", formData);
-      
-      // Kiểm tra phản hồi từ server
+      const response = await axios.post(
+        "http://localhost:5001/api/patients",
+        formattedData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
       if (response.status === 201) {
-        console.log("Patient added successfully:", response.data);
-        navigate("/patients"); // Chuyển hướng đến trang danh sách bệnh nhân
+        toast.success("🎉 Thêm bệnh nhân thành công!", { position: "top-right", autoClose: 1500 });
+        setTimeout(() => navigate("/patient"), 1600); // Chờ 3 giây rồi chuyển trang
       }
     } catch (err) {
-      // Xử lý lỗi nếu có
       setError("Có lỗi xảy ra khi thêm bệnh nhân. Vui lòng thử lại.");
-      console.error("Error adding patient:", err);
+      toast.error("❌ Lỗi: Không thể thêm bệnh nhân!", { position: "top-right", autoClose: 1500 });
+      console.error("Error adding patient:", err.response?.data || err.message);
     } finally {
-      setLoading(false); // Kết thúc trạng thái loading
+      setLoading(false);
     }
   };
 
@@ -74,19 +90,35 @@ const PatientForm = () => {
                 <h4 className="text-dark">Thông tin bệnh nhân</h4>
                 <p className="text-muted">Điền tất cả thông tin bên dưới</p>
                 <Form onSubmit={handleSubmit}>
-                <FormGroup>
-                    <Label for="name">
-                      ID <span className="text-danger">*</span>
+                  <FormGroup>
+                    <Label for="id_card">
+                      CMND/CCCD <span className="text-danger">*</span>
                     </Label>
                     <Input
-                      type="string"
-                      id="id"
-                      name="id"
-                      value={formData.idid}
+                      type="text"
+                      id="id_card"
+                      name="id_card"
+                      value={formData.id_card}
                       onChange={handleChange}
-                      placeholder="Nhập id"
+                      placeholder="Nhập CMND/CCCD"
+                      required
                     />
                   </FormGroup>
+
+                  <FormGroup>
+                    <Label for="patient_id">
+                      Mã bệnh nhân <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="text"
+                      id="patient_id"
+                      name="patient_id"
+                      value={formData.patient_id}
+                      onChange={handleChange}
+                      placeholder="Nhập mã bệnh nhân (hoặc để trống để tự tạo)"
+                    />
+                  </FormGroup>
+
                   <FormGroup>
                     <Label for="name">
                       Họ và tên <span className="text-danger">*</span>
@@ -98,6 +130,7 @@ const PatientForm = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Nhập họ và tên"
+                      required
                     />
                   </FormGroup>
 
@@ -112,6 +145,7 @@ const PatientForm = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="Nhập số điện thoại"
+                      required
                     />
                   </FormGroup>
 
@@ -144,15 +178,16 @@ const PatientForm = () => {
                   </FormGroup>
 
                   <FormGroup>
-                    <Label for="dob">
+                    <Label for="birth_date">
                       Ngày sinh <span className="text-danger">*</span>
                     </Label>
                     <Input
                       type="date"
-                      id="dob"
-                      name="dob"
-                      value={formData.dob}
+                      id="birth_date"
+                      name="birth_date"
+                      value={formData.birth_date}
                       onChange={handleChange}
+                      required
                     />
                   </FormGroup>
 
@@ -167,6 +202,7 @@ const PatientForm = () => {
                       value={formData.address}
                       onChange={handleChange}
                       placeholder="Nhập địa chỉ"
+                      required
                     />
                   </FormGroup>
 
@@ -175,19 +211,22 @@ const PatientForm = () => {
                   <Button color="success" className="mr-2" type="submit" disabled={loading}>
                     {loading ? "Đang lưu..." : "Lưu lại"}
                   </Button>
-                  <Button color="btn btn-light" onClick={() => navigate("/patients")}>
+                  <Button color="light" onClick={() => navigate("/patient")}>
                     Quay lại
                   </Button>
                 </Form>
               </Col>
 
               <Col md="6">
-                {/* Có thể thêm thông tin khác ở đây nếu cần */}
+                {/* Nếu muốn thêm nội dung bên phải */}
               </Col>
             </Row>
           </CardBody>
         </Card>
       </Container>
+
+      {/* Đặt ToastContainer ở cuối */}
+      <ToastContainer />
     </>
   );
 };
