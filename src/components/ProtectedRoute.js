@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('authToken');
-  return token !== null; // Trả về true nếu có token, false nếu không
+  return token !== null; 
 };
 
 const ProtectedRoute = ({ children }) => {

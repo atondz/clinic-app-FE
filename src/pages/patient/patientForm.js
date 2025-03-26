@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "../../components/Headers/Header"; // Giả sử Header có sẵn
+import Header from "../../components/Headers/Header";
 import {
   Container,
   Row,
@@ -14,8 +14,8 @@ import {
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify"; // Import Toast
-import "react-toastify/dist/ReactToastify.css"; // Import CSS của Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PatientForm = () => {
   const [formData, setFormData] = useState({
@@ -42,6 +42,13 @@ const PatientForm = () => {
     setLoading(true);
     setError("");
 
+    // ✅ Kiểm tra CMND/CCCD đúng 12 số
+    if (!/^\d{12}$/.test(formData.id_card)) {
+      toast.error("❌ CMND/CCCD phải gồm đúng 12 chữ số!");
+      setLoading(false);
+      return;
+    }
+
     const formattedData = {
       id_card: formData.id_card,
       patient_id: formData.patient_id || `PAT${Date.now()}`,
@@ -60,12 +67,18 @@ const PatientForm = () => {
       );
 
       if (response.status === 201) {
-        toast.success("🎉 Thêm bệnh nhân thành công!", { position: "top-right", autoClose: 1500 });
-        setTimeout(() => navigate("/patient"), 1600); // Chờ 3 giây rồi chuyển trang
+        toast.success("🎉 Thêm bệnh nhân thành công!", {
+          position: "top-right",
+          autoClose: 1500,
+        });
+        setTimeout(() => navigate("/patient"), 1600);
       }
     } catch (err) {
       setError("Có lỗi xảy ra khi thêm bệnh nhân. Vui lòng thử lại.");
-      toast.error("❌ Lỗi: Không thể thêm bệnh nhân!", { position: "top-right", autoClose: 1500 });
+      toast.error("❌ Lỗi: Không thể thêm bệnh nhân!", {
+        position: "top-right",
+        autoClose: 1500,
+      });
       console.error("Error adding patient:", err.response?.data || err.message);
     } finally {
       setLoading(false);
@@ -101,7 +114,10 @@ const PatientForm = () => {
                       value={formData.id_card}
                       onChange={handleChange}
                       placeholder="Nhập CMND/CCCD"
+                      pattern="\d{12}"
+                      title="CMND/CCCD phải gồm đúng 12 chữ số"
                       required
+                      maxLength={12}
                     />
                   </FormGroup>
 
@@ -206,7 +222,7 @@ const PatientForm = () => {
                     />
                   </FormGroup>
 
-                  {error && <p className="text-danger">{error}</p>} {/* Hiển thị lỗi nếu có */}
+                  {error && <p className="text-danger">{error}</p>}
 
                   <Button color="success" className="mr-2" type="submit" disabled={loading}>
                     {loading ? "Đang lưu..." : "Lưu lại"}
@@ -218,14 +234,13 @@ const PatientForm = () => {
               </Col>
 
               <Col md="6">
-                {/* Nếu muốn thêm nội dung bên phải */}
+                {/* Bạn có thể thêm nội dung phụ bên phải tại đây */}
               </Col>
             </Row>
           </CardBody>
         </Card>
       </Container>
 
-      {/* Đặt ToastContainer ở cuối */}
       <ToastContainer />
     </>
   );

@@ -5,9 +5,6 @@ export const isAuthenticated = () => {
   };
   // src/utils/auth.js
 
-// Kiểm tra người dùng có đăng nhập không
-
-
 // Hàm đăng xuất
 export const logout = (navigate) => {
   localStorage.removeItem("authToken"); // Xóa token
