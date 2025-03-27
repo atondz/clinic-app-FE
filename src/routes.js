@@ -1,20 +1,16 @@
 import React from "react";
-
 import Profile from "pages/profile/Profile.js";
 import Maps from "pages/clinic/Maps";
 import Register from "pages/auth/Register.js";
 import Login from "pages/auth/Login.js";
 import Tables from "views/examples/Tables.js";
-
 import Home from "pages/home/index.tsx";
 import WelcomePage from "pages/auth/WelcomePage.js";
 import Patient from "pages/patient/patient.js";
 import NotFound from "pages/notFound";
 import AddClinic from "pages/clinic/Addclinic.js";
-
 import MedicineTypes from "pages/MedicineTypes/MedicineTypes.js";
 import AddMedicineTypes from "pages/MedicineTypes/AddMedicineTypes.js";
-
 import PatientForm from "pages/patient/patientForm";
 import ListOfDrugs from "pages/Medicine/ListOfDrugs.js";
 import AddDrugForm from "pages/Medicine/AddDrugForm.js";
@@ -177,13 +173,6 @@ const sidebarRoutes = [
     component: <RegistrationSystem />,
     layout: "/admin",
   },
-  {
-    path: "/prescription",
-    name: "Giấy Khám Bệnh",
-    icon: "fa fa-medkit text-orange",
-    component: <Prescription />,
-    layout: "/admin",
-  },
 
   {
     path: "/maps",
@@ -213,17 +202,9 @@ const sidebarRoutes = [
     component: <MedicineTypes />,
     layout: "/admin",
   },
-  // {
-  //   path: "/icons",
-  //   name: "Đơn Thuốc",
-  //   icon: "fa fa-medkit text-orange",
-  //   component: <Icons />,
-  //   layout: "/admin",
-  // },
-
   {
     path: "/registrationDetails",
-    name: "details",
+    name: "Danh Sách Đăng Ký",
     icon: "ni ni-single-02 text-yellow",
     component: <RegistrationDetails />,
     layout: "/admin",

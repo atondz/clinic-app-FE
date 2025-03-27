@@ -1,91 +1,73 @@
-import React from 'react';
-import { Stethoscope, Users, Clock } from 'lucide-react';
+import { NavLink } from "react-router-dom";
 import {
-  UncontrolledCollapse,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  
-  Nav,
-  Container,
-  Row,
-  Col,
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  Container
 } from "reactstrap";
-import { Link } from 'react-router-dom';
 
-const ClinicLanding = () => {
+const Welcome = () => {
   return (
-    <>
-    <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
-      <Container className="px-4">
-        <NavbarBrand to="/" tag={Link}>
-          <img
-            alt="..."
-            src={require("../../assets/img/brand/argon-react-white.png")}
-          />
-        </NavbarBrand>
-        <button className="navbar-toggler" id="navbar-collapse-main">
-          <span className="navbar-toggler-icon" />
-        </button>
-        <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
-          <div className="navbar-collapse-header d-md-none">
-            <Row>
-              <Col className="collapse-brand" xs="6">
-                <Link to="/">
-                  <img
-                    alt="..."
-                    src={require("../../assets/img/brand/argon-react.png")}
-                  />
-                </Link>
-              </Col>
-              <Col className="collapse-close" xs="6">
-                <button className="navbar-toggler" id="navbar-collapse-main">
-                  <span />
-                  <span />
-                </button>
-              </Col>
-            </Row>
+    <Container
+      fluid
+      className="d-flex align-items-center justify-content-center min-vh-100"
+      style={{
+        backgroundColor: "#3498db", // Màu xanh dương
+        padding: "0",
+        margin: "0",
+      }}
+    >
+      <Card 
+        className="shadow border-0"
+        style={{
+          width: "400px", // Chiều rộng cố định để tạo khối vuông
+          maxWidth: "100%", // Đảm bảo không vượt quá màn hình nhỏ
+          backgroundColor: "#ffffff", // Nền trắng cho card
+        }}
+      >
+        <CardHeader className="text-center bg-white border-0">
+          <h2 className="mb-0">Chào mừng</h2>
+        </CardHeader>
+        <CardBody className="px-5 py-5">
+          <div className="text-center">
+            <p className="mb-4">
+              Vui lòng chọn một tùy chọn để tiếp tục
+            </p>
+            
+            {/* Nút Đăng nhập */}
+            <NavLink to="/auth/login" className="text-decoration-none">
+              <Button 
+                className="mb-3 w-100" 
+                color="primary"
+                type="button"
+              >
+                Đăng nhập
+              </Button>
+            </NavLink>
+
+            {/* Nút Đăng ký */}
+            <NavLink to="/auth/register" className="text-decoration-none">
+              <Button 
+                className="w-100" 
+                color="secondary"
+                type="button"
+              >
+                Tạo tài khoản mới
+              </Button>
+            </NavLink>
+
+            {/* Liên kết bổ sung */}
+            <div className="mt-3">
+              <NavLink to="/auth/register" className="text-muted">
+                <small>Chưa có tài khoản? Đăng ký ngay</small>
+              </NavLink>
+            </div>
           </div>
-          <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink className="nav-link-icon" to="/" tag={Link}>
-                <i className="ni ni-planet" />
-                <span className="nav-link-inner--text">Dashboard</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                className="nav-link-icon"
-                to="/auth/register"
-                tag={Link}
-              >
-                <i className="ni ni-circle-08" />
-                <span className="nav-link-inner--text">Register</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink className="nav-link-icon" to="/auth/login" tag={Link}>
-                <i className="ni ni-key-25" />
-                <span className="nav-link-inner--text">Login</span>
-              </NavLink>
-            </NavItem>
-            {/* <NavItem>
-              <NavLink
-                className="nav-link-icon"
-                to="/admin/user-profile"
-                tag={Link}
-              >
-                <i className="ni ni-single-02" />
-                <span className="nav-link-inner--text">Profile</span>
-              </NavLink>
-            </NavItem> */}
-          </Nav>
-        </UncontrolledCollapse>
-      </Container>
-    </Navbar>
-  </>
+        </CardBody>
+      </Card>
+    </Container>
   );
 };
 
-export default ClinicLanding;
+export default Welcome;

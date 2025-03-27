@@ -44,6 +44,7 @@ const TableList = ({ data, navigate, setPatients }) => {
     <>
       <tr>
         <td>{data.patient_id}</td>
+        <td>{data.id_card}</td>
         <td>{data.name}</td>
         <td>{data.gender ? "Nam" : "Nữ"}</td>
         <td>{data.phone}</td>

@@ -5,7 +5,7 @@ import {
   InputGroup, InputGroupAddon, InputGroupText, Col, Pagination, PaginationItem, PaginationLink
 } from "reactstrap";
 import TableList from "./TableList"; // Import hàng dữ liệu
-import { toast } from "react-toastify"; // 🚀 Hiển thị thông báo
+
 import "react-toastify/dist/ReactToastify.css"; // Import CSS của toast
 
 const PatientList = () => {
@@ -81,6 +81,7 @@ const PatientList = () => {
               <thead className="thead-light">
                 <tr>
                   <th scope="col">Mã</th>
+                  <th scope="col">CCCD</th>
                   <th scope="col">Tên Bệnh nhân</th>
                   <th scope="col">Giới Tính</th>
                   <th scope="col">SDT</th>

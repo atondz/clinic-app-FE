@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Headers/Header";
-import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import { Card, CardBody, CardTitle, Row, Col } from "reactstrap";
 const Home = () => {
   
   const [stats, setStats] = useState({

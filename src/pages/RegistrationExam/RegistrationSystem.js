@@ -302,6 +302,7 @@ const RegistrationSystem = () => {
   return (
     <>
       <Header />
+      
       <div className="container mt-4">
         {errorMessage && (
           <Alert variant="danger" onClose={() => setErrorMessage("")} dismissible>

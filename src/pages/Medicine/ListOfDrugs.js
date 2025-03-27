@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Container } from "reactstrap";
+
 
 const ListOfDrugs = () => {
   const [drugs, setDrugs] = useState([]);
@@ -130,9 +132,9 @@ const ListOfDrugs = () => {
   );
 
   return (
-    <>
+    <Container className="min-vh-100" fluid>
       <Header />
-      <div className="container mt-4">
+      <div className=" mt-4">
         <h4 className="mb-4">Danh Sách Thuốc</h4>
         {loading && <p>Đang tải dữ liệu...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
@@ -311,7 +313,7 @@ const ListOfDrugs = () => {
         </Modal>
       )}
       <ToastContainer />
-    </>
+    </Container>
   );
 };
 

@@ -11,6 +11,14 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import Header from "components/Headers/Header";
+import {
+  CardHeader,
+  Container,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from "reactstrap";
 
 const MedicalRecordModal = ({ registration, show, onHide }) => {
   if (!registration) return null;
@@ -297,70 +305,94 @@ const RegistrationSystem = () => {
   }
 
   return (
-    <>
+    <Container className="min-vh-100" fluid>
       <Header />
-      <h3 className="mb-4 text-primary">
-        <i className="fas fa-list-alt me-2"></i>
-        DANH SÁCH ĐĂNG KÝ KHÁM BỆNH
-      </h3>
+      <Row className="mb-4">
+        <div className="col">
+          <h3 className="text-dark mb-0">
+            <i className="fas fa-list-alt me-2" />
+            DANH SÁCH ĐĂNG KÝ KHÁM BỆNH
+          </h3>
+        </div>
+      </Row>
 
       {registrations.length === 0 ? (
         <div className="alert alert-info">Không có dữ liệu đăng ký</div>
       ) : (
-        <>
-          <Table
-            striped
-            bordered
-            hover
-            className="table-bordered border-primar"
-            style={{
-              width: "30%",
-             
-              fontSize: "14px",
-
-              // điều chỉnh cỡ chữ
-            }}
-          >
-            <thead className="bg-primary text-white">
-              <tr>
-                <th>STT</th>
-                <th>Mã KCB</th>
-                <th>Tên bệnh nhân</th>
-                <th>Phòng khám</th>
-                <th>Bác sĩ</th>
-                <th>Ưu tiên</th>
-              </tr>
-            </thead>
-            <tbody>
-              {registrations.map((reg, index) => (
-                <tr
-                  key={reg._id}
-                  onClick={() => handleRowClick(reg)}
-                  style={{ cursor: "pointer" }}
-                  className="hover-highlight"
-                >
-                  <td>{index + 1}</td>
-                  <td>{reg.medical_code}</td>
-                  <td>{reg.patient_id?.name}</td>
-                  <td>{reg.clinic_id?.name}</td>
-                  <td>{reg.doctor_id?.name}</td>
-                  <td>
-                    <Badge bg={reg.priority ? "primary" : "secondary"}> 
-                      {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
-                    </Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-
-          <MedicalRecordModal
-            registration={selectedRegistration}
-            show={showModal}
-            onHide={() => setShowModal(false)}
-          />
-        </>
+        <Row>
+          <div className="col">
+            <Card className="shadow">
+              <CardHeader className="bg-light border-0">
+                <h4 className="text-dark mb-0">Danh sách đăng ký</h4>
+              </CardHeader>
+              <Table className="align-items-center" responsive>
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã KCB</th>
+                    <th scope="col">Tên bệnh nhân</th>
+                    <th scope="col">Phòng khám</th>
+                    <th scope="col">Bác sĩ</th>
+                    <th scope="col">Ưu tiên</th>
+                    <th scope="col" /> {/* Cột hành động */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {registrations.map((reg, index) => (
+                    <tr
+                      key={reg._id}
+                      onClick={() => handleRowClick(reg)}
+                      style={{ cursor: "pointer" }}
+                      className="hover-highlight"
+                    >
+                      <td>{index + 1}</td>
+                      <td>{reg.medical_code}</td>
+                      <td>{reg.patient_id?.name}</td>
+                      <td>{reg.clinic_id?.name}</td>
+                      <td>{reg.doctor_id?.name}</td>
+                      <td>
+                        <span
+                          style={{
+                            color: reg.priority ? "red" : "gray", // Màu đỏ khi ưu tiên, xám khi thường
+                            fontWeight: reg.priority ? "bold" : "normal", // In đậm khi ưu tiên (tùy chọn)
+                          }}
+                        >
+                          {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
+                        </span>
+                      </td>
+                      <td className="text-right">
+                        <UncontrolledDropdown>
+                          <DropdownToggle
+                            className="btn-icon-only text-light"
+                            role="button"
+                            size="sm"
+                            color=""
+                          >
+                            <i className="fas fa-ellipsis-v" />
+                          </DropdownToggle>
+                          <DropdownMenu className="dropdown-menu-arrow" right>
+                            <DropdownItem onClick={() => handleRowClick(reg)}>
+                              Chi tiết
+                            </DropdownItem>
+                            <DropdownItem>Chỉnh sửa</DropdownItem>
+                            <DropdownItem>Xóa</DropdownItem>
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Card>
+          </div>
+        </Row>
       )}
+
+      <MedicalRecordModal
+        registration={selectedRegistration}
+        show={showModal}
+        onHide={() => setShowModal(false)}
+      />
 
       <style jsx>{`
         .hover-highlight:hover {
@@ -369,7 +401,7 @@ const RegistrationSystem = () => {
           transition: all 0.2s ease;
         }
       `}</style>
-    </>
+    </Container>
   );
 };
 

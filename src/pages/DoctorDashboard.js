@@ -6,7 +6,7 @@ import Header from './../components/Headers/Header';
 import { useNavigate } from 'react-router-dom'; // Thêm để chuyển hướng
 
 const DoctorDashboard = () => {
-  const user = useSelector(state => state.user);
+  const [user, setUser] = useState(null);
   const [registrations, setRegistrations] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedRegistration, setSelectedRegistration] = useState(null);
@@ -16,10 +16,33 @@ const DoctorDashboard = () => {
   });
   const [error, setError] = useState(""); // Thêm state để hiển thị lỗi
   const navigate = useNavigate();
+  
 
   // Lấy token từ localStorage
   const authToken = localStorage.getItem("authToken");
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("authToken");
 
+      if (!token) {
+        console.error("Token không tồn tại!");
+        return;
+      }
+
+      try {
+        const res = await axios.get("http://localhost:5001/api/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setUser(res.data);
+      } catch (error) {
+        console.error("Lỗi khi lấy thông tin người dùng:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  
   useEffect(() => {
     if (!user || user.role !== 'doctor') return; // Không fetch nếu không phải doctor
     if (!authToken) {

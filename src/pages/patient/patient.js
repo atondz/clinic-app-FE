@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from "../../components/Headers/Header";
-import PatientList from "components/Tables/PatientList.js";
+import PatientList from "../../components/Tables/PatientList.js";
 
 const Patient = () => {
   return (
