@@ -21,6 +21,8 @@ import AddDrugForm from "pages/Medicine/AddDrugForm.js";
 import Prescription from "pages/Prescription/Prescription";
 import RegistrationSystem from "pages/RegistrationExam/RegistrationSystem";
 import RegistrationDetails from "pages/RegistrationExam/RegistrationDetails.js";
+import DoctorDashboard from "pages/DoctorDashboard";
+
 var routes = [
   {
     path: "/home",
@@ -57,6 +59,7 @@ var routes = [
     component: <Prescription />,
     layout: "/admin",
   },
+  
   {
     path: "/maps",
     name: "Phòng Khám",
@@ -149,6 +152,14 @@ var routes = [
     component: <AddMedicineTypes />,
     layout: "/admin",
   },
+  {
+    path: "/doctors",
+    name: "Doctor",
+    icon: "fa fa-plus-circle text-success",
+    component: <DoctorDashboard />,
+    layout: "/admin",
+  },
+
 ];
 
 const sidebarRoutes = [
@@ -217,6 +228,14 @@ const sidebarRoutes = [
     component: <RegistrationDetails />,
     layout: "/admin",
   },
+  {
+    path: "/doctors",
+    name: "Doctor",
+    icon: "fa fa-plus-circle text-success",
+    component: <DoctorDashboard />,
+    layout: "/admin",
+  },
+ 
 
 ];
 

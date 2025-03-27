@@ -155,7 +155,7 @@ const Register = () => {
               </FormGroup>
 
               {/* Vai trò */}
-              <FormGroup>
+              {/* <FormGroup>
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
@@ -173,7 +173,7 @@ const Register = () => {
                     <option value="admin">Quản trị viên</option>
                   </Input>
                 </InputGroup>
-              </FormGroup>
+              </FormGroup> */}
 
               {/* Điều khoản sử dụng */}
               <Row className="my-4">

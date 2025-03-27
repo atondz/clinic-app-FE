@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Provider } from 'react-redux';
+import store from './store'; // Import store
 
 import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -14,6 +16,7 @@ import ProtectedRoute from "components/ProtectedRoute";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
+  <Provider store={store}>
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Navigate to="/auth/register" />} />
@@ -34,4 +37,5 @@ root.render(
     </Routes>
 
   </BrowserRouter>
+  </Provider>
 );

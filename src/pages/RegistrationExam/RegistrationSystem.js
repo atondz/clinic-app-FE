@@ -10,6 +10,7 @@ import {
   Card,
 } from "react-bootstrap";
 import Header from "./../../components/Headers/Header";
+import { useNavigate } from "react-router-dom"; // Thêm để chuyển hướng
 
 const RegistrationSystem = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -17,6 +18,7 @@ const RegistrationSystem = () => {
   const [doctors, setDoctors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken") || "");
   const [formData, setFormData] = useState({
     isNewPatient: true,
     patient_id: null,
@@ -35,30 +37,51 @@ const RegistrationSystem = () => {
     note: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate(); // Dùng để chuyển hướng
 
   useEffect(() => {
+    if (!authToken) {
+      setErrorMessage("Vui lòng đăng nhập để tiếp tục.");
+      navigate("/login"); // Chuyển hướng nếu chưa đăng nhập
+      return;
+    }
+
     const fetchData = async () => {
       try {
-        const clinicsRes = await fetch("http://localhost:5001/api/clinics");
+        const headers = {
+          "Authorization": `Bearer ${authToken}`,
+        };
+
+        const clinicsRes = await fetch("http://localhost:5001/api/clinics", { headers });
+        if (!clinicsRes.ok) throw new Error("Không thể tải danh sách phòng khám.");
         const clinicsData = await clinicsRes.json();
         setClinics(clinicsData || []);
-        const doctorsRes = await fetch("http://localhost:5001/api/users/doctors");
+
+        const doctorsRes = await fetch("http://localhost:5001/api/users/doctors", { headers });
+        if (!doctorsRes.ok) throw new Error("Không thể tải danh sách bác sĩ.");
         const doctorsData = await doctorsRes.json();
         setDoctors(doctorsData || []);
+
         await loadRegistrations(currentPage);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setErrorMessage("Lỗi khi tải dữ liệu, vui lòng thử lại.");
+        setErrorMessage("Lỗi khi tải dữ liệu, vui lòng thử lại hoặc đăng nhập lại.");
       }
     };
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, authToken, navigate]);
 
   const loadRegistrations = async (page) => {
     try {
       const res = await fetch(
-        `http://localhost:5001/api/registerExam?page=${page}&limit=10`
+        `http://localhost:5001/api/registerExam?page=${page}&limit=10`,
+        {
+          headers: {
+            "Authorization": `Bearer ${authToken}`,
+          },
+        }
       );
+      if (!res.ok) throw new Error("Không thể tải danh sách đăng ký.");
       const data = await res.json();
       setRegistrations(data.docs);
       setTotalPages(data.totalPages);
@@ -127,8 +150,11 @@ const RegistrationSystem = () => {
     }
 
     try {
-      // Kiểm tra xem ID_card đã tồn tại chưa
-      const checkRes = await fetch(`http://localhost:5001/api/patients/id_card/${formData.patientData.id_card}`);
+      const checkRes = await fetch(`http://localhost:5001/api/patients/id_card/${formData.patientData.id_card}`, {
+        headers: {
+          "Authorization": `Bearer ${authToken}`,
+        },
+      });
       const checkData = await checkRes.json();
       const patientExists = checkData && checkData.id_card;
 
@@ -141,7 +167,6 @@ const RegistrationSystem = () => {
       };
 
       if (patientExists) {
-        // Nếu bệnh nhân đã tồn tại, chuyển sang dùng patient_id
         setFormData((prev) => ({
           ...prev,
           isNewPatient: false,
@@ -150,11 +175,9 @@ const RegistrationSystem = () => {
         payload.isNewPatient = false;
         payload.selectedPatientId = checkData._id;
       } else if (formData.isNewPatient) {
-        // Nếu là bệnh nhân mới và chưa tồn tại, gửi patientData
         payload.isNewPatient = true;
         payload.patientData = formData.patientData;
       } else {
-        // Nếu là bệnh nhân cũ được chọn trước, dùng patient_id
         payload.isNewPatient = false;
         payload.selectedPatientId = formData.patient_id;
       }
@@ -163,6 +186,7 @@ const RegistrationSystem = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`,
         },
         body: JSON.stringify(payload),
       });
@@ -207,7 +231,11 @@ const RegistrationSystem = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5001/api/patients/id_card/${idCard}`);
+      const res = await fetch(`http://localhost:5001/api/patients/id_card/${idCard}`, {
+        headers: {
+          "Authorization": `Bearer ${authToken}`,
+        },
+      });
       const data = await res.json();
       console.log("API Response:", data);
 
