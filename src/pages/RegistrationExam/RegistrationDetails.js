@@ -8,6 +8,7 @@ import {
   Col,
   Table,
   Spinner,
+  Alert,
 } from "react-bootstrap";
 import axios from "axios";
 import Header from "components/Headers/Header";
@@ -259,6 +260,9 @@ const RegistrationSystem = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [registrationToDelete, setRegistrationToDelete] = useState(null);
 
   // Fetch data from API
   useEffect(() => {
@@ -279,10 +283,34 @@ const RegistrationSystem = () => {
     fetchData();
   }, []);
 
-  // Xử lý khi nhấn vào một hàng trong bảng
-  const handleRowClick = (registration) => {
+  // Xử lý hiển thị modal chi tiết
+  const handleShowDetails = (registration) => {
     setSelectedRegistration(registration);
     setShowModal(true);
+  };
+
+  // Xử lý xác nhận xóa
+  const handleConfirmDelete = (registration) => {
+    setRegistrationToDelete(registration);
+    setShowDeleteConfirm(true);
+  };
+
+  // Xử lý xóa
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:5001/api/registerExam/${registrationToDelete._id}`
+      );
+      setRegistrations(
+        registrations.filter((reg) => reg._id !== registrationToDelete._id)
+      );
+      setSuccessMessage("Xóa phiếu đăng ký thành công!");
+      setShowDeleteConfirm(false);
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (err) {
+      console.error("Error deleting registration:", err);
+      setError("Lỗi khi xóa phiếu đăng ký: " + err.message);
+    }
   };
 
   if (loading) {
@@ -305,102 +333,113 @@ const RegistrationSystem = () => {
   }
 
   return (
-    < >
+    <>
       <Header />
-      <Row className="mb-4">
-        <div className="col">
-          <h3 className="text-dark mb-0">
-            <i className="fas fa-list-alt me-2" />
-            DANH SÁCH ĐĂNG KÝ KHÁM BỆNH
-          </h3>
-        </div>
-      </Row>
-
-      {registrations.length === 0 ? (
-        <div className="alert alert-info">Không có dữ liệu đăng ký</div>
-      ) : (
-        <Row>
+      <>
+        <Row className="mb-4">
           <div className="col">
-            <Card className="shadow">
-              <CardHeader className="bg-light border-0">
-                <h4 className="text-dark mb-0">Danh sách đăng ký</h4>
-              </CardHeader>
-              <Table className="align-items-center" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã KCB</th>
-                    <th scope="col">Tên bệnh nhân</th>
-                    <th scope="col">Phòng khám</th>
-                    <th scope="col">Bác sĩ</th>
-                    <th scope="col">Ưu tiên</th>
-                    <th scope="col" /> {/* Cột hành động */}
-                  </tr>
-                </thead>
-                <tbody>
-                  {registrations.map((reg, index) => (
-                    <tr
-                      key={reg._id}
-                      onClick={() => handleRowClick(reg)}
-                      style={{ cursor: "pointer" }}
-                      className="hover-highlight"
-                    >
-                      <td>{index + 1}</td>
-                      <td>{reg.medical_code}</td>
-                      <td>{reg.patient_id?.name}</td>
-                      <td>{reg.clinic_id?.name}</td>
-                      <td>{reg.doctor_id?.name}</td>
-                      <td>
-                        <span
-                          style={{
-                            color: reg.priority ? "red" : "gray", // Màu đỏ khi ưu tiên, xám khi thường
-                            fontWeight: reg.priority ? "bold" : "normal", // In đậm khi ưu tiên (tùy chọn)
-                          }}
-                        >
-                          {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
-                        </span>
-                      </td>
-                      <td className="text-right">
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            className="btn-icon-only text-light"
-                            role="button"
-                            size="sm"
-                            color=""
-                          >
-                            <i className="fas fa-ellipsis-v" />
-                          </DropdownToggle>
-                          <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem onClick={() => handleRowClick(reg)}>
-                              Chi tiết
-                            </DropdownItem>
-                            <DropdownItem>Chỉnh sửa</DropdownItem>
-                            <DropdownItem>Xóa</DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card>
+            <h1 className="display-4 text-dark mb-0">
+              <i className="fas fa-list-alt me-2" />
+              DANH SÁCH ĐĂNG KÝ KHÁM BỆNH
+            </h1>
           </div>
         </Row>
-      )}
 
-      <MedicalRecordModal
-        registration={selectedRegistration}
-        show={showModal}
-        onHide={() => setShowModal(false)}
-      />
+        {successMessage && (
+          <Alert variant="success" onClose={() => setSuccessMessage(null)} dismissible>
+            {successMessage}
+          </Alert>
+        )}
 
-      <style jsx>{`
-        .hover-highlight:hover {
-          background-color: #f8f9fa;
-          transform: translateY(-1px);
-          transition: all 0.2s ease;
-        }
-      `}</style>
+        {registrations.length === 0 ? (
+          <div className="alert alert-info">Không có dữ liệu đăng ký</div>
+        ) : (
+          <Row>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="bg-light border-0">
+                  <Row className="align-items-center">
+                    <Col>
+                      <h3 className="mb-0">Danh sách đăng ký</h3>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">STT</th>
+                      <th scope="col">Mã KCB</th>
+                      <th scope="col">Tên bệnh nhân</th>
+                      <th scope="col">Phòng khám</th>
+                      <th scope="col">Bác sĩ</th>
+                      <th scope="col">Ưu tiên</th>
+                      <th scope="col" className="text-right">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {registrations.map((reg, index) => (
+                      <tr key={reg._id}>
+                        <td>{index + 1}</td>
+                        <td>{reg.medical_code}</td>
+                        <td>{reg.patient_id?.name}</td>
+                        <td>{reg.clinic_id?.name}</td>
+                        <td>{reg.doctor_id?.name}</td>
+                        <td>
+                          <Badge color={reg.priority ? "danger" : "secondary"}>
+                            {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
+                          </Badge>
+                        </td>
+                        <td className="text-right">
+                          <Button
+                            variant="info"
+                            size="sm"
+                            className="mr-2"
+                            onClick={() => handleShowDetails(reg)}
+                          >
+                            <i className="fas fa-eye mr-1"></i> Chi tiết
+                          </Button>
+                          <Button
+                            variant="danger"
+                            size="sm"
+                            onClick={() => handleConfirmDelete(reg)}
+                          >
+                            <i className="fas fa-trash mr-1"></i> Xóa
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Card>
+            </div>
+          </Row>
+        )}
+
+        {/* Modal chi tiết */}
+        <MedicalRecordModal
+          registration={selectedRegistration}
+          show={showModal}
+          onHide={() => setShowModal(false)}
+        />
+
+        {/* Modal xác nhận xóa */}
+        <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Xác nhận xóa</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Bạn có chắc chắn muốn xóa phiếu đăng ký của bệnh nhân <strong>{registrationToDelete?.patient_id?.name}</strong> (Mã KCB: {registrationToDelete?.medical_code}) không?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
+              Hủy bỏ
+            </Button>
+            <Button variant="danger" onClick={handleDelete}>
+              Xác nhận xóa
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     </>
   );
 };
