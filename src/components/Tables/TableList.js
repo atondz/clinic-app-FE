@@ -32,7 +32,6 @@ const TableList = ({ data, navigate, setPatients }) => {
   };
 
   const handleSavePatient = (updatedPatient) => {
-    // Update the patient in the list
     setPatients((prev) =>
       prev.map((patient) =>
         patient._id === updatedPatient._id ? updatedPatient : patient
@@ -59,13 +58,21 @@ const TableList = ({ data, navigate, setPatients }) => {
               <DropdownItem onClick={() => setIsEditModalOpen(true)}>
                 Chỉnh sửa
               </DropdownItem>
-              <DropdownItem onClick={handleDelete}>Xóa</DropdownItem>
+              <DropdownItem
+                onClick={() =>
+                  navigate("/medical-history", { state: { patientId: data._id } })
+                }
+              >
+                Medical History
+              </DropdownItem>
+              <DropdownItem onClick={handleDelete}>
+                Xóa
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </td>
       </tr>
 
-      {/* Edit Modal */}
       <PatientEditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}

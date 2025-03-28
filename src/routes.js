@@ -18,6 +18,7 @@ import Prescription from "pages/Prescription/Prescription";
 import RegistrationSystem from "pages/RegistrationExam/RegistrationSystem";
 import RegistrationDetails from "pages/RegistrationExam/RegistrationDetails.js";
 import DoctorDashboard from "pages/DoctorDashboard";
+import MedicalHistory from "pages/patient/MedicalHistory";
 
 var routes = [
   {
@@ -90,6 +91,15 @@ var routes = [
     icon: "ni ni-single-02 text-yellow",
     component: <Profile />,
     layout: "/admin",
+    
+  },
+  {
+    path: "/medical-history",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: <MedicalHistory />,
+    layout: "/admin",
+    
   },
   {
     path: "/registrationDetails",
@@ -215,6 +225,14 @@ const sidebarRoutes = [
     icon: "fa fa-plus-circle text-success",
     component: <DoctorDashboard />,
     layout: "/admin",
+  },
+  {
+    path: "/medical-history",
+    name: "Lịch Sử khám bệnh",
+    icon: "ni ni-single-02 text-yellow",
+    component: <MedicalHistory />,
+    layout: "/admin",
+    
   },
  
 
