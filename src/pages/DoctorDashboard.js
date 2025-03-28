@@ -56,7 +56,7 @@ const DoctorDashboard = () => {
   }, []);
   
   useEffect(() => {
-    if (!user || user.role !== 'doctor') return; // Không fetch nếu không phải doctor
+    if (!user || user.role !== 'doctor') return; // Không fetch nếu không phải doctor..
     if (!authToken) {
       setError("Vui lòng đăng nhập để tiếp tục.");
       navigate("/login");
