@@ -385,10 +385,15 @@ const RegistrationSystem = () => {
                         <td>{reg.clinic_id?.name}</td>
                         <td>{reg.doctor_id?.name}</td>
                         <td>
-                          <Badge color={reg.priority ? "danger" : "secondary"}>
-                            {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
-                          </Badge>
-                        </td>
+                        <span
+                          style={{
+                            color: reg.priority ? "red" : "gray", 
+                            fontWeight: reg.priority ? "bold" : "normal", 
+                          }}
+                        >
+                          {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
+                        </span>
+                      </td>
                         <td className="text-right">
                           <Button
                             variant="info"
