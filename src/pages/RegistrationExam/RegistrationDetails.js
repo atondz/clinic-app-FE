@@ -305,7 +305,7 @@ const RegistrationSystem = () => {
   }
 
   return (
-    <Container className="min-vh-100" fluid>
+    < >
       <Header />
       <Row className="mb-4">
         <div className="col">
@@ -401,7 +401,7 @@ const RegistrationSystem = () => {
           transition: all 0.2s ease;
         }
       `}</style>
-    </Container>
+    </>
   );
 };
 

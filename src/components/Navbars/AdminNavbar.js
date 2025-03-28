@@ -88,9 +88,9 @@ const AdminNavbar = () => {
                 <i className="ni ni-settings-gear-65" />
                 <span>Cài đặt</span>
               </DropdownItem>
-              <DropdownItem to="/appointments" tag={Link}>
+              <DropdownItem to="/doctors" tag={Link}>
                 <i className="ni ni-calendar-grid-58" />
-                <span>Lịch khám bệnh</span>
+                <span>DS phiếu khám</span>
               </DropdownItem>
               <DropdownItem to="/support" tag={Link}>
                 <i className="ni ni-support-16" />

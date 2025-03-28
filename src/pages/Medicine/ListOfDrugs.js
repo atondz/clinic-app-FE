@@ -132,7 +132,8 @@ const ListOfDrugs = () => {
   );
 
   return (
-    <Container className="min-vh-100" fluid>
+    <>
+   
       <Header />
       <div className=" mt-4">
         <h4 className="mb-4">Danh Sách Thuốc</h4>
@@ -313,7 +314,8 @@ const ListOfDrugs = () => {
         </Modal>
       )}
       <ToastContainer />
-    </Container>
+    
+    </>
   );
 };
 

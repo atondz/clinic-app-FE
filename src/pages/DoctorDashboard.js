@@ -1,9 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Form, Modal } from 'react-bootstrap';
+
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Header from './../components/Headers/Header';
 import { useNavigate } from 'react-router-dom'; // Thêm để chuyển hướng
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Form, Modal } from 'react-bootstrap';
+import {
+  Container,
+  Card,
+  CardHeader,
+  Row,
+  Col,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+} from 'reactstrap';
 
 const DoctorDashboard = () => {
   const [user, setUser] = useState(null);
@@ -151,40 +163,57 @@ const DoctorDashboard = () => {
   }
 
   return (
-    <div className="container mt-4">
+    <>
       <Header />
-      <h2>Danh sách phiếu khám của bác sĩ</h2>
-      {error && (
-        <div className="alert alert-danger" onClick={() => setError("")}>
-          {error}
-        </div>
-      )}
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Mã khám</th>
-            <th>Tên bệnh nhân</th>
-            <th>Triệu chứng</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody>
-          {registrations.map((reg, index) => (
-            <tr key={reg._id}>
-              <td>{index + 1}</td>
-              <td>{reg.medical_code}</td>
-              <td>{reg.patient_id.name}</td>
-              <td>{reg.symptoms}</td>
-              <td>
-                <Button variant="primary" onClick={() => handleCreatePrescription(reg)}>
-                  Tạo đơn thuốc
-                </Button>
-              </td>
+      <Row className="mb-4 align-items-center">
+        <Col md="6">
+          <h3 className="text-dark mb-0">🩺 Danh Sách Phiếu Khám</h3>
+        </Col>
+        <Col md="6" className="text-right">
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <i className="fas fa-search" />
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input
+              placeholder="Tìm bệnh nhân..."
+            />
+          </InputGroup>
+        </Col>
+      </Row>
+
+      <Card className="shadow">
+        <CardHeader className="bg-light border-0">
+          <h4 className="text-dark mb-0">Danh sách phiếu khám</h4>
+        </CardHeader>
+        <Table striped bordered hover responsive>
+          <thead className="thead-light">
+            <tr>
+              <th>STT</th>
+              <th>Mã khám</th>
+              <th>Tên bệnh nhân</th>
+              <th>Triệu chứng</th>
+              <th className="text-right">Hành động</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {registrations.map((reg, index) => (
+              <tr key={reg._id}>
+                <td>{index + 1}</td>
+                <td>{reg.medical_code}</td>
+                <td>{reg.patient_id.name}</td>
+                <td>{reg.symptoms}</td>
+                <td className="text-right">
+                  <Button variant="primary" onClick={() => handleCreatePrescription(reg)}>
+                    Tạo đơn thuốc
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Card>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
@@ -241,7 +270,7 @@ const DoctorDashboard = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 

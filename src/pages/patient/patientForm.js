@@ -53,11 +53,12 @@ const PatientForm = () => {
       id_card: formData.id_card,
       patient_id: formData.patient_id || `PAT${Date.now()}`,
       name: formData.name,
-      gender: formData.gender === "Nam" ? true : false,
+      gender: formData.gender === "Nam" ? "male" : "female", // sửa chỗ này
       birth_date: formData.birth_date,
       phone: formData.phone,
       address: formData.address,
     };
+    
 
     try {
       const response = await axios.post(
