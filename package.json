@@ -24,8 +24,8 @@
   },
   "homepage": "https://demos.creative-tim.com/",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "cross-env PUBLIC_URL=/ react-scripts build",
+    "start": "set PORT=3000s && react-scripts start",
+    "build": "npm install && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
