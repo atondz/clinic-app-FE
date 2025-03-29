@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Header from './../components/Headers/Header';
 import { useNavigate } from 'react-router-dom';
@@ -60,6 +59,7 @@ const DoctorDashboard = () => {
     fetchUserData();
   }, []);
 
+
   useEffect(() => {
     if (!user || user.role !== 'doctor') return;
 
@@ -72,9 +72,9 @@ const DoctorDashboard = () => {
     const fetchRegistrations = async () => {
       try {
         const response = await axios.get(`http://localhost:5001/api/registerExam/doctor/${user._id}`, {
-          headers: {
+            headers: {
             "Authorization": `Bearer ${authToken}`,
-          },
+            },
         });
         setRegistrations(response.data);
       } catch (error) {
@@ -142,72 +142,10 @@ const DoctorDashboard = () => {
   };
 
   const handleCreatePrescription = (registration) => {
-    setSelectedRegistration(registration);
-    setPrescriptionData({ medicines: [{ name: "", dosage: "" }], notes: "" });
-    setShowModal(true);
+
+    navigate(`/prescritions/${registration?._id}/${registration?.patient_id?._id}/${registration?.doctor_id}`)
   };
 
-  const handleAddMedicine = () => {
-    setPrescriptionData(prev => ({
-      ...prev,
-      medicines: [...prev.medicines, { name: "", dosage: "" }],
-    }));
-  };
-
-  const handleRemoveMedicine = (index) => {
-    setPrescriptionData(prev => {
-      const newMedicines = [...prev.medicines];
-      newMedicines.splice(index, 1);
-      return { ...prev, medicines: newMedicines };
-    });
-  };
-
-  const handleMedicineNameChange = (e, index) => {
-    const newMedicines = [...prescriptionData.medicines];
-    newMedicines[index].name = e.target.value;
-    setPrescriptionData({ ...prescriptionData, medicines: newMedicines });
-  };
-
-  const handleMedicineDosageChange = (e, index) => {
-    const newMedicines = [...prescriptionData.medicines];
-    newMedicines[index].dosage = e.target.value;
-    setPrescriptionData({ ...prescriptionData, medicines: newMedicines });
-  };
-
-  const handleNotesChange = (e) => {
-    setPrescriptionData({ ...prescriptionData, notes: e.target.value });
-  };
-
-  const handleSubmitPrescription = async () => {
-    try {
-      await axios.post(
-        'http://localhost:5001/api/registerExam/prescriptions',
-        {
-          patient_id: selectedRegistration.patient_id._id,
-          registration_id: selectedRegistration._id,
-          doctor_id: user._id,
-          medicines: prescriptionData.medicines,
-          notes: prescriptionData.notes,
-        },
-        {
-          headers: {
-            "Authorization": `Bearer ${authToken}`,
-          },
-        }
-      );
-      setShowModal(false);
-      setSuccessMessage('Tạo đơn thuốc thành công!');
-      setTimeout(() => setSuccessMessage(""), 3000);
-    } catch (error) {
-      console.error('Lỗi tạo đơn thuốc:', error);
-      if (error.response?.status === 401) {
-        setError("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại.");
-        navigate("/login");
-      } else {
-        setError("Lỗi tạo đơn thuốc, vui lòng thử lại.");
-      }
-    }
-  };
 
   if (!user || user.role !== 'doctor') {
     return (
@@ -352,78 +290,7 @@ const DoctorDashboard = () => {
           </div>
         </Card>
 
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-          <Modal.Header closeButton className="border-0 pb-0">
-            <Modal.Title className="display-4">Tạo đơn thuốc</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {selectedRegistration && (
-              <div className="mb-4">
-                <h5 className="text-muted">Bệnh nhân: {selectedRegistration.patient_id?.name}</h5>
-                <h6 className="text-muted">Mã khám: {selectedRegistration.medical_code}</h6>
-              </div>
-            )}
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label className="font-weight-bold">Thuốc và liều lượng</Form.Label>
-                {prescriptionData.medicines.map((medicine, index) => (
-                  <div key={index} className="d-flex align-items-center mb-2">
-                    <Form.Control
-                      type="text"
-                      value={medicine.name}
-                      placeholder="Tên thuốc"
-                      onChange={(e) => handleMedicineNameChange(e, index)}
-                      className="mr-2"
-                    />
-                    <Form.Control
-                      type="text"
-                      value={medicine.dosage}
-                      placeholder="Liều lượng"
-                      onChange={(e) => handleMedicineDosageChange(e, index)}
-                      className="mr-2"
-                    />
-                    {index > 0 && (
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleRemoveMedicine(index)}
-                        className="btn-icon"
-                      >
-                        <i className="fas fa-times"></i>
-                      </Button>
-                    )}
-                  </div>
-                ))}
-                <Button
-                  variant="outline-primary"
-                  size="sm"
-                  onClick={handleAddMedicine}
-                  className="mt-2"
-                >
-                  <i className="fas fa-plus mr-1"></i> Thêm thuốc
-                </Button>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label className="font-weight-bold">Ghi chú</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  value={prescriptionData.notes}
-                  placeholder="Nhập ghi chú..."
-                  onChange={handleNotesChange}
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer className="border-0 pt-0">
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-              Hủy bỏ
-            </Button>
-            <Button variant="primary" onClick={handleSubmitPrescription}>
-              <i className="fas fa-save mr-1"></i> Lưu đơn thuốc
-            </Button>
-          </Modal.Footer>
-        </Modal>
+       
       </>
     </>
   );

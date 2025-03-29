@@ -18,9 +18,11 @@ import Prescription from "pages/Prescription/Prescription";
 import RegistrationSystem from "pages/RegistrationExam/RegistrationSystem";
 import RegistrationDetails from "pages/RegistrationExam/RegistrationDetails.js";
 import DoctorDashboard from "pages/DoctorDashboard";
+import PrescriptionOrder from 'pages/PrescriptionOrder'
+import Bill from "pages/Bill";
 import MedicalHistory from "pages/patient/MedicalHistory";
 
-var routes = [
+const routes = [
   {
     path: "/home",
     name: "Home",
@@ -165,6 +167,20 @@ var routes = [
     component: <DoctorDashboard />,
     layout: "/admin",
   },
+  {
+    path: "/prescritions/:registration_id/:patient_id/:doctor_id",
+    name: "Bill",
+    icon: "fa fa-plus-circle text-success",
+    component: <PrescriptionOrder />,
+    layout: "/admin",
+  },
+  {
+    path: "/bill",
+    name: "Đơn thuốc",
+    icon: "fa fa-plus-circle text-success",
+    component: <Bill />,
+    layout: "/admin",
+  },
 
 ];
 
@@ -227,12 +243,11 @@ const sidebarRoutes = [
     layout: "/admin",
   },
   {
-    path: "/medical-history",
-    name: "Lịch Sử khám bệnh",
-    icon: "ni ni-single-02 text-yellow",
-    component: <MedicalHistory />,
+    path: "/bill",
+    name: "Hoá Đơn",
+    icon: "fa fa-plus-circle text-success",
+    component: <Bill />,
     layout: "/admin",
-    
   },
  
 
