@@ -20,6 +20,7 @@ const Bill = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const [billDetail, setBillDetail] = useState(null);
   const authToken = localStorage.getItem("authToken");
+  const [totalCharged, setTotalCharged] = useState(null);
 
   const getPrescritions = async () => {
     try {
@@ -58,11 +59,27 @@ const Bill = () => {
     setBillDetail(null);
   };
 
+  const calculateTotalCharged = () => {
+    const total = prescriptions
+      .filter((item) => item.status === "CHARGED")
+      .reduce((sum, item) => sum + (item.total_price || 0), 0);
+    setTotalCharged(total);
+
+    console.log('ta',prescriptions
+      )
+  };
+
   useEffect(() => {
     if (!prescriptions.length) {
       getPrescritions();
     }
   }, []);
+
+  useEffect(() => {
+    if (prescriptions.length) {
+      calculateTotalCharged();
+    }
+  }, [prescriptions])
 
   return (
     <div>
@@ -71,6 +88,12 @@ const Bill = () => {
         <Card className="shadow">
           <CardHeader className="bg-transparent">
             <h3 className="mb-0">Đơn Thuốc</h3>
+
+            {totalCharged &&  <Badge
+              color='success'
+            >
+              {'Số tiền đã được thanh toán: ' + totalCharged + ' VNĐ'}
+            </Badge>}
           </CardHeader>
           <Table className="align-items-center table-flush" responsive>
             <thead className="thead-light">
