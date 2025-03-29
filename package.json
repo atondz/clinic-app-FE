@@ -24,7 +24,7 @@
   },
   "homepage": "https://demos.creative-tim.com/",
   "scripts": {
-    "start": "set PORT=3000s && react-scripts start",
+    "start": "set PORT=3000 && react-scripts start",
     "build": "npm install",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
