@@ -21,6 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const roleAccess = localStorage.getItem("roleAccess")
 
   // Trạng thái lưu dữ liệu form
   const [formData, setFormData] = useState({
@@ -43,9 +44,14 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:5001/api/users/login", formData);
       const token = response.data.token;
+      const role = response.data?.role;
 
       // Lưu token vào localStorage
       localStorage.setItem("authToken", token);
+
+      if(!roleAccess) {
+        localStorage.setItem("roleAccess", role)
+      }
 
       toast.success("Đăng nhập thành công! Chuyển hướng đến trang chính...");
       

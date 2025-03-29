@@ -18,3 +18,9 @@ export const PAYMENT_STATUS_MAPPING_VALUE = {
         color: "danger"
     }
 }
+
+export const ROLE_ACCESS = {
+    ALL: 'ALL',
+    DOCTOR: 'DOCTOR',
+    STAFF: 'STAFF'
+}

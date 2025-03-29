@@ -11,5 +11,6 @@ export const isAuthenticated = () => {
 // Hàm đăng xuất
 export const logout = (navigate) => {
   localStorage.removeItem("authToken"); // Xóa token
+  localStorage.removeItem("roleAccess");
   navigate("/auth/login"); // Chuyển hướng về trang đăng nhập
 };

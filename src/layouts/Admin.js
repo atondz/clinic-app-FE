@@ -10,11 +10,14 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import { sidebarRoutes } from "routes.js";
 
 import routes from "routes.js";
+import { ROLE_ACCESS } from "config/constant";
 // import notFound from './../pages/notFound';
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
+
+  const roleAcces = localStorage.getItem("roleAccess");
 
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -46,11 +49,14 @@ const Admin = (props) => {
     return "Brand";
   };
 
+  const sidebarRouterByRole = sidebarRoutes.filter((sidebarRoute) => sidebarRoute.roleAcces === roleAcces?.toUpperCase() || sidebarRoute.roleAcces === ROLE_ACCESS.ALL);
+
+  console.log("sidebarRouterByRole", sidebarRouterByRole, roleAcces?.toLowerCase())
   return (
     <>
    <Sidebar
   {...props}
-  sidebarRoutes={sidebarRoutes}
+  sidebarRoutes={sidebarRouterByRole}
 
 />
 

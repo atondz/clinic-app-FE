@@ -21,6 +21,7 @@ import DoctorDashboard from "pages/DoctorDashboard";
 import PrescriptionOrder from 'pages/PrescriptionOrder'
 import Bill from "pages/Bill";
 import MedicalHistory from "pages/patient/MedicalHistory";
+import { ROLE_ACCESS } from "config/constant";
 import DiagnosisPage from "pages/Diagnosis/DiagnosisPage";
 
 const routes = [
@@ -30,6 +31,7 @@ const routes = [
     icon: "fa fa-plus-square text-primary",
     component: <Home />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/regisExam",
@@ -37,6 +39,7 @@ const routes = [
     icon: "fa fa-plus-square text-primary",
     component: <RegistrationSystem />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/Welcome",
@@ -51,6 +54,7 @@ const routes = [
     icon: "fa fa-plus-square text-primary",
     component: <PatientForm />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/prescription",
@@ -58,6 +62,7 @@ const routes = [
     icon: "fa fa-medkit text-orange",
     component: <Prescription />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   
   {
@@ -66,6 +71,7 @@ const routes = [
     icon: "ni ni-pin-3 text-orange",
     component: <Maps />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/addClinic",
@@ -73,6 +79,7 @@ const routes = [
     icon: "ni ni-circle-08 text-pink",
     component: <AddClinic />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/drug",
@@ -80,6 +87,7 @@ const routes = [
     icon: "ni ni-pin-3 text-orange",
     component: <ListOfDrugs />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/addDrugForm",
@@ -87,6 +95,7 @@ const routes = [
     icon: "ni ni-pin-3 text-orange",
     component: <AddDrugForm />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/user-profile",
@@ -94,6 +103,7 @@ const routes = [
     icon: "ni ni-single-02 text-yellow",
     component: <Profile />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
     
   },
   {
@@ -102,6 +112,7 @@ const routes = [
     icon: "ni ni-single-02 text-yellow",
     component: <MedicalHistory />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
     
   },
   {
@@ -110,6 +121,7 @@ const routes = [
     icon: "ni ni-single-02 text-yellow",
     component: <RegistrationDetails />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/tables",
@@ -117,6 +129,7 @@ const routes = [
     icon: "ni ni-bullet-list-67 text-red",
     component: <Tables />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/login",
@@ -138,6 +151,7 @@ const routes = [
     icon: "ni ni-circle-08 text-pink",
     component: <Patient />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/notFound",
@@ -145,6 +159,7 @@ const routes = [
     icon: "ni ni-circle-08 text-pink",
     component: <NotFound />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
 
   {
@@ -153,6 +168,7 @@ const routes = [
     icon: "fa fa-pills text-primary",
     component: <MedicineTypes />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/add-medicine-types",
@@ -160,6 +176,7 @@ const routes = [
     icon: "fa fa-plus-circle text-success",
     component: <AddMedicineTypes />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/doctors",
@@ -167,6 +184,7 @@ const routes = [
     icon: "fa fa-plus-circle text-success",
     component: <DoctorDashboard />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/prescritions/:registration_id/:patient_id/:doctor_id",
@@ -174,12 +192,21 @@ const routes = [
     icon: "fa fa-plus-circle text-success",
     component: <PrescriptionOrder />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/bill",
     name: "Đơn thuốc",
     icon: "fa fa-plus-circle text-success",
     component: <Bill />,
+    layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
+  },
+  {
+    path: "/diagnosis/:registrationId/:patientId/:doctorId",
+    name: "Đơn thuốc",
+    icon: "fa fa-plus-circle text-success",
+    component: <DiagnosisPage />,
     layout: "/admin",
   },
   {
@@ -199,6 +226,7 @@ const sidebarRoutes = [
     icon: "fa fa-plus-square text-primary",
     component: <Home />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/regisExam",
@@ -206,6 +234,7 @@ const sidebarRoutes = [
     icon: "fa fa-plus-square text-primary",
     component: <RegistrationSystem />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.STAFF
   },
 
   {
@@ -214,6 +243,7 @@ const sidebarRoutes = [
     icon: "ni ni-pin-3 text-orange",
     component: <Maps />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/drug",
@@ -221,6 +251,7 @@ const sidebarRoutes = [
     icon: "fas fa-capsules fs-1 text-orange",
     component: <ListOfDrugs />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/patient",
@@ -228,6 +259,7 @@ const sidebarRoutes = [
     icon: "ni ni-circle-08 text-pink",
     component: <Patient />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/medicine-types",
@@ -235,6 +267,7 @@ const sidebarRoutes = [
     icon: "fa fa-pills text-primary",
     component: <MedicineTypes />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/registrationDetails",
@@ -242,6 +275,7 @@ const sidebarRoutes = [
     icon: "ni ni-single-02 text-yellow",
     component: <RegistrationDetails />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.ALL
   },
   {
     path: "/doctors",
@@ -249,6 +283,7 @@ const sidebarRoutes = [
     icon: "fa fa-plus-circle text-success",
     component: <DoctorDashboard />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.DOCTOR
   },
   {
     path: "/bill",
@@ -256,6 +291,7 @@ const sidebarRoutes = [
     icon: "fa fa-plus-circle text-success",
     component: <Bill />,
     layout: "/admin",
+    roleAcces:  ROLE_ACCESS?.STAFF
   },
  
 

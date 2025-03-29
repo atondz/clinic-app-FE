@@ -20,7 +20,7 @@ const AdminNavbar = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("authToken");
-
+      
       if (!token) {
         console.error("Token không tồn tại!");
         return;
