@@ -18,45 +18,43 @@ const BillDetail = ({
 }) => {
   const printRef = useRef(null);
   const authToken = localStorage.getItem("authToken");
+
   const handlePrint = () => {
     const printContent = printRef.current.innerHTML;
 
-    // Tạo cửa sổ mới
     const printWindow = window.open("", "_blank");
-
-    // Tạo cấu trúc HTML hoàn chỉnh
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
         <head>
-          <title>In tài liệu</title>
+          <title>Hóa đơn #${data._id}</title>
           <style>
-            /* Reset CSS để in đẹp hơn */
-            body { margin: 0; padding: 20px; font-family: Arial; }
-            @page { size: auto; margin: 10mm; }
-            
-            /* Đảm bảo nội dung in hiển thị đúng */
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            h5 { margin-top: 20px; }
             @media print {
-              body { visibility: hidden; }
-              .print-content { visibility: visible; }
+              body { margin: 0; padding: 20px; }
+              @page { size: auto; margin: 10mm; }
             }
           </style>
         </head>
         <body>
-          <div class="print-content">${printContent}</div>
+          <div>${printContent}</div>
           <script>
-            // Tự động in và đóng cửa sổ
             window.onload = function() {
-              setTimeout(() => {
+              setTimeout(function() {
                 window.print();
-                setTimeout(() => window.close(), 500);
+                setTimeout(function() {
+                  window.close();
+                }, 1000);
               }, 200);
             };
           </script>
         </body>
       </html>
     `);
-
     printWindow.document.close();
   };
 
@@ -72,14 +70,13 @@ const BillDetail = ({
 
     if (res && res.status === 200) {
       alert("Thanh toán thành công!");
-
       onReload();
       onClose();
     }
   };
 
   return (
-    <Modal isOpen={open} toggle={onClose}>
+    <Modal isOpen={open} toggle={onClose} size="lg">
       <ModalHeader toggle={onClose}>Hoá Đơn</ModalHeader>
       <ModalBody>
         {data && (
