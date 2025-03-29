@@ -63,7 +63,7 @@ const TableList = ({ data, navigate, setPatients }) => {
                   navigate("/medical-history", { state: { patientId: data._id } })
                 }
               >
-                Medical History
+                Lịch sử khám bệnh
               </DropdownItem>
               <DropdownItem onClick={handleDelete}>
                 Xóa

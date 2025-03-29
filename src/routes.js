@@ -21,6 +21,7 @@ import DoctorDashboard from "pages/DoctorDashboard";
 import PrescriptionOrder from 'pages/PrescriptionOrder'
 import Bill from "pages/Bill";
 import MedicalHistory from "pages/patient/MedicalHistory";
+import DiagnosisPage from "pages/Diagnosis/DiagnosisPage";
 
 const routes = [
   {
@@ -179,6 +180,13 @@ const routes = [
     name: "Đơn thuốc",
     icon: "fa fa-plus-circle text-success",
     component: <Bill />,
+    layout: "/admin",
+  },
+  {
+    path: "/diagnosis/:registrationId/:patientId/:doctorId",
+    name: "Đơn thuốc",
+    icon: "fa fa-plus-circle text-success",
+    component: <DiagnosisPage />,
     layout: "/admin",
   },
 
