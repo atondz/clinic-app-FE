@@ -26,12 +26,43 @@ const MedicalRecordModal = ({ registration, show, onHide }) => {
 
   const handlePrint = () => {
     const printContent = document.getElementById("printable-area").innerHTML;
-    const originalContent = document.body.innerHTML;
 
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = originalContent;
-    window.location.reload();
+    // Tạo một cửa sổ mới
+    const printWindow = window.open("", "_blank");
+
+    // Viết nội dung cần in vào cửa sổ mới
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>In bệnh án</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+            @media print {
+              body { visibility: hidden; }
+              .print-content { visibility: visible; position: absolute; top: 0; left: 0; }
+              @page { size: A4; margin: 10mm; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="print-content">${printContent}</div>
+          <script>
+            // Tự động in khi trang tải xong
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+                // Đóng cửa sổ in sau 1 giây
+                setTimeout(function() { window.close(); }, 1000);
+              }, 200);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+
+    // Đóng tài liệu để hoàn tất quá trình tải
+    printWindow.document.close();
   };
 
   return (

@@ -20,12 +20,44 @@ const BillDetail = ({
   const authToken = localStorage.getItem("authToken");
   const handlePrint = () => {
     const printContent = printRef.current.innerHTML;
-    const originalContent = document.body.innerHTML;
 
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = originalContent;
-    window.location.reload(); // Load lại trang để tránh mất nội dung
+    // Tạo cửa sổ mới
+    const printWindow = window.open("", "_blank");
+
+    // Tạo cấu trúc HTML hoàn chỉnh
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>In tài liệu</title>
+          <style>
+            /* Reset CSS để in đẹp hơn */
+            body { margin: 0; padding: 20px; font-family: Arial; }
+            @page { size: auto; margin: 10mm; }
+            
+            /* Đảm bảo nội dung in hiển thị đúng */
+            @media print {
+              body { visibility: hidden; }
+              .print-content { visibility: visible; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="print-content">${printContent}</div>
+          <script>
+            // Tự động in và đóng cửa sổ
+            window.onload = function() {
+              setTimeout(() => {
+                window.print();
+                setTimeout(() => window.close(), 500);
+              }, 200);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
   };
 
   const charge = async () => {

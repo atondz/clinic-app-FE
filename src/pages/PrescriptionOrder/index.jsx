@@ -120,7 +120,7 @@ const PrescriptionOrder = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="bg-transparent">
-                <h3 className="mb-0">Bill</h3>
+                <h3 className="mb-0">Đơn thuốc</h3>
               </CardHeader>
               <CardBody>
                 <Form>
