@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/static/css/main.371d3228.css",
+    "main.js": "/static/js/main.19da96ee.js",
+    "static/media/profile-cover.jpg": "/static/media/profile-cover.2ff9b9652529c4c300e0.jpg",
+    "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.2582b0e4bcf85eceead0.ttf",
+    "static/media/team-2-800x800.jpg": "/static/media/team-2-800x800.3e08ef145920c93bbe32.jpg",
+    "static/media/team-4-800x800.jpg": "/static/media/team-4-800x800.00b764e8b06050fe3e76.jpg",
+    "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.1815e00441357e01619e.ttf",
+    "static/media/team-3-800x800.jpg": "/static/media/team-3-800x800.70911cddbb86ea83b652.jpg",
+    "static/media/team-1-800x800.jpg": "/static/media/team-1-800x800.fa5a7ac2c81a43925586.jpg",
+    "static/media/fa-solid-900.woff2": "/static/media/fa-solid-900.2463b90d9a316e4e5294.woff2",
+    "static/media/nucleo-icons.svg": "/static/media/nucleo-icons.95fa360c1c73431a0f9a.svg",
+    "static/media/fa-brands-400.woff2": "/static/media/fa-brands-400.c210719e60948b211a12.woff2",
+    "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.914997e1bdfc990d0897.ttf",
+    "static/media/argon-react.png": "/static/media/argon-react.128d71d316a8e92aff4a.png",
+    "static/media/argon-react-white.png": "/static/media/argon-react-white.e4dd3b41697ada43fdcb.png",
+    "static/media/react.jpg": "/static/media/react.0e8c90660cd0ac1c3e75.jpg",
+    "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.89999bdf5d835c012025.woff2",
+    "static/media/angular.jpg": "/static/media/angular.b50456665f80ad7ac7de.jpg",
+    "static/media/sketch.jpg": "/static/media/sketch.a6af780afb0dc6910131.jpg",
+    "static/media/nucleo-icons.eot": "/static/media/nucleo-icons.19abb5402a664606b14c.eot",
+    "static/media/vue.jpg": "/static/media/vue.43bd93a8a614b73badd2.jpg",
+    "static/media/nucleo-icons.ttf": "/static/media/nucleo-icons.d6a66724e7a7bf1bba65.ttf",
+    "static/media/bootstrap.jpg": "/static/media/bootstrap.bd712487b8d6b192ca16.jpg",
+    "static/media/fa-v4compatibility.ttf": "/static/media/fa-v4compatibility.da94ef451f4969af06e6.ttf",
+    "static/media/nucleo-icons.woff": "/static/media/nucleo-icons.c82c9b7c40130b7116d3.woff",
+    "static/media/nucleo-icons.woff2": "/static/media/nucleo-icons.cba267483aa6a7cb6e33.woff2",
+    "static/media/fa-v4compatibility.woff2": "/static/media/fa-v4compatibility.ea8f94e1d22e0d35ccd4.woff2",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.371d3228.css",
+    "static/js/main.19da96ee.js"
+  ]
+}
