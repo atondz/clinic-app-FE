@@ -49,12 +49,15 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5001/api/users/register", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-      });
+      const response = await axios.post(
+        "https://clinic-app-be.onrender.com/api/users/register",
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+        }
+      );
 
       toast.success("Đăng ký thành công! Chuyển hướng đến trang đăng nhập...");
       console.log(response.data);
@@ -191,7 +194,7 @@ const Register = () => {
                     >
                       <span className="text-muted">
                         Tôi đồng ý với{" "}
-                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" >
+                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
                           Chính sách bảo mật
                         </a>
                       </span>
@@ -202,7 +205,7 @@ const Register = () => {
 
               {/* Nút Đăng ký */}
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="submit" >
+                <Button className="mt-4" color="primary" type="submit">
                   Đăng ký
                 </Button>
               </div>

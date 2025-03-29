@@ -24,7 +24,7 @@ const Bill = () => {
   const getPrescritions = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5001/api/prescriptions"
+        "https://clinic-app-be.onrender.com/api/prescriptions"
       );
       console.log("response.data.data", response.data);
       setPrescriptions(response.data || []);
@@ -34,7 +34,7 @@ const Bill = () => {
 
   const cancelPayment = async (id) => {
     const res = await fetch(
-      `http://localhost:5001/api/prescriptions/cancel/${id}`,
+      `https://clinic-app-be.onrender.com/api/prescriptions/cancel/${id}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,

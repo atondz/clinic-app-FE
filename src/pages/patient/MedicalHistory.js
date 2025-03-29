@@ -1,18 +1,25 @@
 import Header from "components/Headers/Header";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { 
-  Container, 
-  Card, 
-  CardHeader, 
+import {
+  Container,
+  Card,
+  CardHeader,
   CardBody,
   Row,
   Col,
   Spinner,
   Badge,
-  Button
+  Button,
 } from "reactstrap";
-import { FaUserInjured, FaNotesMedical, FaFlask, FaHeartbeat, FaCalendarAlt, FaFileMedicalAlt } from "react-icons/fa";
+import {
+  FaUserInjured,
+  FaNotesMedical,
+  FaFlask,
+  FaHeartbeat,
+  FaCalendarAlt,
+  FaFileMedicalAlt,
+} from "react-icons/fa";
 
 const MedicalHistory = () => {
   const location = useLocation();
@@ -29,7 +36,7 @@ const MedicalHistory = () => {
     }
 
     // Fetch patient data
-    fetch(`http://localhost:5001/api/patients/${patientId}`, {
+    fetch(`https://clinic-app-be.onrender.com/api/patients/${patientId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
     })
       .then((res) => {
@@ -39,7 +46,7 @@ const MedicalHistory = () => {
       .then((data) => {
         setPatientName(data.name || "Không xác định");
         const historyIds = data.medical_history || [];
-        
+
         if (historyIds.length === 0) {
           setMedicalHistory([]);
           setLoading(false);
@@ -49,14 +56,19 @@ const MedicalHistory = () => {
         // Fetch diagnosis details
         Promise.all(
           historyIds.map((historyId) =>
-            fetch(`http://localhost:5001/api/diagnosis/${historyId}`, {
-              headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
-            })
-              .then((res) => res.ok ? res.json() : null)
+            fetch(
+              `https://clinic-app-be.onrender.com/api/diagnosis/${historyId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                },
+              }
+            )
+              .then((res) => (res.ok ? res.json() : null))
               .catch(() => null)
           )
         ).then((historyData) => {
-          setMedicalHistory(historyData.filter(item => item !== null));
+          setMedicalHistory(historyData.filter((item) => item !== null));
           setLoading(false);
         });
       })
@@ -79,7 +91,7 @@ const MedicalHistory = () => {
       month: "2-digit",
       year: "numeric",
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
     });
   };
 
@@ -91,7 +103,8 @@ const MedicalHistory = () => {
           <Col>
             <h1 className="display-4 text-dark">
               <FaFileMedicalAlt className="mr-2 text-primary" />
-              LỊCH SỬ KHÁM BỆNH {patientName && `- ${patientName.toUpperCase()}`}
+              LỊCH SỬ KHÁM BỆNH{" "}
+              {patientName && `- ${patientName.toUpperCase()}`}
             </h1>
           </Col>
         </Row>
@@ -112,7 +125,7 @@ const MedicalHistory = () => {
               </Col>
             </Row>
           </CardHeader>
-          
+
           <CardBody>
             {loading ? (
               <div className="text-center py-5">
@@ -122,7 +135,7 @@ const MedicalHistory = () => {
             ) : medicalHistory.length > 0 ? (
               medicalHistory.map((history, index) => (
                 <Card key={index} className="mb-4 border-0 shadow-sm">
-                  <CardHeader 
+                  <CardHeader
                     className="bg-light cursor-pointer"
                     onClick={() => toggleExpand(index)}
                   >
@@ -150,7 +163,7 @@ const MedicalHistory = () => {
                       </Col>
                     </Row>
                   </CardHeader>
-                  
+
                   {expandedCard === index && (
                     <CardBody>
                       <Row>
@@ -164,7 +177,8 @@ const MedicalHistory = () => {
                               <p>
                                 <strong>Chẩn đoán chính:</strong>{" "}
                                 <Badge color="danger">
-                                  {history.primary_diagnosis || "Chưa có thông tin"}
+                                  {history.primary_diagnosis ||
+                                    "Chưa có thông tin"}
                                 </Badge>
                               </p>
                               <p>
@@ -172,7 +186,11 @@ const MedicalHistory = () => {
                                 {Array.isArray(history.symptoms) ? (
                                   <div className="mt-2">
                                     {history.symptoms.map((symptom, i) => (
-                                      <Badge key={i} color="warning" className="mr-2 mb-2">
+                                      <Badge
+                                        key={i}
+                                        color="warning"
+                                        className="mr-2 mb-2"
+                                      >
                                         {symptom}
                                       </Badge>
                                     ))}
@@ -191,7 +209,8 @@ const MedicalHistory = () => {
                             </h6>
                             <div className="pl-4">
                               <p>
-                                {history.treatment_advice || "Không có hướng dẫn điều trị cụ thể"}
+                                {history.treatment_advice ||
+                                  "Không có hướng dẫn điều trị cụ thể"}
                               </p>
                             </div>
                           </div>
@@ -205,7 +224,8 @@ const MedicalHistory = () => {
                             </h6>
                             <div className="pl-4">
                               <p>
-                                {history.test_results || "Không có kết quả xét nghiệm"}
+                                {history.test_results ||
+                                  "Không có kết quả xét nghiệm"}
                               </p>
                             </div>
                           </div>
@@ -218,8 +238,15 @@ const MedicalHistory = () => {
                             <div className="pl-4">
                               <p>
                                 <strong>Tình trạng hiện tại:</strong>{" "}
-                                <Badge color={history.current_condition ? "success" : "secondary"}>
-                                  {history.current_condition || "Không xác định"}
+                                <Badge
+                                  color={
+                                    history.current_condition
+                                      ? "success"
+                                      : "secondary"
+                                  }
+                                >
+                                  {history.current_condition ||
+                                    "Không xác định"}
                                 </Badge>
                               </p>
                               <p>
@@ -236,14 +263,16 @@ const MedicalHistory = () => {
               ))
             ) : (
               <div className="text-center py-5">
-                <img 
-                  src="/img/theme/empty.svg" 
-                  alt="No data" 
-                  style={{ maxWidth: '200px', opacity: 0.7 }}
+                <img
+                  src="/img/theme/empty.svg"
+                  alt="No data"
+                  style={{ maxWidth: "200px", opacity: 0.7 }}
                   className="mb-4"
                 />
                 <h4 className="text-muted">Không có lịch sử khám bệnh</h4>
-                <p className="text-muted">Bệnh nhân chưa có thông tin khám bệnh nào được ghi nhận</p>
+                <p className="text-muted">
+                  Bệnh nhân chưa có thông tin khám bệnh nào được ghi nhận
+                </p>
               </div>
             )}
           </CardBody>

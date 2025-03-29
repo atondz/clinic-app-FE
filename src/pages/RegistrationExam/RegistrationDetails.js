@@ -269,7 +269,7 @@ const RegistrationSystem = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/registerExam"
+          "https://clinic-app-be.onrender.com/api/registerExam"
         );
         setRegistrations(response.data);
         setLoading(false);
@@ -299,7 +299,7 @@ const RegistrationSystem = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:5001/api/registerExam/${registrationToDelete._id}`
+        `https://clinic-app-be.onrender.com/api/registerExam/${registrationToDelete._id}`
       );
       setRegistrations(
         registrations.filter((reg) => reg._id !== registrationToDelete._id)
@@ -346,7 +346,11 @@ const RegistrationSystem = () => {
         </Row>
 
         {successMessage && (
-          <Alert variant="success" onClose={() => setSuccessMessage(null)} dismissible>
+          <Alert
+            variant="success"
+            onClose={() => setSuccessMessage(null)}
+            dismissible
+          >
             {successMessage}
           </Alert>
         )}
@@ -373,7 +377,9 @@ const RegistrationSystem = () => {
                       <th scope="col">Phòng khám</th>
                       <th scope="col">Bác sĩ</th>
                       <th scope="col">Ưu tiên</th>
-                      <th scope="col" className="text-right">Hành động</th>
+                      <th scope="col" className="text-right">
+                        Hành động
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -385,15 +391,15 @@ const RegistrationSystem = () => {
                         <td>{reg.clinic_id?.name}</td>
                         <td>{reg.doctor_id?.name}</td>
                         <td>
-                        <span
-                          style={{
-                            color: reg.priority ? "red" : "gray", 
-                            fontWeight: reg.priority ? "bold" : "normal", 
-                          }}
-                        >
-                          {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
-                        </span>
-                      </td>
+                          <span
+                            style={{
+                              color: reg.priority ? "red" : "gray",
+                              fontWeight: reg.priority ? "bold" : "normal",
+                            }}
+                          >
+                            {reg.priority ? "ƯU TIÊN" : "THƯỜNG"}
+                          </span>
+                        </td>
                         <td className="text-right">
                           <Button
                             variant="info"
@@ -428,15 +434,24 @@ const RegistrationSystem = () => {
         />
 
         {/* Modal xác nhận xóa */}
-        <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)} centered>
+        <Modal
+          show={showDeleteConfirm}
+          onHide={() => setShowDeleteConfirm(false)}
+          centered
+        >
           <Modal.Header closeButton>
             <Modal.Title>Xác nhận xóa</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Bạn có chắc chắn muốn xóa phiếu đăng ký của bệnh nhân <strong>{registrationToDelete?.patient_id?.name}</strong> (Mã KCB: {registrationToDelete?.medical_code}) không?
+            Bạn có chắc chắn muốn xóa phiếu đăng ký của bệnh nhân{" "}
+            <strong>{registrationToDelete?.patient_id?.name}</strong> (Mã KCB:{" "}
+            {registrationToDelete?.medical_code}) không?
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteConfirm(false)}
+            >
               Hủy bỏ
             </Button>
             <Button variant="danger" onClick={handleDelete}>

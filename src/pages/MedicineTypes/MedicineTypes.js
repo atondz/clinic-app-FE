@@ -42,7 +42,9 @@ const MedicineTypes = () => {
   useEffect(() => {
     const fetchMedicineTypes = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/medicineTypes");
+        const response = await fetch(
+          "https://clinic-app-be.onrender.com/api/medicineTypes"
+        );
         if (!response.ok) throw new Error("Không thể lấy dữ liệu");
         const { data } = await response.json();
         setMedicineTypes(data);
@@ -64,7 +66,9 @@ const MedicineTypes = () => {
   };
 
   const truncateText = (text, maxLength = 30) => {
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
   };
 
   const filteredMedicineTypes = medicineTypes.filter((type) => {
@@ -81,7 +85,7 @@ const MedicineTypes = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:5001/api/medicineTypes/${_id}`,
+        `https://clinic-app-be.onrender.com/api/medicineTypes/${_id}`,
         {
           method: "DELETE",
         }
@@ -113,7 +117,7 @@ const MedicineTypes = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/medicineTypes/${editingType._id}`,
+        `https://clinic-app-be.onrender.com/api/medicineTypes/${editingType._id}`,
         {
           method: "PUT",
           headers: {
@@ -219,11 +223,13 @@ const MedicineTypes = () => {
                       <tr key={`medicine-type-${type._id}-${index}`}>
                         <td>{indexOfFirstItem + index + 1}</td>
                         <td>{type.medicine_type_code}</td>
-                        <td style={{
+                        <td
+                          style={{
                             maxWidth: "300px",
                             whiteSpace: isExpanded ? "pre-wrap" : "nowrap",
                             wordBreak: "break-word",
-                          }}>
+                          }}
+                        >
                           {showText}
                           {type.medicine_type_name.length > 30 && (
                             <Button
@@ -277,8 +283,8 @@ const MedicineTypes = () => {
               />
             </PaginationItem>
             {[...Array(totalPages)].map((_, index) => (
-              <PaginationItem 
-                active={index + 1 === currentPage} 
+              <PaginationItem
+                active={index + 1 === currentPage}
                 key={`page-${index}`}
               >
                 <PaginationLink onClick={() => handlePageChange(index + 1)}>

@@ -20,16 +20,19 @@ const AdminNavbar = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("authToken");
-      
+
       if (!token) {
         console.error("Token không tồn tại!");
         return;
       }
 
       try {
-        const res = await axios.get("http://localhost:5001/api/users/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "https://clinic-app-be.onrender.com/api/users/me",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         setUser(res.data);
       } catch (error) {
@@ -50,7 +53,11 @@ const AdminNavbar = () => {
   };
 
   return (
-    <Navbar className="navbar-top navbar-dark pt-2" expand="md" id="navbar-main">
+    <Navbar
+      className="navbar-top navbar-dark pt-2"
+      expand="md"
+      id="navbar-main"
+    >
       <Container fluid>
         <Link
           className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
@@ -63,9 +70,7 @@ const AdminNavbar = () => {
           <UncontrolledDropdown nav>
             <DropdownToggle className="pr-0" nav>
               <Media className="align-items-center">
-                <span
-                  className="avatar avatar-sm rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                >
+                <span className="avatar avatar-sm rounded-circle bg-primary text-white d-flex align-items-center justify-content-center">
                   {user ? getAvatarInitials(user.name) : ""}
                 </span>
                 <Media className="ml-2 d-none d-lg-block">

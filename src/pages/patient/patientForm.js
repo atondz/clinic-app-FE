@@ -58,11 +58,10 @@ const PatientForm = () => {
       phone: formData.phone,
       address: formData.address,
     };
-    
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/patients",
+        "https://clinic-app-be.onrender.com/api/patients",
         formattedData,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -225,7 +224,12 @@ const PatientForm = () => {
 
                   {error && <p className="text-danger">{error}</p>}
 
-                  <Button color="success" className="mr-2" type="submit" disabled={loading}>
+                  <Button
+                    color="success"
+                    className="mr-2"
+                    type="submit"
+                    disabled={loading}
+                  >
                     {loading ? "Đang lưu..." : "Lưu lại"}
                   </Button>
                   <Button color="light" onClick={() => navigate("/patient")}>

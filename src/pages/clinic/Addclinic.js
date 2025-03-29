@@ -21,7 +21,6 @@ import axios from "axios"; // Thêm thư viện axios để gọi API
 import { ToastContainer, toast } from "react-toastify"; // Import thư viện toast
 import "react-toastify/dist/ReactToastify.css"; // Import CSS
 
-
 const AddClinic = () => {
   const navigate = useNavigate(); // Sử dụng hook useNavigate
   const [clinicCode, setClinicCode] = useState(""); // State cho mã phòng khám
@@ -31,15 +30,18 @@ const AddClinic = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5001/api/clinics", {
-        code: clinicCode,
-        name: clinicName,
-      });
-      toast.success("Thêm phòng khám thành công!",{autoClose: 1000});
+      const response = await axios.post(
+        "https://clinic-app-be.onrender.com/api/clinics",
+        {
+          code: clinicCode,
+          name: clinicName,
+        }
+      );
+      toast.success("Thêm phòng khám thành công!", { autoClose: 1000 });
       navigate("/maps"); // Chuyển hướng về trang danh sách
     } catch (error) {
       console.error("Lỗi khi thêm phòng khám:", error);
-      toast.success("Thêm phòng khám thất bại!",{autoClose: 1000});
+      toast.success("Thêm phòng khám thất bại!", { autoClose: 1000 });
     }
   };
 
@@ -115,7 +117,7 @@ const AddClinic = () => {
             </Form>
           </CardBody>
         </Card>
-        <ToastContainer /> 
+        <ToastContainer />
       </Container>
     </>
   );

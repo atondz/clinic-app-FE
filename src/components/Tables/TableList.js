@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import { toast } from "react-toastify";
 import PatientEditModal from "pages/patient/PatientEditModel";
 
@@ -9,17 +14,25 @@ const TableList = ({ data, navigate, setPatients }) => {
   const handleDelete = async () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa bệnh nhân này không?")) {
       try {
-        const response = await fetch(`http://localhost:5001/api/patients/${data._id}`, {
-          method: "DELETE",
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json'
+        const response = await fetch(
+          `https://clinic-app-be.onrender.com/api/patients/${data._id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
 
         if (response.ok) {
-          setPatients((prev) => prev.filter((patient) => patient._id !== data._id));
-          toast.success("Xóa bệnh nhân thành công!", { position: "top-right", autoClose: 1000 });
+          setPatients((prev) =>
+            prev.filter((patient) => patient._id !== data._id)
+          );
+          toast.success("Xóa bệnh nhân thành công!", {
+            position: "top-right",
+            autoClose: 1000,
+          });
         } else {
           const errorData = await response.json();
           toast.error(errorData.message || "Lỗi khi xóa bệnh nhân!");
@@ -51,7 +64,12 @@ const TableList = ({ data, navigate, setPatients }) => {
         <td>{data.address}</td>
         <td className="text-right">
           <UncontrolledDropdown>
-            <DropdownToggle className="btn-icon-only text-light" role="button" size="sm" color="">
+            <DropdownToggle
+              className="btn-icon-only text-light"
+              role="button"
+              size="sm"
+              color=""
+            >
               <i className="fas fa-ellipsis-v" />
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
@@ -60,14 +78,14 @@ const TableList = ({ data, navigate, setPatients }) => {
               </DropdownItem>
               <DropdownItem
                 onClick={() =>
-                  navigate("/medical-history", { state: { patientId: data._id } })
+                  navigate("/medical-history", {
+                    state: { patientId: data._id },
+                  })
                 }
               >
                 Lịch sử khám bệnh
               </DropdownItem>
-              <DropdownItem onClick={handleDelete}>
-                Xóa
-              </DropdownItem>
+              <DropdownItem onClick={handleDelete}>Xóa</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </td>

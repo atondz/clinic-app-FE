@@ -33,14 +33,16 @@ const Maps = () => {
   const [editingClinic, setEditingClinic] = useState({
     _id: "",
     code: "",
-    name: ""
+    name: "",
   });
 
   // Fetch danh sách phòng khám từ API
   useEffect(() => {
     const fetchClinics = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/clinics");
+        const response = await axios.get(
+          "https://clinic-app-be.onrender.com/api/clinics"
+        );
         setClinics(response.data);
       } catch (error) {
         console.error("Lỗi khi fetch danh sách phòng khám:", error);
@@ -61,7 +63,9 @@ const Maps = () => {
       return;
     }
     try {
-      await axios.delete(`http://localhost:5001/api/clinics/${_id}`);
+      await axios.delete(
+        `https://clinic-app-be.onrender.com/api/clinics/${_id}`
+      );
       setClinics(clinics.filter((clinic) => clinic._id !== _id));
       toast.success("Xóa phòng khám thành công!");
     } catch (error) {
@@ -75,7 +79,7 @@ const Maps = () => {
     setEditingClinic({
       _id: clinic._id,
       code: clinic.code,
-      name: clinic.name
+      name: clinic.name,
     });
     setShowModal(true);
   };
@@ -84,17 +88,19 @@ const Maps = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5001/api/clinics/${editingClinic._id}`,
+        `https://clinic-app-be.onrender.com/api/clinics/${editingClinic._id}`,
         {
           code: editingClinic.code,
-          name: editingClinic.name
+          name: editingClinic.name,
         }
       );
-      
-      setClinics(clinics.map(clinic => 
-        clinic._id === editingClinic._id ? response.data : clinic
-      ));
-      
+
+      setClinics(
+        clinics.map((clinic) =>
+          clinic._id === editingClinic._id ? response.data : clinic
+        )
+      );
+
       setShowModal(false);
       toast.success("Cập nhật phòng khám thành công!");
     } catch (error) {

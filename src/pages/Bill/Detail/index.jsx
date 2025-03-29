@@ -30,7 +30,7 @@ const BillDetail = ({
 
   const charge = async () => {
     const res = await fetch(
-      `http://localhost:5001/api/prescriptions/charged/${data._id}`,
+      `https://clinic-app-be.onrender.com/api/prescriptions/charged/${data._id}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,

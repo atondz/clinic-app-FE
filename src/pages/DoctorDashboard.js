@@ -47,9 +47,12 @@ const DoctorDashboard = () => {
       }
 
       try {
-        const res = await axios.get("http://localhost:5001/api/users/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "https://clinic-app-be.onrender.com/api/users/me",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         setUser(res.data);
       } catch (error) {
@@ -72,7 +75,7 @@ const DoctorDashboard = () => {
     const fetchRegistrations = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/registerExam/doctor/${user._id}`,
+          `https://clinic-app-be.onrender.com/api/registerExam/doctor/${user._id}`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -93,11 +96,13 @@ const DoctorDashboard = () => {
     };
     fetchRegistrations();
   }, [user, authToken, navigate, successMessage]);
-  
+
   const handleCreateDiagnosis = (registration) => {
-    navigate(`/diagnosis/${registration?._id}/${registration?.patient_id?._id}/${user._id}`);
+    navigate(
+      `/diagnosis/${registration?._id}/${registration?.patient_id?._id}/${user._id}`
+    );
   };
-  
+
   // Hàm tìm kiếm trên client-side
   const handleSearch = () => {
     if (!searchTerm.trim()) {

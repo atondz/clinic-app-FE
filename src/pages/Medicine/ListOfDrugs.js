@@ -8,7 +8,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Container } from "reactstrap";
 
-
 const ListOfDrugs = () => {
   const [drugs, setDrugs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,14 +28,19 @@ const ListOfDrugs = () => {
       setLoadingTypes(true);
       setErrorTypes(null);
       try {
-        const response = await axios.get("http://localhost:5001/api/medicineTypes");
+        const response = await axios.get(
+          "https://clinic-app-be.onrender.com/api/medicineTypes"
+        );
         const typesData = response.data.data || response.data || [];
         if (!Array.isArray(typesData)) {
           throw new Error("Dữ liệu loại thuốc không phải là mảng");
         }
         setMedicineTypes(typesData);
       } catch (error) {
-        console.error("Lỗi khi lấy danh sách loại thuốc:", error.response?.data || error.message);
+        console.error(
+          "Lỗi khi lấy danh sách loại thuốc:",
+          error.response?.data || error.message
+        );
         setErrorTypes(error.message);
         toast.error(`Lỗi khi tải loại thuốc: ${error.message}`);
       } finally {
@@ -50,7 +54,9 @@ const ListOfDrugs = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get("http://localhost:5001/api/medicine");
+      const response = await axios.get(
+        "https://clinic-app-be.onrender.com/api/medicine"
+      );
       setDrugs(response.data.data || []);
       console.log("Danh sách thuốc:", response.data.data);
     } catch (error) {
@@ -92,7 +98,7 @@ const ListOfDrugs = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5001/api/medicine/${editingDrug.id}`,
+        `https://clinic-app-be.onrender.com/api/medicine/${editingDrug.id}`,
         updatedDrug
       );
       const updatedMedicine = response.data.data || response.data;
@@ -106,7 +112,8 @@ const ListOfDrugs = () => {
       toast.success("Cập nhật thuốc thành công!");
     } catch (error) {
       console.error("Lỗi khi cập nhật thuốc:", error);
-      const errorMessage = error.response?.data?.message || "Lỗi không xác định";
+      const errorMessage =
+        error.response?.data?.message || "Lỗi không xác định";
       toast.error(`Cập nhật thất bại: ${errorMessage}`);
     }
   };
@@ -114,8 +121,12 @@ const ListOfDrugs = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa thuốc này?")) {
       try {
-        await axios.delete(`http://localhost:5001/api/medicine/${id}`);
-        setDrugs((prevDrugs) => prevDrugs.filter((drug) => (drug._id || drug.id) !== id));
+        await axios.delete(
+          `https://clinic-app-be.onrender.com/api/medicine/${id}`
+        );
+        setDrugs((prevDrugs) =>
+          prevDrugs.filter((drug) => (drug._id || drug.id) !== id)
+        );
         toast.success("Xóa thuốc thành công!");
       } catch (error) {
         console.error("Lỗi khi xóa thuốc:", error);
@@ -126,14 +137,15 @@ const ListOfDrugs = () => {
 
   const filteredDrugs = drugs.filter(
     (drug) =>
-      (drug.medicine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (drug.medicine_code?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (drug.medicine_type_id?.medicine_type_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+      drug.medicine_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      drug.medicine_code?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      drug.medicine_type_id?.medicine_type_name
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   return (
     <>
-   
       <Header />
       <div className=" mt-4">
         <h4 className="mb-4">Danh Sách Thuốc</h4>
@@ -224,7 +236,10 @@ const ListOfDrugs = () => {
                   type="text"
                   value={editingDrug.medicine_code || ""}
                   onChange={(e) =>
-                    setEditingDrug({ ...editingDrug, medicine_code: e.target.value })
+                    setEditingDrug({
+                      ...editingDrug,
+                      medicine_code: e.target.value,
+                    })
                   }
                   required
                 />
@@ -235,7 +250,10 @@ const ListOfDrugs = () => {
                   type="text"
                   value={editingDrug.medicine_name || ""}
                   onChange={(e) =>
-                    setEditingDrug({ ...editingDrug, medicine_name: e.target.value })
+                    setEditingDrug({
+                      ...editingDrug,
+                      medicine_name: e.target.value,
+                    })
                   }
                   required
                 />
@@ -254,13 +272,19 @@ const ListOfDrugs = () => {
                   <Form.Select
                     value={editingDrug.medicine_type_id || ""}
                     onChange={(e) =>
-                      setEditingDrug({ ...editingDrug, medicine_type_id: e.target.value })
+                      setEditingDrug({
+                        ...editingDrug,
+                        medicine_type_id: e.target.value,
+                      })
                     }
                     required
                   >
                     <option value="">Chọn loại thuốc</option>
                     {medicineTypes.map((type) => (
-                      <option key={type.id || type._id} value={type.id || type._id}>
+                      <option
+                        key={type.id || type._id}
+                        value={type.id || type._id}
+                      >
                         {type.medicine_type_name}
                       </option>
                     ))}
@@ -296,7 +320,10 @@ const ListOfDrugs = () => {
                   rows={3}
                   value={editingDrug.description || ""}
                   onChange={(e) =>
-                    setEditingDrug({ ...editingDrug, description: e.target.value })
+                    setEditingDrug({
+                      ...editingDrug,
+                      description: e.target.value,
+                    })
                   }
                   required
                 />
@@ -314,7 +341,6 @@ const ListOfDrugs = () => {
         </Modal>
       )}
       <ToastContainer />
-    
     </>
   );
 };

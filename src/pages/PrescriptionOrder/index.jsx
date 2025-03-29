@@ -22,7 +22,7 @@ const PrescriptionOrder = () => {
 
   const [dropdownOpen, setDropdownOpen] = useState([]);
   const [prescriptionData, setPrescriptionData] = useState({
-    medicines: [{name:"",  medicine_id: "", dosage: "", quantity: 0 }],
+    medicines: [{ name: "", medicine_id: "", dosage: "", quantity: 0 }],
     notes: "",
   });
 
@@ -52,7 +52,9 @@ const PrescriptionOrder = () => {
 
   const fetchDrugs = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/medicine");
+      const response = await axios.get(
+        "https://clinic-app-be.onrender.com/api/medicine"
+      );
       setDrugs(response.data.data || []);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách thuốc:", error);
@@ -68,7 +70,11 @@ const PrescriptionOrder = () => {
   const handleSelectDrug = (index, selectedDrug) => {
     setPrescriptionData((prev) => {
       const newMedicines = [...prev.medicines];
-      newMedicines[index] = { ...newMedicines[index], medicine_id: selectedDrug?._id, name: selectedDrug?.medicine_name };
+      newMedicines[index] = {
+        ...newMedicines[index],
+        medicine_id: selectedDrug?._id,
+        name: selectedDrug?.medicine_name,
+      };
       return { ...prev, medicines: newMedicines };
     });
   };
@@ -76,7 +82,7 @@ const PrescriptionOrder = () => {
   const handleSubmitPrescription = async () => {
     try {
       await axios.post(
-        "http://localhost:5001/api/prescriptions",
+        "https://clinic-app-be.onrender.com/api/prescriptions",
         {
           patient_id: patient_id,
           registration_id: registration_id,
@@ -142,9 +148,7 @@ const PrescriptionOrder = () => {
                               drugs.map((drug) => (
                                 <DropdownItem
                                   key={drug.medicine_id}
-                                  onClick={() =>
-                                    handleSelectDrug(index, drug)
-                                  }
+                                  onClick={() => handleSelectDrug(index, drug)}
                                 >
                                   {drug.medicine_name}
                                 </DropdownItem>

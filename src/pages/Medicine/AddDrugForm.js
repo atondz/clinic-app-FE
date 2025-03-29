@@ -27,14 +27,19 @@ const AddDrugForm = () => {
       setLoadingTypes(true);
       setErrorTypes(null);
       try {
-        const response = await axios.get("http://localhost:5001/api/medicineTypes");
+        const response = await axios.get(
+          "https://clinic-app-be.onrender.com/api/medicineTypes"
+        );
         const typesData = response.data.data || response.data || [];
         if (!Array.isArray(typesData)) {
           throw new Error("Dữ liệu loại thuốc không phải là mảng");
         }
         setMedicineTypes(typesData);
       } catch (error) {
-        console.error("Lỗi khi lấy danh sách loại thuốc:", error.response?.data || error.message);
+        console.error(
+          "Lỗi khi lấy danh sách loại thuốc:",
+          error.response?.data || error.message
+        );
         setErrorTypes(error.message);
         toast.error(`Lỗi khi tải loại thuốc: ${error.message}`);
       } finally {
@@ -48,7 +53,6 @@ const AddDrugForm = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,17 +71,19 @@ const AddDrugForm = () => {
     }
 
     try {
-
       console.log("Dữ liệu gửi lên:", formData);
-      const response = await axios.post("http://localhost:5001/api/medicine", {
-        medicine_code: formData.medicine_code,
-        medicine_name: formData.medicine_name,
-        medicine_type_id: formData.medicine_type_id,
-        price: parseInt(formData.price),
+      const response = await axios.post(
+        "https://clinic-app-be.onrender.com/api/medicine",
+        {
+          medicine_code: formData.medicine_code,
+          medicine_name: formData.medicine_name,
+          medicine_type_id: formData.medicine_type_id,
+          price: parseInt(formData.price),
 
-        unit: formData.unit,
-        description: formData.description,
-      });
+          unit: formData.unit,
+          description: formData.description,
+        }
+      );
 
       toast.success("Thêm thuốc thành công!", {
         autoClose: 2000,
@@ -94,7 +100,8 @@ const AddDrugForm = () => {
       });
     } catch (error) {
       console.error("Lỗi khi thêm thuốc:", error);
-      const errorMessage = error.response?.data?.message || "Lỗi không xác định";
+      const errorMessage =
+        error.response?.data?.message || "Lỗi không xác định";
       toast.error(`Thêm thuốc thất bại: ${errorMessage}`, {
         autoClose: 4000,
       });
@@ -224,7 +231,6 @@ const AddDrugForm = () => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-
             />
           </Form.Group>
 

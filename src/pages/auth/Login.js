@@ -13,7 +13,7 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -21,7 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  const roleAccess = localStorage.getItem("roleAccess")
+  const roleAccess = localStorage.getItem("roleAccess");
 
   // Trạng thái lưu dữ liệu form
   const [formData, setFormData] = useState({
@@ -42,19 +42,22 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5001/api/users/login", formData);
+      const response = await axios.post(
+        "https://clinic-app-be.onrender.com/api/users/login",
+        formData
+      );
       const token = response.data.token;
       const role = response.data?.role;
 
       // Lưu token vào localStorage
       localStorage.setItem("authToken", token);
 
-      if(!roleAccess) {
-        localStorage.setItem("roleAccess", role)
+      if (!roleAccess) {
+        localStorage.setItem("roleAccess", role);
       }
 
       toast.success("Đăng nhập thành công! Chuyển hướng đến trang chính...");
-      
+
       // Chuyển hướng sau 0.2 giây
       setTimeout(() => {
         navigate("/home");
@@ -64,7 +67,7 @@ const Login = () => {
       console.error(error);
     }
   };
- 
+
   return (
     <>
       <Col lg="5" md="7">
@@ -119,7 +122,10 @@ const Login = () => {
                   id="customCheckLogin"
                   type="checkbox"
                 />
-                <label className="custom-control-label" htmlFor="customCheckLogin">
+                <label
+                  className="custom-control-label"
+                  htmlFor="customCheckLogin"
+                >
                   <span className="text-muted">Ghi nhớ đăng nhập</span>
                 </label>
               </div>
@@ -137,7 +143,11 @@ const Login = () => {
         {/* Liên kết Quên mật khẩu và Đăng ký */}
         <Row className="mt-3">
           <Col xs="6">
-            <a className="text-light" href="#pablo" onClick={(e) => e.preventDefault()}>
+            <a
+              className="text-light"
+              href="#pablo"
+              onClick={(e) => e.preventDefault()}
+            >
               <small>Quên mật khẩu?</small>
             </a>
           </Col>

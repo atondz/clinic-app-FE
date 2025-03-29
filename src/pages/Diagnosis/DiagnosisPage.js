@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Container,
   Card,
@@ -15,10 +15,18 @@ import {
   Col,
   Alert,
   Badge,
-  Spinner
-} from 'reactstrap';
-import Header from 'components/Headers/Header';
-import { FaStethoscope, FaUserInjured, FaNotesMedical, FaFlask, FaHeartbeat, FaCalendarAlt, FaArrowLeft } from 'react-icons/fa';
+  Spinner,
+} from "reactstrap";
+import Header from "components/Headers/Header";
+import {
+  FaStethoscope,
+  FaUserInjured,
+  FaNotesMedical,
+  FaFlask,
+  FaHeartbeat,
+  FaCalendarAlt,
+  FaArrowLeft,
+} from "react-icons/fa";
 
 const DiagnosisPage = () => {
   const { registrationId, patientId, doctorId } = useParams();
@@ -27,15 +35,15 @@ const DiagnosisPage = () => {
     patient_id: patientId,
     registration_id: registrationId,
     doctor_id: doctorId,
-    primary_diagnosis: '',
+    primary_diagnosis: "",
     symptoms: [],
-    current_symptom: '',
-    test_results: '',
-    current_condition: '',
-    treatment_advice: ''
+    current_symptom: "",
+    test_results: "",
+    current_condition: "",
+    treatment_advice: "",
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [patientInfo, setPatientInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPatientLoading, setIsPatientLoading] = useState(true);
@@ -44,13 +52,18 @@ const DiagnosisPage = () => {
     const fetchPatientInfo = async () => {
       try {
         setIsPatientLoading(true);
-        const response = await axios.get(`http://localhost:5001/api/patients/${patientId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
-        });
+        const response = await axios.get(
+          `https://clinic-app-be.onrender.com/api/patients/${patientId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
         setPatientInfo(response.data);
       } catch (err) {
-        console.error('Error fetching patient info:', err);
-        setError('Không thể tải thông tin bệnh nhân');
+        console.error("Error fetching patient info:", err);
+        setError("Không thể tải thông tin bệnh nhân");
       } finally {
         setIsPatientLoading(false);
       }
@@ -63,7 +76,7 @@ const DiagnosisPage = () => {
     const { name, value } = e.target;
     setDiagnosisData({
       ...diagnosisData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -72,7 +85,7 @@ const DiagnosisPage = () => {
       setDiagnosisData({
         ...diagnosisData,
         symptoms: [...diagnosisData.symptoms, diagnosisData.current_symptom],
-        current_symptom: ''
+        current_symptom: "",
       });
     }
   };
@@ -82,39 +95,45 @@ const DiagnosisPage = () => {
     newSymptoms.splice(index, 1);
     setDiagnosisData({
       ...diagnosisData,
-      symptoms: newSymptoms
+      symptoms: newSymptoms,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     if (!diagnosisData.primary_diagnosis) {
-      setError('Vui lòng nhập chẩn đoán chính');
+      setError("Vui lòng nhập chẩn đoán chính");
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:5001/api/diagnosis', diagnosisData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+      const response = await axios.post(
+        "https://clinic-app-be.onrender.com/api/diagnosis",
+        diagnosisData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
         }
-      });
+      );
 
       if (response.status === 201) {
-        setSuccess('Lưu chẩn đoán thành công!');
+        setSuccess("Lưu chẩn đoán thành công!");
         setTimeout(() => {
           navigate(-1);
         }, 1500);
       }
     } catch (err) {
-      console.error('Error submitting diagnosis:', err);
-      setError(err.response?.data?.message || 'Có lỗi xảy ra khi lưu chẩn đoán');
+      console.error("Error submitting diagnosis:", err);
+      setError(
+        err.response?.data?.message || "Có lỗi xảy ra khi lưu chẩn đoán"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -127,11 +146,7 @@ const DiagnosisPage = () => {
         {/* Header Section */}
         <Row className="mb-4 align-items-center">
           <Col>
-            <Button 
-              color="light" 
-              onClick={() => navigate(-1)}
-              className="mr-3"
-            >
+            <Button color="light" onClick={() => navigate(-1)} className="mr-3">
               <FaArrowLeft className="mr-2" />
               Quay lại
             </Button>
@@ -181,25 +196,29 @@ const DiagnosisPage = () => {
                 <Col md={4} className="mb-3">
                   <div className="bg-light p-3 rounded">
                     <h6 className="text-muted mb-2">Giới tính</h6>
-                    <h5 className="mb-0">{patientInfo.gender === 'male' ? 'Nam' : 'Nữ'}</h5>
+                    <h5 className="mb-0">
+                      {patientInfo.gender === "male" ? "Nam" : "Nữ"}
+                    </h5>
                   </div>
                 </Col>
                 <Col md={4} className="mb-3">
                   <div className="bg-light p-3 rounded">
                     <h6 className="text-muted mb-2">Ngày sinh</h6>
-                    <h5 className="mb-0">{new Date(patientInfo.birth_date).toLocaleDateString()}</h5>
+                    <h5 className="mb-0">
+                      {new Date(patientInfo.birth_date).toLocaleDateString()}
+                    </h5>
                   </div>
                 </Col>
                 <Col md={4} className="mb-3">
                   <div className="bg-light p-3 rounded">
                     <h6 className="text-muted mb-2">Số CMND</h6>
-                    <h5 className="mb-0">{patientInfo.id_card || '---'}</h5>
+                    <h5 className="mb-0">{patientInfo.id_card || "---"}</h5>
                   </div>
                 </Col>
                 <Col md={4} className="mb-3">
                   <div className="bg-light p-3 rounded">
                     <h6 className="text-muted mb-2">Số điện thoại</h6>
-                    <h5 className="mb-0">{patientInfo.phone || '---'}</h5>
+                    <h5 className="mb-0">{patientInfo.phone || "---"}</h5>
                   </div>
                 </Col>
               </Row>
@@ -276,13 +295,13 @@ const DiagnosisPage = () => {
                           color="info"
                           pill
                           className="mb-2 mr-2 d-flex align-items-center"
-                          style={{ fontSize: '0.9rem', padding: '0.5em 0.8em' }}
+                          style={{ fontSize: "0.9rem", padding: "0.5em 0.8em" }}
                         >
                           {symptom}
                           <Button
                             close
                             className="ml-2 p-0"
-                            style={{ fontSize: '1rem' }}
+                            style={{ fontSize: "1rem" }}
                             onClick={() => handleRemoveSymptom(index)}
                           />
                         </Badge>

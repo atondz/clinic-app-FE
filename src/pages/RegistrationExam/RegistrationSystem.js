@@ -19,7 +19,9 @@ const RegistrationSystem = () => {
   const [doctors, setDoctors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken") || "");
+  const [authToken, setAuthToken] = useState(
+    localStorage.getItem("authToken") || ""
+  );
   const [formData, setFormData] = useState({
     isNewPatient: true,
     patient_id: null,
@@ -50,15 +52,22 @@ const RegistrationSystem = () => {
     const fetchData = async () => {
       try {
         const headers = {
-          "Authorization": `Bearer ${authToken}`,
+          Authorization: `Bearer ${authToken}`,
         };
 
-        const clinicsRes = await fetch("http://localhost:5001/api/clinics", { headers });
-        if (!clinicsRes.ok) throw new Error("Không thể tải danh sách phòng khám.");
+        const clinicsRes = await fetch(
+          "https://clinic-app-be.onrender.com/api/clinics",
+          { headers }
+        );
+        if (!clinicsRes.ok)
+          throw new Error("Không thể tải danh sách phòng khám.");
         const clinicsData = await clinicsRes.json();
         setClinics(clinicsData || []);
 
-        const doctorsRes = await fetch("http://localhost:5001/api/users/doctors", { headers });
+        const doctorsRes = await fetch(
+          "https://clinic-app-be.onrender.com/api/users/doctors",
+          { headers }
+        );
         if (!doctorsRes.ok) throw new Error("Không thể tải danh sách bác sĩ.");
         const doctorsData = await doctorsRes.json();
         setDoctors(doctorsData || []);
@@ -66,7 +75,9 @@ const RegistrationSystem = () => {
         await loadRegistrations(currentPage);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setErrorMessage("Lỗi khi tải dữ liệu, vui lòng thử lại hoặc đăng nhập lại.");
+        setErrorMessage(
+          "Lỗi khi tải dữ liệu, vui lòng thử lại hoặc đăng nhập lại."
+        );
       }
     };
     fetchData();
@@ -75,10 +86,10 @@ const RegistrationSystem = () => {
   const loadRegistrations = async (page) => {
     try {
       const res = await fetch(
-        `http://localhost:5001/api/registerExam?page=${page}&limit=10`,
+        `https://clinic-app-be.onrender.com/api/registerExam?page=${page}&limit=10`,
         {
           headers: {
-            "Authorization": `Bearer ${authToken}`,
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -127,7 +138,8 @@ const RegistrationSystem = () => {
       return "Vui lòng chọn phòng khám, bác sĩ và nhập triệu chứng.";
     }
     if (formData.isNewPatient) {
-      const { id_card, name, birth_date, phone, address } = formData.patientData;
+      const { id_card, name, birth_date, phone, address } =
+        formData.patientData;
       if (!id_card || !name || !birth_date || !phone || !address) {
         return "Vui lòng nhập đầy đủ thông tin bệnh nhân.";
       }
@@ -151,11 +163,14 @@ const RegistrationSystem = () => {
     }
 
     try {
-      const checkRes = await fetch(`http://localhost:5001/api/patients/id_card/${formData.patientData.id_card}`, {
-        headers: {
-          "Authorization": `Bearer ${authToken}`,
-        },
-      });
+      const checkRes = await fetch(
+        `https://clinic-app-be.onrender.com/api/patients/id_card/${formData.patientData.id_card}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
       const checkData = await checkRes.json();
       const patientExists = checkData && checkData.id_card;
 
@@ -183,14 +198,17 @@ const RegistrationSystem = () => {
         payload.selectedPatientId = formData.patient_id;
       }
 
-      const response = await fetch("http://localhost:5001/api/registerExam", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${authToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        "https://clinic-app-be.onrender.com/api/registerExam",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const responseData = await response.json();
 
@@ -216,7 +234,9 @@ const RegistrationSystem = () => {
         setErrorMessage("");
         alert("Đăng ký khám thành công!");
       } else {
-        setErrorMessage(responseData.message || "Đăng ký thất bại, vui lòng thử lại.");
+        setErrorMessage(
+          responseData.message || "Đăng ký thất bại, vui lòng thử lại."
+        );
       }
     } catch (error) {
       console.error("Registration failed:", error);
@@ -232,11 +252,14 @@ const RegistrationSystem = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5001/api/patients/id_card/${idCard}`, {
-        headers: {
-          "Authorization": `Bearer ${authToken}`,
-        },
-      });
+      const res = await fetch(
+        `https://clinic-app-be.onrender.com/api/patients/id_card/${idCard}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
       const data = await res.json();
       console.log("API Response:", data);
 
@@ -249,7 +272,9 @@ const RegistrationSystem = () => {
             id_card: patient.id_card || "",
             name: patient.name || "",
             gender: patient.gender || "male",
-            birth_date: patient.birth_date ? patient.birth_date.slice(0, 10) : "",
+            birth_date: patient.birth_date
+              ? patient.birth_date.slice(0, 10)
+              : "",
             phone: patient.phone || "",
             address: patient.address || "",
           },
@@ -303,12 +328,17 @@ const RegistrationSystem = () => {
   return (
     <>
       <Header />
-      
-      <Container className=" mt-4" fluid >
+
+      <Container className=" mt-4" fluid>
         <Row className="justify-content-center">
           <Col lg={10} xl={8}>
             {errorMessage && (
-              <Alert variant="danger" onClose={() => setErrorMessage("")} dismissible className="shadow-sm">
+              <Alert
+                variant="danger"
+                onClose={() => setErrorMessage("")}
+                dismissible
+                className="shadow-sm"
+              >
                 <i className="fas fa-exclamation-circle me-2"></i>
                 {errorMessage}
               </Alert>
@@ -348,8 +378,8 @@ const RegistrationSystem = () => {
                                 required
                                 placeholder="Nhập số CMND/CCCD"
                               />
-                              <Button 
-                                variant="outline-primary" 
+                              <Button
+                                variant="outline-primary"
                                 onClick={handleSearchPatient}
                               >
                                 <i className="fas fa-search me-1"></i> Tìm
@@ -433,7 +463,9 @@ const RegistrationSystem = () => {
                                 type="radio"
                                 name="patientData.gender"
                                 value="female"
-                                checked={formData.patientData.gender === "female"}
+                                checked={
+                                  formData.patientData.gender === "female"
+                                }
                                 onChange={handleInputChange}
                                 id="gender-female"
                               />
@@ -567,7 +599,9 @@ const RegistrationSystem = () => {
                               label={
                                 <>
                                   <i className="fas fa-exclamation-triangle me-2 text-danger"></i>
-                                  <span className="fw-bold">Khám ưu tiên (cấp cứu)</span>
+                                  <span className="fw-bold">
+                                    Khám ưu tiên (cấp cứu)
+                                  </span>
                                 </>
                               }
                               checked={formData.priority}
@@ -580,9 +614,9 @@ const RegistrationSystem = () => {
                   </Card>
 
                   <div className="text-center mt-4">
-                    <Button 
-                      variant="primary" 
-                      type="submit" 
+                    <Button
+                      variant="primary"
+                      type="submit"
                       size="lg"
                       className="px-5 py-2"
                     >
@@ -599,39 +633,41 @@ const RegistrationSystem = () => {
 
       {/* CSS tùy chỉnh */}
       <style jsx>{`
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
           border-radius: 0.375rem;
           padding: 0.75rem 1rem;
           border: 1px solid #dee2e6;
           transition: all 0.3s ease;
         }
-        
-        .form-control:focus, .form-select:focus {
+
+        .form-control:focus,
+        .form-select:focus {
           border-color: #86b7fe;
           box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
-        
+
         .card {
           border-radius: 0.5rem;
           overflow: hidden;
         }
-        
+
         .btn-primary {
           background-color: #0d6efd;
           border-color: #0d6efd;
           transition: all 0.3s ease;
         }
-        
+
         .btn-primary:hover {
           background-color: #0b5ed7;
           border-color: #0a58ca;
         }
-        
+
         .form-label {
           color: #495057;
           margin-bottom: 0.5rem;
         }
-        
+
         .card-header {
           padding: 1rem 1.5rem;
         }
